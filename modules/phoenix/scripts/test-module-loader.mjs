@@ -1,7 +1,8 @@
-import assert from 'node:assert/strict';
-import fs from 'node:fs/promises';
-import path from 'node:path';
-import { fileURLToPath, pathToFileURL } from 'node:url';
+import './shim/node-env.mjs';
+import assert from './shim/assert.mjs';
+import fs from './shim/fs.mjs';
+import path from './shim/path.mjs';
+import { fileURLToPath, pathToFileURL } from './shim/url.mjs';
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const moduleLoaderURL = pathToFileURL(path.join(rootDir, 'lib', 'services', 'moduleLoader.mjs')).href;

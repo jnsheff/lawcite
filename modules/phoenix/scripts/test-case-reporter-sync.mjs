@@ -1,4 +1,5 @@
-import assert from 'node:assert/strict';
+import './shim/node-env.mjs';
+import assert from './shim/assert.mjs';
 
 globalThis.Zotero = {
   debug() {},

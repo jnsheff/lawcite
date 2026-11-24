@@ -1,4 +1,5 @@
-import assert from 'node:assert/strict';
+import './shim/node-env.mjs';
+import assert from './shim/assert.mjs';
 import { Patcher } from '../lib/services/patcher.mjs';
 
 const fieldIDs = new Map([['date', 1], ['title', 2], ['extra', 3], ['court', 4]]);

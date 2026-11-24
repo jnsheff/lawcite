@@ -1,7 +1,8 @@
-import assert from 'node:assert/strict';
-import fs from 'node:fs/promises';
-import path from 'node:path';
-import { fileURLToPath, pathToFileURL } from 'node:url';
+import './shim/node-env.mjs';
+import assert from './shim/assert.mjs';
+import fs from './shim/fs.mjs';
+import path from './shim/path.mjs';
+import { fileURLToPath, pathToFileURL } from './shim/url.mjs';
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const abbrevServiceURL = pathToFileURL(path.join(rootDir, 'lib', 'services', 'abbrevService.mjs')).href;
@@ -60,14 +61,14 @@ try {
 }
 
 for (const proceduralCase of [
-  ['In re American Broadcasting Company', '<i>in re</i> Am. Broad. Co.'],
+  ['In re American Broadcasting Company', '<i>In re</i> Am. Broad. Co.'],
   ['Ex rel. Academy', '<i>ex rel</i>. Acad.'],
   ['Ex rel., Academy', '<i>ex rel</i>., Acad.'],
   ['State on the relation of Academy', 'St. <i>ex rel</i>. Acad.'],
   ['On behalf of Academy', '<i>ex rel</i>. Acad.'],
-  ['In the matter of Academy', '<i>in re</i> Acad.'],
-  ['Petition of Academy', '<i>in re</i> Acad.'],
-  ['Application of Academy', '<i>in re</i> Acad.'],
+  ['In the matter of Academy', '<i>In re</i> Acad.'],
+  ['Petition of Academy', '<i>In re</i> Acad.'],
+  ['Application of Academy', '<i>In re</i> Acad.'],
 ]) {
   try {
     assert.equal(service.abbreviateTitleFallback(proceduralCase[0], 'us'), proceduralCase[1]);
@@ -201,7 +202,7 @@ patcher._decorateShortForms(
   'http://juris-m.github.io/styles/jm-indigobook',
 );
 try {
-  assert.equal(proceduralItem.title, '<i>in re</i> Acad. <i>ex rel</i>. Bros.');
+  assert.equal(proceduralItem.title, '<i>In re</i> Acad. <i>ex rel</i>. Bros.');
   assert.equal(proceduralItem['title-short'], proceduralItem.title);
   console.log('PASS IndigoBook decoration preserves procedural italics in title and generated title-short');
 } catch (error) {
@@ -469,9 +470,48 @@ for (const [key, expected, label] of periodicalCases) {
   }
 }
 
+// Regression: citeproc calls getAbbreviation with a NORMALIZED key (lower-cased, punctuation stripped). The
+// plugin used to run the word-based fallback on that key, printing "nyu L. Rev." and "J. Econ. Mgmt. strategy",
+// and it escaped "&" itself, which citeproc escapes again ("&amp;amp;"). Drive the real patched hook.
+const SHEFF_STYLE = 'http://www.zotero.org/styles/sheff-indigobook';
+function patchedAbbreviation(title, styleID, type = 'article-journal') {
+  globalThis.Zotero.Cite = { System: function System() {} };
+  const hookPatcher = new Patcher({ abbrevService: service });
+  hookPatcher._patchAbbreviations();
+  hookPatcher._rememberContainerTitleContext({ type, 'container-title': title });
+  const sys = new globalThis.Zotero.Cite.System();
+  const obj = {};
+  const key = service.normalizeKey(title); // what citeproc passes
+  sys.getAbbreviation(styleID, obj, 'default', 'container-title', key, false);
+  for (const bucket of Object.values(obj)) {
+    if (bucket?.['container-title']?.[key]) return bucket['container-title'][key];
+  }
+  return null;
+}
+const patchedHookCases = [
+  ['NYU Law Review', SHEFF_STYLE, 'NYU L. Rev.', 'capitalization survives the normalized key (NYU)'],
+  ['Journal of Economics & Management Strategy', SHEFF_STYLE, 'J. Econ. & Mgmt. Strategy', 'capitalization and "&" survive (Strategy, &)'],
+  ['Harvard Journal of Law & Technology', SHEFF_STYLE, 'Harv. J.L. & Tech.', 'adjacent single capitals close up and "&" is escaped only once'],
+  ['NYU Law Review', 'http://www.zotero.org/styles/apa', null, 'a style outside the allow-list gets no fallback'],
+];
+for (const [title, styleID, expected, label] of patchedHookCases) {
+  let actual = null;
+  try {
+    const raw = patchedAbbreviation(title, styleID);
+    // the value is wrapped as <span class="nocase">...</span>; strip it for comparison
+    actual = raw === null ? null : raw.replace(/^<span class="nocase">/, '').replace(/<\/span>$/, '');
+    assert.equal(actual, expected);
+    assert.ok(raw === null || !/&amp;/.test(raw), 'ampersand must not be pre-escaped');
+    console.log(`PASS Patched hook: ${label}: ${title} -> ${actual}`);
+  } catch (error) {
+    failures += 1;
+    console.error(`FAIL Patched hook: ${label}: expected ${expected} but got ${actual} (${String(error?.message || error).split('\n')[0]})`);
+  }
+}
+
 if (failures) {
   process.exitCode = 1;
   console.error(`\n${failures} abbreviation regression test(s) failed.`);
 } else {
-  console.log(`\nAll ${cases.length + optionCases.length + periodicalCases.length + 28} abbreviation regression tests passed.`);
+  console.log(`\nAll ${cases.length + optionCases.length + periodicalCases.length + patchedHookCases.length + 28} abbreviation regression tests passed.`);
 }
