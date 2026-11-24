@@ -67,6 +67,9 @@ def main():
             shutil.copy2(src, dst)
     copytree(os.path.join(HICITE, 'locale'), os.path.join(STAGE, 'locale'))
     shutil.copy2(os.path.join(HICITE, 'prefs.js'), os.path.join(STAGE, 'prefs.js'))
+    # lawcite's icon (assets/icon.svg): the plugin icon, and the image citation-phoenix's Settings pane loads
+    shutil.copy2(os.path.join(ROOT, 'assets', 'icon.svg'), os.path.join(STAGE, 'icon.svg'))
+    shutil.copy2(os.path.join(ROOT, 'assets', 'icon.svg'), os.path.join(STAGE, 'content', 'ui', 'icon48.svg'))
     copytree(os.path.join(TRANSL, 'translators'), os.path.join(STAGE, 'translators'))
     for name in ('manifest.json', 'bootstrap.js'):
         shutil.copy2(os.path.join(ROOT, name), os.path.join(STAGE, name))
@@ -88,7 +91,7 @@ def main():
 def verify(xpi):
     names = set(zipfile.ZipFile(xpi).namelist())
     problems = []
-    for need in ('manifest.json', 'bootstrap.js', 'prefs.js', 'content/citation-phoenix.js', 'content/schema.json',
+    for need in ('manifest.json', 'bootstrap.js', 'prefs.js', 'icon.svg', 'content/ui/icon48.svg', 'content/citation-phoenix.js', 'content/schema.json',
                  'content/localization.json', 'styles/index.json', 'style-modules/index.json',
                  'juris-abbrevs/DIRECTORY_LISTING.json', 'juris-maps/primary-jurisdictions.json',
                  'hicite/hicite-export.js', 'hicite/preferences.xhtml', 'hicite/translator/hicite.js',
@@ -97,6 +100,9 @@ def verify(xpi):
                  'styles/lawcite-apa.csl'):
         if need not in names:
             problems.append('missing ' + need)
+    z = zipfile.ZipFile(xpi)
+    if '>LC<' not in z.read('icon.svg').decode('utf-8') or z.read('icon.svg') != z.read('content/ui/icon48.svg'):
+        problems.append('icon.svg is not the lawcite icon, or content/ui/icon48.svg differs from it')
     ftl = [n for n in names if n.endswith('citation-phoenix.ftl')]
     if len(ftl) < 40:
         problems.append(f'only {len(ftl)} citation-phoenix.ftl files (expected ~48)')
