@@ -473,7 +473,9 @@ for (const [key, expected, label] of periodicalCases) {
 // Regression: citeproc calls getAbbreviation with a NORMALIZED key (lower-cased, punctuation stripped). The
 // plugin used to run the word-based fallback on that key, printing "nyu L. Rev." and "J. Econ. Mgmt. strategy",
 // and it escaped "&" itself, which citeproc escapes again ("&amp;amp;"). Drive the real patched hook.
-const SHEFF_STYLE = 'http://www.zotero.org/styles/sheff-indigobook';
+const SHEFF_STYLE = 'http://www.zotero.org/styles/sheff-indigobook'; // earlier name, still honored
+const LAWREVIEW_STYLE = 'http://www.zotero.org/styles/lawcite-indigobook-lawreview';
+const MEMORANDA_STYLE = 'http://www.zotero.org/styles/lawcite-indigobook-memoranda';
 function patchedAbbreviation(title, styleID, type = 'article-journal') {
   globalThis.Zotero.Cite = { System: function System() {} };
   const hookPatcher = new Patcher({ abbrevService: service });
@@ -492,6 +494,8 @@ const patchedHookCases = [
   ['NYU Law Review', SHEFF_STYLE, 'NYU L. Rev.', 'capitalization survives the normalized key (NYU)'],
   ['Journal of Economics & Management Strategy', SHEFF_STYLE, 'J. Econ. & Mgmt. Strategy', 'capitalization and "&" survive (Strategy, &)'],
   ['Harvard Journal of Law & Technology', SHEFF_STYLE, 'Harv. J.L. & Tech.', 'adjacent single capitals close up and "&" is escaped only once'],
+  ['NYU Law Review', LAWREVIEW_STYLE, 'NYU L. Rev.', 'lawcite-indigobook-lawreview gets the fallback'],
+  ['Journal of Economics & Management Strategy', MEMORANDA_STYLE, 'J. Econ. & Mgmt. Strategy', 'lawcite-indigobook-memoranda gets the fallback'],
   ['NYU Law Review', 'http://www.zotero.org/styles/apa', null, 'a style outside the allow-list gets no fallback'],
 ];
 for (const [title, styleID, expected, label] of patchedHookCases) {

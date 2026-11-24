@@ -92,7 +92,8 @@ def verify(xpi):
                  'content/localization.json', 'styles/index.json', 'style-modules/index.json',
                  'juris-abbrevs/DIRECTORY_LISTING.json', 'juris-maps/primary-jurisdictions.json',
                  'hicite/hicite-export.js', 'hicite/preferences.xhtml', 'hicite/translator/hicite.js',
-                 'locale/en-US/hicite-export.ftl', 'locale/en-US/citation-phoenix.ftl'):
+                 'locale/en-US/hicite-export.ftl', 'locale/en-US/citation-phoenix.ftl',
+                 'styles/lawcite-indigobook-lawreview.csl', 'styles/lawcite-indigobook-memoranda.csl'):
         if need not in names:
             problems.append('missing ' + need)
     ftl = [n for n in names if n.endswith('citation-phoenix.ftl')]

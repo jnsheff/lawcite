@@ -20,6 +20,20 @@ shows a message naming them. Disable or remove them under Tools > Plugins, then 
 Your data is untouched: the legal fields, `Extra` data, citation keys and auto-export jobs are stored
 in the library and in the same preferences the standalone plugins used.
 
+## Styles
+
+lawcite installs its own CSL styles into Zotero at startup, next to the Juris-M styles from citation-phoenix:
+
+| Style | For | ID |
+|-------|-----|----|
+| Lawcite IndigoBook Law Review | law-review footnotes | `lawcite-indigobook-lawreview` |
+| Lawcite IndigoBook Memoranda | legal memoranda, briefs and other practitioner documents | `lawcite-indigobook-memoranda` |
+
+Both are adapted from the JM Indigo Book styles by Frank Bennett (CC BY-SA 4.0) and add the Bluebook periodical
+abbreviation rules. A bundled style is installed when it is missing and updated when its `<updated>` date is newer;
+a style you have edited in Zotero's styles folder is overwritten only by a newer bundled version. Earlier copies
+named `sheff-indigobook` and `sheff-indigobook-law-review` keep working but are no longer shipped.
+
 ## Layout
 
 ```

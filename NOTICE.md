@@ -31,7 +31,7 @@ license: it gives no rights to anyone but Sheff and those to whom Sheff
 sublicenses. Someone who wants to reuse the upstream code directly should ask Risch.
 
 Changes by Sheff (Bluebook periodical abbreviations, year-only dates for reports,
-hearings and regulations, the Sheff-IndigoBook styles and others) are covered by the
+hearings and regulations, the lawcite IndigoBook styles and others) are covered by the
 MIT license in `LICENSE`, except the CSL styles, which are CC BY-SA as stated in
 their `<rights>` elements.
 
@@ -46,8 +46,9 @@ Bundled third-party material keeps its own terms:
 - `modules/phoenix/style-modules/` is dedicated to the public domain under CC0 1.0
   (`style-modules/LICENSE`).
 - The bundled CSL styles carry the license stated in each file's `<rights>` element,
-  for example CC BY-SA 3.0 for `jm-indigobook.csl`. The Sheff-IndigoBook styles,
-  adapted from the JM Indigo Book style by Frank Bennett, are CC BY-SA 4.0.
+  for example CC BY-SA 3.0 for `jm-indigobook.csl`. The lawcite IndigoBook styles
+  (`lawcite-indigobook-lawreview.csl`, `lawcite-indigobook-memoranda.csl`, formerly
+  Sheff-IndigoBook), adapted from the JM Indigo Book styles by Frank Bennett, are CC BY-SA 4.0.
 
 ## Not carried over
 

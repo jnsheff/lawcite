@@ -4171,6 +4171,9 @@ export class Patcher {
     const key = String(styleID || '').trim().toLowerCase();
     return key === 'http://juris-m.github.io/styles/jm-indigobook'
       || key === 'http://juris-m.github.io/styles/jm-indigobook-law-review'
+      || key === 'http://www.zotero.org/styles/lawcite-indigobook-lawreview'
+      || key === 'http://www.zotero.org/styles/lawcite-indigobook-memoranda'
+      // the styles' earlier names, for copies already installed
       || key === 'http://www.zotero.org/styles/sheff-indigobook'
       || key === 'http://www.zotero.org/styles/sheff-indigobook-law-review';
   }

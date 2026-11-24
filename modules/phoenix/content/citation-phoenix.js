@@ -5928,7 +5928,7 @@ ${mlzBlock}` : mlzBlock;
     }
     _styleAllowsContainerTitleFallback(styleID) {
       const key = String(styleID || "").trim().toLowerCase();
-      return key === "http://juris-m.github.io/styles/jm-indigobook" || key === "http://juris-m.github.io/styles/jm-indigobook-law-review" || key === "http://www.zotero.org/styles/sheff-indigobook" || key === "http://www.zotero.org/styles/sheff-indigobook-law-review";
+      return key === "http://juris-m.github.io/styles/jm-indigobook" || key === "http://juris-m.github.io/styles/jm-indigobook-law-review" || key === "http://www.zotero.org/styles/lawcite-indigobook-lawreview" || key === "http://www.zotero.org/styles/lawcite-indigobook-memoranda" || key === "http://www.zotero.org/styles/sheff-indigobook" || key === "http://www.zotero.org/styles/sheff-indigobook-law-review";
     }
     _patchIndigoBookCaseTitleFormatting(styleXML, styleID = "") {
       if (!this._styleAllowsContainerTitleFallback(styleID)) return styleXML;
