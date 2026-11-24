@@ -1,0 +1,12 @@
+{
+  "filename": "auto-zw.json",
+  "name": "Zimbabwe",
+  "version": "2026-07-22 20:44:53 UTC",
+  "xdata": {
+    "default": {
+      "place": {
+        "ZW": "Zimbabwe"
+      }
+    }
+  }
+}

@@ -1,0 +1,93 @@
+<!-- hicite settings pane. Parsed by Zotero as an XUL fragment: XUL elements are unprefixed and
+     HTML elements use the html: prefix. `preference` attributes bind a control to a preference
+     (full key); the same keys are read by the export translator and the add-on. -->
+<vbox id="hicite-prefs" onload="Zotero.HiCitePrefs.init()">
+	<groupbox>
+		<html:h2>Citation keys</html:h2>
+		<description>
+			Keys are Better BibTeX's, kept in Zotero's Citation Key field: with Better BibTeX installed it makes them
+			(from its default formula, except for legal sources, below); without it, hicite makes the same keys itself.
+			A key never changes by itself. To re-key an item, right-click it (or a collection) and choose
+			"hicite: Regenerate Citation Key", "hicite: Regenerate Case Keys" or "hicite: Regenerate All Citation Keys".
+		</description>
+		<checkbox label="Give Better BibTeX a citation key formula for legal sources (new items only)"
+			preference="extensions.zotero.translators.hicite.bbtFormula"/>
+		<description>
+			Cases: the first party's name and the year. Statutes, bills and hearings: the Short Title, else the first
+			word of the title, and the year. Everything else: Better BibTeX's default, author + three title words + year.
+		</description>
+	</groupbox>
+
+	<groupbox>
+		<html:h2>Export</html:h2>
+		<checkbox label="Use an item's Short Title as its short-form name (inline)"
+			preference="extensions.zotero.translators.hicite.shortTitleInline"/>
+		<checkbox label="Leave out a website's title when it repeats the author"
+			preference="extensions.zotero.translators.hicite.omitRedundantSite"/>
+		<hbox align="center">
+			<label value="Authors listed:" control="hicite-maxAuthors"/>
+			<menulist id="hicite-maxAuthors" native="true" preference="extensions.zotero.translators.hicite.maxAuthors">
+				<menupopup>
+					<menuitem label="All of them" value="0"/>
+					<menuitem label="First author, then et al." value="1"/>
+					<menuitem label="First 2, then et al." value="2"/>
+					<menuitem label="First 3, then et al." value="3"/>
+					<menuitem label="First 4, then et al." value="4"/>
+					<menuitem label="First 5, then et al." value="5"/>
+					<menuitem label="First 6, then et al." value="6"/>
+					<menuitem label="First 8, then et al." value="8"/>
+					<menuitem label="First 10, then et al." value="10"/>
+				</menupopup>
+			</menulist>
+		</hbox>
+		<checkbox label="Put titles in Bluebook title case (e.g. &quot;Finding structure in time&quot; becomes &quot;Finding Structure in Time&quot;)"
+			preference="extensions.zotero.translators.hicite.titleCase"/>
+		<hbox align="center">
+			<label value="Shorten longer lists to the first two authors, et al.:" control="hicite-longLists"/>
+			<menulist id="hicite-longLists" native="true" preference="extensions.zotero.translators.hicite.longLists">
+				<menupopup>
+					<menuitem label="Never" value="0"/>
+					<menuitem label="Lists of more than 4" value="4"/>
+					<menuitem label="Lists of more than 6" value="6"/>
+					<menuitem label="Lists of more than 8" value="8"/>
+					<menuitem label="Lists of more than 10" value="10"/>
+					<menuitem label="Lists of more than 20" value="20"/>
+				</menupopup>
+			</menulist>
+		</hbox>
+		<checkbox label="Include URLs (kept for web sources; dropped for works with a print citation)"
+			preference="extensions.zotero.translators.hicite.includeUrls"/>
+		<description>Changes apply to the next export and re-run your auto-exports.</description>
+	</groupbox>
+
+	<groupbox>
+		<html:h2>Legal data (citation-phoenix)</html:h2>
+		<label id="hicite-phoenix-status" value="Checking for citation-phoenix…"/>
+		<hbox align="center">
+			<label value="Use its legal data:" control="hicite-phoenixMode"/>
+			<menulist id="hicite-phoenixMode" native="true" preference="extensions.zotero.translators.hicite.phoenixMode">
+				<menupopup>
+					<menuitem label="Automatically (when citation-phoenix is installed and enabled)" value="auto"/>
+					<menuitem label="Always" value="on"/>
+					<menuitem label="Never" value="off"/>
+				</menupopup>
+			</menulist>
+		</hbox>
+		<description>
+			citation-phoenix stores Juris-M's legal data in Extra and Juris-M court IDs such as "court.appeals" in the Court field.
+			When it is in use, hicite turns a court ID into its Bluebook abbreviation ("court.appeals" in the Second Circuit becomes
+			"2d Cir."), takes a missing reporter from the Juris-M data, and writes citation-phoenix regulations as regcode and treaties
+			as treaty. Without it, items export exactly as before. A court ID that cannot be translated with certainty is left out and
+			noted in the .tex file. Changes re-run your auto-exports.
+		</description>
+	</groupbox>
+
+	<groupbox>
+		<html:h2>Auto-exports</html:h2>
+		<vbox id="hicite-jobs"/>
+		<description>
+			To add one, right-click a library or collection and choose "hicite: Auto-Export to File…", or tick
+			"Keep updated" when exporting with the hicite format.
+		</description>
+	</groupbox>
+</vbox>

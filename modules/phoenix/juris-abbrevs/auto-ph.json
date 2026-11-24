@@ -1,0 +1,12 @@
+{
+  "filename": "auto-ph.json",
+  "name": "Philippines",
+  "version": "2026-07-22 20:44:53 UTC",
+  "xdata": {
+    "default": {
+      "place": {
+        "PH": "Philippines"
+      }
+    }
+  }
+}

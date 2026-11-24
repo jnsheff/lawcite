@@ -1,0 +1,1081 @@
+[
+ {
+  "itemType": "journalArticle",
+  "title": "Government in Ignorance of the Law: A Plea for Better Publication",
+  "creators": [
+   {
+    "creatorType": "author",
+    "firstName": "Erwin N.",
+    "lastName": "Griswold"
+   }
+  ],
+  "publicationTitle": "Harvard Law Review",
+  "volume": "48",
+  "pages": "198-230",
+  "date": "1934-12-01",
+  "extra": "Citation Key: griswold1934a"
+ },
+ {
+  "itemType": "book",
+  "title": "Nimmer on Copyright & Related Things",
+  "creators": [
+   {
+    "creatorType": "author",
+    "firstName": "Melville B.",
+    "lastName": "Nimmer"
+   },
+   {
+    "creatorType": "author",
+    "firstName": "David",
+    "lastName": "Nimmer"
+   }
+  ],
+  "publisher": "LexisNexis",
+  "date": "2014",
+  "edition": "2nd ed.",
+  "extra": "Citation Key: nimmer2014"
+ },
+ {
+  "itemType": "bookSection",
+  "title": "A Chapter, With a Comma",
+  "bookTitle": "Edited Volume",
+  "creators": [
+   {
+    "creatorType": "author",
+    "firstName": "Ann",
+    "lastName": "Écrivain"
+   },
+   {
+    "creatorType": "editor",
+    "firstName": "Ed",
+    "lastName": "Itor"
+   }
+  ],
+  "pages": "45-60",
+  "date": "2010",
+  "extra": "Citation Key: ecrivain2010"
+ },
+ {
+  "itemType": "newspaperArticle",
+  "title": "How Companies Learn Your Secrets",
+  "creators": [
+   {
+    "creatorType": "author",
+    "firstName": "Charles",
+    "lastName": "Duhigg"
+   }
+  ],
+  "publicationTitle": "New York Times Magazine",
+  "pages": "MM30",
+  "date": "2016-01-01",
+  "extra": "Citation Key: duhigg2016"
+ },
+ {
+  "itemType": "webpage",
+  "title": "Nutella: How the World Went Nuts",
+  "creators": [
+   {
+    "creatorType": "author",
+    "firstName": "Dany",
+    "lastName": "Mitzman"
+   }
+  ],
+  "websiteTitle": "BBC News",
+  "date": "2014-05-18",
+  "url": "http://www.bbc.com/news/a%20b?x=1&y=2",
+  "extra": "Citation Key: mitzman2014"
+ },
+ {
+  "itemType": "case",
+  "caseName": "Wheaton v. Peters",
+  "reporter": "U.S.",
+  "reporterVolume": "33",
+  "firstPage": "591",
+  "date": "1834",
+  "extra": "Citation Key: wheaton"
+ },
+ {
+  "itemType": "report",
+  "title": "Overview of FTC Actions",
+  "creators": [
+   {
+    "creatorType": "author",
+    "name": "Federal Trade Commission",
+    "fieldMode": 1
+   }
+  ],
+  "institution": "FTC",
+  "date": "2019-06",
+  "extra": "Citation Key: federaltradecommission2019"
+ },
+ {
+  "itemType": "statute",
+  "nameOfAct": "Patent Act",
+  "code": "U.S.C.",
+  "codeNumber": "35",
+  "section": "101",
+  "extra": "Citation Key: ref"
+ },
+ {
+  "itemType": "thesis",
+  "title": "A Dissertation",
+  "thesisType": "Ph.D. dissertation",
+  "creators": [
+   {
+    "creatorType": "author",
+    "firstName": "Jo",
+    "lastName": "Doe"
+   }
+  ],
+  "date": "2001",
+  "extra": "Citation Key: doe2001"
+ },
+ {
+  "itemType": "journalArticle",
+  "title": "Another",
+  "creators": [
+   {
+    "creatorType": "author",
+    "firstName": "Erwin",
+    "lastName": "Griswold"
+   }
+  ],
+  "publicationTitle": "Yale Law Journal",
+  "volume": "1",
+  "pages": "1",
+  "date": "1934",
+  "extra": "Citation Key: griswold1934"
+ },
+ {
+  "itemType": "journalArticle",
+  "title": "50% of C# & R_2: The $5 Question ~ a^b",
+  "creators": [
+   {
+    "creatorType": "author",
+    "firstName": "María José",
+    "lastName": "de la Peña"
+   }
+  ],
+  "publicationTitle": "J. of \"Odd\" Things",
+  "volume": "7",
+  "pages": "e12-e19",
+  "date": "2020-03-15",
+  "extra": "Citation Key: delapena2020"
+ },
+ {
+  "itemType": "webpage",
+  "title": "A page with a fragment",
+  "websiteTitle": "Example",
+  "date": "2021",
+  "url": "https://example.com/a_b#frag?q=100%25",
+  "extra": "Citation Key: page2021"
+ },
+ {
+  "itemType": "case",
+  "caseName": "In re Smith",
+  "docketNumber": "No. 12-345",
+  "court": "D. Mass.",
+  "date": "2013-05-01",
+  "extra": "Citation Key: inresmith"
+ },
+ {
+  "itemType": "book",
+  "title": "The Untitled Anonymous Work",
+  "date": "1999",
+  "extra": "Citation Key: untitled1999"
+ },
+ {
+  "itemType": "journalArticle",
+  "title": "Braces {Protected} and {Unbalanced",
+  "creators": [
+   {
+    "creatorType": "author",
+    "firstName": "Al",
+    "lastName": "Anderson"
+   }
+  ],
+  "publicationTitle": "Yale Law Journal",
+  "volume": "100",
+  "pages": "1",
+  "date": "2000",
+  "extra": "Citation Key: anderson2000"
+ },
+ {
+  "itemType": "case",
+  "caseName": "United States v. Alvarez",
+  "reporter": "U.S.",
+  "reporterVolume": "567",
+  "firstPage": "709",
+  "dateDecided": "2012-06-28 June 28, 2012",
+  "citationKey": "2012",
+  "extra": "Citation Key: unitedstates"
+ },
+ {
+  "itemType": "book",
+  "title": "Native Key Book",
+  "creators": [
+   {
+    "creatorType": "author",
+    "firstName": "Nan",
+    "lastName": "Tive"
+   }
+  ],
+  "date": "2015",
+  "citationKey": "tiveNativeKey2015",
+  "extra": "Citation Key: tive2015"
+ },
+ {
+  "itemType": "book",
+  "title": "Duplicate A",
+  "creators": [
+   {
+    "creatorType": "author",
+    "firstName": "D",
+    "lastName": "Up"
+   }
+  ],
+  "date": "2016",
+  "extra": "Citation Key: dupkey"
+ },
+ {
+  "itemType": "book",
+  "title": "Duplicate B",
+  "creators": [
+   {
+    "creatorType": "author",
+    "firstName": "D",
+    "lastName": "Up"
+   }
+  ],
+  "date": "2017",
+  "extra": "Citation Key: dupkey"
+ },
+ {
+  "itemType": "book",
+  "title": "Digit Key In Extra",
+  "creators": [
+   {
+    "creatorType": "author",
+    "firstName": "E",
+    "lastName": "Xtra"
+   }
+  ],
+  "date": "2018",
+  "extra": "Citation Key: 2018"
+ },
+ {
+  "itemType": "preprint",
+  "title": "Attention Is All You Need",
+  "creators": [
+   {
+    "creatorType": "author",
+    "name": "Ashish Vaswani",
+    "fieldMode": 1,
+    "lastName": "Ashish Vaswani",
+    "firstName": ""
+   },
+   {
+    "creatorType": "author",
+    "name": "Noam Shazeer",
+    "fieldMode": 1,
+    "lastName": "Noam Shazeer",
+    "firstName": ""
+   }
+  ],
+  "repository": "arXiv",
+  "archiveID": "arXiv:1706.03762",
+  "date": "2023-08-02",
+  "url": "http://arxiv.org/abs/1706.03762",
+  "shortTitle": "Attention",
+  "extra": "Citation Key: vaswani2023"
+ },
+ {
+  "itemType": "preprint",
+  "title": "Number only in the URL",
+  "creators": [
+   {
+    "creatorType": "author",
+    "firstName": "Ann",
+    "lastName": "Author"
+   }
+  ],
+  "date": "2019-09-03",
+  "url": "https://arxiv.org/abs/1909.01285v2",
+  "extra": "Citation Key: author2019"
+ },
+ {
+  "itemType": "preprint",
+  "title": "An SSRN paper",
+  "creators": [
+   {
+    "creatorType": "author",
+    "name": "Nicholas Bednar",
+    "fieldMode": 1,
+    "lastName": "Nicholas Bednar",
+    "firstName": ""
+   }
+  ],
+  "repository": "Social Science Research Network",
+  "date": "April 28, 2026",
+  "url": "https://papers.ssrn.com/abstract=6525800",
+  "extra": "Citation Key: bednar2026"
+ },
+ {
+  "itemType": "preprint",
+  "title": "A preprint with no identifier at all",
+  "creators": [
+   {
+    "creatorType": "author",
+    "firstName": "Lo",
+    "lastName": "Wen"
+   }
+  ],
+  "date": "2020",
+  "url": "https://example.org/x",
+  "extra": "Citation Key: wen2020"
+ },
+ {
+  "itemType": "conferencePaper",
+  "title": "Large Language Models in Machine Translation",
+  "creators": [
+   {
+    "creatorType": "author",
+    "firstName": "Thorsten",
+    "lastName": "Brants"
+   },
+   {
+    "creatorType": "editor",
+    "firstName": "Jason",
+    "lastName": "Eisner"
+   }
+  ],
+  "proceedingsTitle": "Proceedings of EMNLP-CoNLL",
+  "date": "June 2007",
+  "pages": "858-867",
+  "url": "https://aclanthology.org/D07-1090/",
+  "extra": "Citation Key: brants2007"
+ },
+ {
+  "itemType": "conferencePaper",
+  "title": "A talk with no pages",
+  "creators": [
+   {
+    "creatorType": "author",
+    "firstName": "Cy",
+    "lastName": "Talk"
+   }
+  ],
+  "proceedingsTitle": "Some Workshop",
+  "date": "2001",
+  "url": "http://proceedings.mlr.press/r3/x.html",
+  "extra": "Citation Key: talk2001"
+ },
+ {
+  "itemType": "encyclopediaArticle",
+  "title": "Behaviorism",
+  "creators": [
+   {
+    "creatorType": "author",
+    "name": "George Graham",
+    "fieldMode": 1,
+    "lastName": "George Graham",
+    "firstName": ""
+   }
+  ],
+  "encyclopediaTitle": "The Stanford Encyclopedia of Philosophy",
+  "date": "2023",
+  "url": "https://plato.stanford.edu/entries/behaviorism/",
+  "extra": "Citation Key: graham2023"
+ },
+ {
+  "itemType": "webpage",
+  "title": "How the AI Boom Went Bust",
+  "creators": [
+   {
+    "creatorType": "author",
+    "name": "Thomas Haigh",
+    "fieldMode": 1,
+    "lastName": "Thomas Haigh",
+    "firstName": ""
+   }
+  ],
+  "websiteTitle": "Communications of the ACM",
+  "date": "January 26, 2024",
+  "url": "https://cacm.acm.org/x",
+  "extra": "Citation Key: haigh2024"
+ },
+ {
+  "itemType": "webpage",
+  "title": "Memory and New Controls",
+  "creators": [
+   {
+    "creatorType": "author",
+    "name": "OpenAI",
+    "fieldMode": 1,
+    "lastName": "OpenAI",
+    "firstName": ""
+   }
+  ],
+  "websiteTitle": "OpenAI",
+  "date": "March 13, 2024",
+  "url": "https://openai.com/x",
+  "extra": "Citation Key: openai2024"
+ },
+ {
+  "itemType": "webpage",
+  "title": "Consumer Terms",
+  "creators": [
+   {
+    "creatorType": "author",
+    "name": "Anthropic PBC",
+    "fieldMode": 1,
+    "lastName": "Anthropic PBC",
+    "firstName": ""
+   }
+  ],
+  "websiteTitle": "Anthropic",
+  "date": "October 8, 2025",
+  "url": "https://www.anthropic.com/legal",
+  "extra": "Citation Key: anthropicpbc2025"
+ },
+ {
+  "itemType": "webpage",
+  "title": "Statement on AI Extinction Risk",
+  "creators": [
+   {
+    "creatorType": "author",
+    "name": "Center for AI Safety",
+    "fieldMode": 1,
+    "lastName": "Center for AI Safety",
+    "firstName": ""
+   }
+  ],
+  "websiteTitle": "Something Else",
+  "date": "May 30, 2023",
+  "url": "https://aistatement.com",
+  "extra": "Citation Key: centerforaisafety2023"
+ },
+ {
+  "itemType": "journalArticle",
+  "title": "Person with particle and suffix",
+  "creators": [
+   {
+    "creatorType": "author",
+    "name": "Bart van Merrienboer",
+    "fieldMode": 1,
+    "lastName": "Bart van Merrienboer",
+    "firstName": ""
+   },
+   {
+    "creatorType": "author",
+    "name": "Dean Edmonds Jr.",
+    "fieldMode": 1,
+    "lastName": "Dean Edmonds Jr.",
+    "firstName": ""
+   }
+  ],
+  "publicationTitle": "J. of Things",
+  "volume": "1",
+  "pages": "5",
+  "date": "2018",
+  "extra": "Citation Key: vanmerrienboer2018"
+ },
+ {
+  "itemType": "journalArticle",
+  "title": "Online only article",
+  "creators": [
+   {
+    "creatorType": "author",
+    "firstName": "On",
+    "lastName": "Line"
+   }
+  ],
+  "publicationTitle": "Web Journal",
+  "date": "2024",
+  "url": "https://example.org/online",
+  "extra": "Citation Key: line2024"
+ },
+ {
+  "itemType": "journalArticle",
+  "title": "Print article with a URL",
+  "creators": [
+   {
+    "creatorType": "author",
+    "firstName": "Print",
+    "lastName": "Er"
+   }
+  ],
+  "publicationTitle": "Print Journal",
+  "volume": "12",
+  "pages": "100-120",
+  "date": "2001",
+  "url": "https://jstor.org/x",
+  "extra": "Citation Key: er2001"
+ },
+ {
+  "itemType": "case",
+  "caseName": "Metro-Goldwyn-Mayer Studios Inc. v. Grokster, Ltd.",
+  "shortTitle": "Grokster",
+  "reporter": "U.S.",
+  "reporterVolume": "545",
+  "firstPage": "913",
+  "dateDecided": "2005-06-27",
+  "court": "",
+  "extra": "Citation Key: grokster"
+ },
+ {
+  "itemType": "case",
+  "caseName": "Garcia v Character Technologies Inc.",
+  "reporter": "F.Supp.3d",
+  "reporterVolume": "785",
+  "firstPage": "1157",
+  "court": "M.D. Fla.",
+  "dateDecided": "2025",
+  "url": "https://example.org/ignored-because-reporter",
+  "extra": "Citation Key: garcia"
+ },
+ {
+  "itemType": "case",
+  "caseName": "Doe v. GitHub, Inc.",
+  "docketNumber": "24-7700",
+  "court": "9th Cir.",
+  "dateDecided": "September 16, 2026",
+  "url": "https://cdn.ca9.uscourts.gov/24-7700.pdf",
+  "extra": "Citation Key: doe"
+ },
+ {
+  "itemType": "case",
+  "caseName": "In re Nimitz Technologies LLC",
+  "docketNumber": "2023-103",
+  "court": "Fed. Cir.",
+  "dateDecided": "2022-12-08",
+  "extra": "Citation Key: inrenimitztechnologies"
+ },
+ {
+  "itemType": "book",
+  "title": "Language and Responsibility: Based on Conversations with Mitsou Ronat",
+  "shortTitle": "Language and Responsibility",
+  "creators": [
+   {
+    "creatorType": "author",
+    "firstName": "Noam",
+    "lastName": "Chomsky"
+   }
+  ],
+  "date": "1979",
+  "extra": "Citation Key: chomsky1979"
+ },
+ {
+  "itemType": "journalArticle",
+  "title": "Many authors",
+  "creators": [
+   {
+    "creatorType": "author",
+    "firstName": "Ada",
+    "lastName": "Alpha"
+   },
+   {
+    "creatorType": "author",
+    "firstName": "Bea",
+    "lastName": "Beta"
+   },
+   {
+    "creatorType": "author",
+    "firstName": "Cy",
+    "lastName": "Gamma"
+   },
+   {
+    "creatorType": "author",
+    "firstName": "Di",
+    "lastName": "Delta"
+   },
+   {
+    "creatorType": "author",
+    "firstName": "Ed",
+    "lastName": "Epsilon"
+   },
+   {
+    "creatorType": "author",
+    "firstName": "Flo",
+    "lastName": "Zeta"
+   },
+   {
+    "creatorType": "editor",
+    "firstName": "Ed",
+    "lastName": "Itor"
+   }
+  ],
+  "publicationTitle": "Big Journal",
+  "volume": "3",
+  "pages": "1",
+  "date": "2020",
+  "extra": "Citation Key: alpha2020"
+ },
+ {
+  "itemType": "journalArticle",
+  "title": "Two authors only",
+  "creators": [
+   {
+    "creatorType": "author",
+    "firstName": "Ann",
+    "lastName": "One"
+   },
+   {
+    "creatorType": "author",
+    "firstName": "Bob",
+    "lastName": "Two"
+   }
+  ],
+  "publicationTitle": "Small Journal",
+  "volume": "2",
+  "pages": "9",
+  "date": "2019",
+  "extra": "Citation Key: one2019"
+ },
+ {
+  "itemType": "report",
+  "title": "Institutional authors",
+  "creators": [
+   {
+    "creatorType": "author",
+    "name": "Alpha Committee",
+    "fieldMode": 1,
+    "lastName": "Alpha Committee",
+    "firstName": ""
+   },
+   {
+    "creatorType": "author",
+    "name": "Beta Office",
+    "fieldMode": 1,
+    "lastName": "Beta Office",
+    "firstName": ""
+   },
+   {
+    "creatorType": "author",
+    "name": "Gamma Agency",
+    "fieldMode": 1,
+    "lastName": "Gamma Agency",
+    "firstName": ""
+   }
+  ],
+  "reportNumber": "R-1",
+  "institution": "Somewhere",
+  "date": "2020",
+  "extra": "Citation Key: alphacommittee2020"
+ },
+ {
+  "itemType": "journalArticle",
+  "title": "Inverted and decorated names",
+  "creators": [
+   {
+    "creatorType": "author",
+    "name": "Dzieza, Josh",
+    "fieldMode": 1,
+    "lastName": "Dzieza, Josh",
+    "firstName": ""
+   },
+   {
+    "creatorType": "author",
+    "name": "Thomas E. Hill, Jr.",
+    "fieldMode": 1,
+    "lastName": "Thomas E. Hill, Jr.",
+    "firstName": ""
+   },
+   {
+    "creatorType": "author",
+    "name": "Ruairi Robinson [@RuairiRobinson]",
+    "fieldMode": 1,
+    "lastName": "Ruairi Robinson [@RuairiRobinson]",
+    "firstName": ""
+   },
+   {
+    "creatorType": "author",
+    "name": "Rose, Meredith Filak;",
+    "fieldMode": 1,
+    "lastName": "Rose, Meredith Filak;",
+    "firstName": ""
+   }
+  ],
+  "publicationTitle": "Names Journal",
+  "volume": "4",
+  "pages": "7",
+  "date": "2021",
+  "extra": "Citation Key: dzieza2021"
+ },
+ {
+  "itemType": "webpage",
+  "title": "Institution with a comma",
+  "creators": [
+   {
+    "creatorType": "author",
+    "name": "University of California, San Diego",
+    "fieldMode": 1,
+    "lastName": "University of California, San Diego",
+    "firstName": ""
+   }
+  ],
+  "websiteTitle": "Somewhere Else",
+  "date": "2022",
+  "url": "https://example.edu/x",
+  "extra": "Citation Key: universityofcaliforniasandiego2022"
+ },
+ {
+  "itemType": "book",
+  "title": "An edited volume",
+  "creators": [
+   {
+    "creatorType": "author",
+    "firstName": "Ann",
+    "lastName": "Writer"
+   },
+   {
+    "creatorType": "editor",
+    "firstName": "Ed0",
+    "lastName": "EdOne"
+   },
+   {
+    "creatorType": "editor",
+    "firstName": "Ed1",
+    "lastName": "EdTwo"
+   },
+   {
+    "creatorType": "editor",
+    "firstName": "Ed2",
+    "lastName": "EdThree"
+   },
+   {
+    "creatorType": "editor",
+    "firstName": "Ed3",
+    "lastName": "EdFour"
+   }
+  ],
+  "date": "2018",
+  "extra": "Citation Key: writer2018"
+ },
+ {
+  "itemType": "bookSection",
+  "title": "The Death of the Author",
+  "creators": [
+   {
+    "creatorType": "author",
+    "firstName": "Roland",
+    "lastName": "Barthes"
+   },
+   {
+    "creatorType": "translator",
+    "firstName": "Stephen",
+    "lastName": "Heath"
+   }
+  ],
+  "bookTitle": "Image, Music, Text",
+  "date": "1977",
+  "pages": "142-148",
+  "extra": "Citation Key: barthes1977"
+ },
+ {
+  "itemType": "bookSection",
+  "title": "Uncle Vanya",
+  "creators": [
+   {
+    "creatorType": "author",
+    "firstName": "Anton",
+    "lastName": "Chekhov"
+   },
+   {
+    "creatorType": "editor",
+    "firstName": "Eugene K.",
+    "lastName": "Bristow"
+   },
+   {
+    "creatorType": "translator",
+    "firstName": "Eugene K.",
+    "lastName": "Bristow"
+   }
+  ],
+  "bookTitle": "Anton Chekhov's Plays",
+  "date": "1977",
+  "pages": "1-60",
+  "extra": "Citation Key: chekhov1977"
+ },
+ {
+  "itemType": "bookSection",
+  "title": "Two editors who translated",
+  "creators": [
+   {
+    "creatorType": "author",
+    "firstName": "Uma",
+    "lastName": "Author"
+   },
+   {
+    "creatorType": "editor",
+    "firstName": "Eve",
+    "lastName": "Both"
+   },
+   {
+    "creatorType": "editor",
+    "firstName": "Sam",
+    "lastName": "Also"
+   },
+   {
+    "creatorType": "translator",
+    "firstName": "Sam",
+    "lastName": "Also"
+   },
+   {
+    "creatorType": "translator",
+    "firstName": "Eve",
+    "lastName": "Both"
+   }
+  ],
+  "bookTitle": "A Shared Volume",
+  "date": "2001",
+  "pages": "3-9",
+  "extra": "Citation Key: author2001"
+ },
+ {
+  "itemType": "bookSection",
+  "title": "Editor and different translators",
+  "creators": [
+   {
+    "creatorType": "author",
+    "firstName": "Vic",
+    "lastName": "Writer"
+   },
+   {
+    "creatorType": "editor",
+    "firstName": "Ed",
+    "lastName": "One"
+   },
+   {
+    "creatorType": "translator",
+    "firstName": "Tom",
+    "lastName": "Trans"
+   },
+   {
+    "creatorType": "translator",
+    "firstName": "Sue",
+    "lastName": "Two"
+   }
+  ],
+  "bookTitle": "A Translated Volume",
+  "date": "1999",
+  "pages": "7-20",
+  "extra": "Citation Key: writer1999"
+ },
+ {
+  "itemType": "book",
+  "title": "A translated book",
+  "creators": [
+   {
+    "creatorType": "author",
+    "firstName": "Ann",
+    "lastName": "Scribe"
+   },
+   {
+    "creatorType": "translator",
+    "firstName": "Tom",
+    "lastName": "Trans"
+   }
+  ],
+  "date": "1990",
+  "extra": "Citation Key: scribe1990"
+ },
+ {
+  "itemType": "book",
+  "title": "An edited and translated book",
+  "creators": [
+   {
+    "creatorType": "author",
+    "firstName": "Bo",
+    "lastName": "Composer"
+   },
+   {
+    "creatorType": "editor",
+    "firstName": "Ed",
+    "lastName": "Reviser"
+   },
+   {
+    "creatorType": "translator",
+    "firstName": "Tom",
+    "lastName": "Renderer"
+   }
+  ],
+  "date": "1995",
+  "extra": "Citation Key: composer1995"
+ },
+ {
+  "itemType": "document",
+  "title": "Ensuring a National Policy Framework",
+  "creators": [
+   {
+    "creatorType": "author",
+    "name": "The White House",
+    "fieldMode": 1,
+    "lastName": "The White House",
+    "firstName": ""
+   }
+  ],
+  "date": "2025-12-16",
+  "extra": "hicite-doctype: govdoc\nhicite-vol: 90\nhicite-rep: Fed. Reg.\nhicite-page: 58499\nhicite-number: Exec. Order No. 14365\nCitation Key: trumpeo"
+ },
+ {
+  "itemType": "document",
+  "title": "Complaint",
+  "date": "2026-03-11",
+  "extra": "hicite-doctype: casedoc\nhicite-citation: case: {parties={Angwin v. Superhuman Platform, Inc.}, docket={26-cv-02005}, court={S.D.N.Y.}}\nhicite-docket: 26-cv-02005\nhicite-number: 1\nCitation Key: angwincomplaint"
+ },
+ {
+  "itemType": "document",
+  "title": "Congressional Record",
+  "date": "2025",
+  "extra": "hicite-doctype: congrec\nhicite-vol: 161\nhicite-rep: Cong. Rec.\nhicite-page: S4066\nCitation Key: aimoratorium"
+ },
+ {
+  "itemType": "document",
+  "title": "the Progress Clause",
+  "extra": "hicite-doctype: const\nhicite-page: Article I, S 8, clause 8\nCitation Key: progressclause"
+ },
+ {
+  "itemType": "document",
+  "title": "First Amendment",
+  "extra": "hicite-doctype: constamend\nhicite-number: 1\nCitation Key: firstamend"
+ },
+ {
+  "itemType": "document",
+  "title": "Uniform Trade Secrets Act",
+  "creators": [
+   {
+    "creatorType": "author",
+    "name": "Uniform Law Commission",
+    "fieldMode": 1,
+    "lastName": "Uniform Law Commission",
+    "firstName": ""
+   }
+  ],
+  "date": "1985",
+  "extra": "hicite-doctype: modelcode\nCitation Key: utsa"
+ },
+ {
+  "itemType": "statute",
+  "nameOfAct": "National Artificial Intelligence Initiative Act of 2020",
+  "publicLawNumber": "116-283",
+  "code": "Stat.",
+  "codeNumber": "134",
+  "pages": "4523",
+  "dateEnacted": "2021-01-01",
+  "extra": "hicite-doctype: statsess\nhicite-type: Pub. L. No.\nhicite-slip: yes\nCitation Key: naiia"
+ },
+ {
+  "itemType": "statute",
+  "nameOfAct": "Communications Decency Act",
+  "code": "U.S.C.",
+  "codeNumber": "47",
+  "section": "230",
+  "extra": "hicite-origsect: 509\nhicite-year: 2018\nCitation Key: cda230"
+ },
+ {
+  "itemType": "bill",
+  "title": "NO FAKES Act",
+  "billNumber": "S. 1367",
+  "session": "119",
+  "date": "2025-04-09",
+  "extra": "hicite-status: introduced\nCitation Key: nofakes"
+ },
+ {
+  "itemType": "case",
+  "caseName": "Doe v. Roe",
+  "court": "9th Cir.",
+  "dateDecided": "2024-01-02",
+  "docketNumber": "23-1",
+  "reporter": "F.4th",
+  "reporterVolume": "90",
+  "firstPage": "1",
+  "extra": "hicite-enbanc: yes\nhicite-percuriam: no\nhicite-dbid: 2024 WL 1\nCitation Key: doeroe"
+ },
+ {
+  "itemType": "journalArticle",
+  "title": "Fair Use as Market Failure",
+  "creators": [
+   {
+    "creatorType": "author",
+    "firstName": "Wendy",
+    "lastName": "Gordon"
+   }
+  ],
+  "publicationTitle": "Colum. L. Rev.",
+  "volume": "82",
+  "pages": "1600",
+  "date": "1982",
+  "extra": "hicite-type: Note\nCitation Key: gordon1982"
+ },
+ {
+  "itemType": "book",
+  "title": "Verbal Behavior",
+  "creators": [
+   {
+    "creatorType": "author",
+    "firstName": "B. F.",
+    "lastName": "Skinner"
+   }
+  ],
+  "date": "2020",
+  "extra": "hicite-number: 2\nCitation Key: skinner2020"
+ },
+ {
+  "itemType": "case",
+  "caseName": "Andy Warhol Foundation for the Visual Arts, Inc. v. Goldsmith",
+  "shortTitle": "Warhol",
+  "court": "U.S.",
+  "reporter": "U.S.",
+  "reporterVolume": "598",
+  "firstPage": "508",
+  "dateDecided": "2023-05-18",
+  "docketNumber": "No. 21-869",
+  "extra": "Citation Key: warholus"
+ },
+ {
+  "itemType": "case",
+  "caseName": "Thomson Reuters Enterprise Centre GmbH v. Ross Intelligence Inc.",
+  "shortTitle": "Ross",
+  "court": "D. Del.",
+  "reporter": "WL",
+  "reporterVolume": "2025",
+  "firstPage": "458520",
+  "dateDecided": "2025-02-11",
+  "docketNumber": "No. 1:20-cv-613",
+  "extra": "Citation Key: rossintel"
+ },
+ {
+  "itemType": "case",
+  "caseName": "Doe v. Roe",
+  "shortTitle": "Doe",
+  "court": "S.D.N.Y.",
+  "reporter": "U.S. Dist. LEXIS",
+  "reporterVolume": "2023",
+  "firstPage": "1234",
+  "dateDecided": "2023-01-05",
+  "extra": "Citation Key: doelexis"
+ },
+ {
+  "itemType": "case",
+  "caseName": "Boomer v. Atlantic Cement Co.",
+  "shortTitle": "Boomer",
+  "court": "N.Y.",
+  "reporter": "N.Y.2d",
+  "reporterVolume": "26",
+  "firstPage": "219",
+  "dateDecided": "1970-03-04",
+  "extra": "Citation Key: boomerny"
+ },
+ {
+  "itemType": "case",
+  "caseName": "Authors Guild v. Google, Inc.",
+  "shortTitle": "Guild",
+  "court": "2d Cir.",
+  "reporter": "F.3d",
+  "reporterVolume": "804",
+  "firstPage": "202",
+  "dateDecided": "2015-10-16",
+  "extra": "Citation Key: guild2d"
+ }
+]

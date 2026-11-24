@@ -1,0 +1,12 @@
+{
+  "filename": "auto-sl.json",
+  "name": "Sierra Leone",
+  "version": "2026-07-22 20:44:53 UTC",
+  "xdata": {
+    "default": {
+      "place": {
+        "SL": "Sierra Leone"
+      }
+    }
+  }
+}

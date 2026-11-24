@@ -1,0 +1,12 @@
+{
+  "filename": "auto-gw.json",
+  "name": "Guinea-Bissau",
+  "version": "2026-07-22 20:44:52 UTC",
+  "xdata": {
+    "default": {
+      "place": {
+        "GW": "Guinea-Bissau"
+      }
+    }
+  }
+}

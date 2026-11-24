@@ -1,0 +1,12 @@
+{
+  "filename": "auto-bg.json",
+  "name": "Bulgaria",
+  "version": "2026-07-22 20:44:51 UTC",
+  "xdata": {
+    "default": {
+      "place": {
+        "BG": "Bulgaria"
+      }
+    }
+  }
+}

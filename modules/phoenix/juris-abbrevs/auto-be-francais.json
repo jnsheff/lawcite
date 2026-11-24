@@ -1,0 +1,1288 @@
+{
+  "filename": "auto-be-francais.json",
+  "name": "België",
+  "version": "2026-07-22 20:44:51 UTC",
+  "xdata": {
+    "default": {
+      "place": {
+        "BE": "Belgique",
+        "BE:ANTWERPEN": "Anvers",
+        "BE:ANTWERPEN:ANTWERPEN": "Anvers",
+        "BE:ANTWERPEN:ANTWERPEN:ARENDONK": "Arendonk",
+        "BE:ANTWERPEN:ANTWERPEN:BOOM": "Boom",
+        "BE:ANTWERPEN:ANTWERPEN:BRASSCHAAT": "Brasschaat",
+        "BE:ANTWERPEN:ANTWERPEN:HEIST.OP.DEN.BERG": "Heist-op-den-Berg",
+        "BE:ANTWERPEN:ANTWERPEN:HERENTALS": "Herentals",
+        "BE:ANTWERPEN:ANTWERPEN:HOOGSTRATEN": "Hoogstraten",
+        "BE:ANTWERPEN:ANTWERPEN:KAPELLEN": "Kapellen",
+        "BE:ANTWERPEN:ANTWERPEN:KONTICH": "Kontich",
+        "BE:ANTWERPEN:ANTWERPEN:LIER": "Lier",
+        "BE:ANTWERPEN:ANTWERPEN:MECHELEN": "Mechelen",
+        "BE:ANTWERPEN:ANTWERPEN:MOL": "Mol",
+        "BE:ANTWERPEN:ANTWERPEN:SCHILDE": "Schilde",
+        "BE:ANTWERPEN:ANTWERPEN:TURNHOUT": "Turnhout",
+        "BE:ANTWERPEN:ANTWERPEN:WESTERLO": "Westerlo",
+        "BE:ANTWERPEN:ANTWERPEN:WILLEBROEK": "Willebroek",
+        "BE:ANTWERPEN:ANTWERPEN:ZANDHOVEN": "Zandhoven",
+        "BE:ANTWERPEN:LIMBURG:BERINGEN": "Beringen",
+        "BE:ANTWERPEN:LIMBURG:BILZEN": "Bilzen",
+        "BE:ANTWERPEN:LIMBURG:BORGLOON": "Borgloon",
+        "BE:ANTWERPEN:LIMBURG:BREE": "Bree",
+        "BE:ANTWERPEN:LIMBURG:GENK": "Genk",
+        "BE:ANTWERPEN:LIMBURG:HASSELT": "Hasselt",
+        "BE:ANTWERPEN:LIMBURG:HOUTHALEN.HELCHTEREN": "Houthalen-Helchteren",
+        "BE:ANTWERPEN:LIMBURG:LIMBURG.AUBEL": "Limburg-Aubel",
+        "BE:ANTWERPEN:LIMBURG:MAASEIK": "Maaseik",
+        "BE:ANTWERPEN:LIMBURG:MAASMECHELEN": "Maasmechelen",
+        "BE:ANTWERPEN:LIMBURG:NEERPELT.LOMMEL": "Neerpelt-Lommel",
+        "BE:ANTWERPEN:LIMBURG:SINT.TRUIDEN": "Sint-Truiden",
+        "BE:ANTWERPEN:LIMBURG:TONGEREN": "Tongeren",
+        "BE:ANTWERPEN:LIMBURG:TONGEREN.VOEREN": "Tongeren-Voeren",
+        "BE:BERGEN": "Mons",
+        "BE:BERGEN:HENEGOUWEN": "Hainault",
+        "BE:BERGEN:HENEGOUWEN:AAT.LESSEN": "Aat-Lessen",
+        "BE:BERGEN:HENEGOUWEN:BEAUMONT.CHIMAY.MERBES.LE.CHATEAU": "Beaumont-Chimay-Merbes-le-Château",
+        "BE:BERGEN:HENEGOUWEN:BERGEN": "Bergen",
+        "BE:BERGEN:HENEGOUWEN:BINCHE": "Binche",
+        "BE:BERGEN:HENEGOUWEN:BOUSSU": "Boussu",
+        "BE:BERGEN:HENEGOUWEN:CHARLEROI": "Charleroi",
+        "BE:BERGEN:HENEGOUWEN:CHATELET": "Châtelet",
+        "BE:BERGEN:HENEGOUWEN:DOORNIK": "Doornik",
+        "BE:BERGEN:HENEGOUWEN:DOUR.COLFONTAINE": "Dour-Colfontaine",
+        "BE:BERGEN:HENEGOUWEN:ENGHIEN.LENS": "Enghien-Lens",
+        "BE:BERGEN:HENEGOUWEN:FONTAINE.L.EVEQUE": "Fontaine-l'Evêque",
+        "BE:BERGEN:HENEGOUWEN:LA.LOUVIÈRE": "La Louvière",
+        "BE:BERGEN:HENEGOUWEN:MOESKROEN": "Moeskroen",
+        "BE:BERGEN:HENEGOUWEN:MOESKROEN.KOMEN.WAASTEN": "Moeskroen-Komen-Waasten",
+        "BE:BERGEN:HENEGOUWEN:PERUWELZ.LEUZE.EN.HAINAUT": "Péruwelz-Leuze en Hainaut",
+        "BE:BERGEN:HENEGOUWEN:SENEFFE": "Seneffe",
+        "BE:BERGEN:HENEGOUWEN:THUIN": "Thuin",
+        "BE:BERGEN:HENEGOUWEN:ZINNIK": "Zinnik",
+        "BE:BRUSSEL": "Brussels",
+        "BE:BRUSSEL:BRUSSEL": "Brussels",
+        "BE:BRUSSEL:BRUSSEL:ANDERLECHT": "Anderlecht",
+        "BE:BRUSSEL:BRUSSEL:ELSENE": "Elsene",
+        "BE:BRUSSEL:BRUSSEL:ETTERBEEK": "Etterbeek",
+        "BE:BRUSSEL:BRUSSEL:JETTE": "Jette",
+        "BE:BRUSSEL:BRUSSEL:OUDERGHEM": "Ouderghem",
+        "BE:BRUSSEL:BRUSSEL:SCHAARBEEK": "Schaarbeek",
+        "BE:BRUSSEL:BRUSSEL:SINT.GILLIS": "Sint-Gillis",
+        "BE:BRUSSEL:BRUSSEL:SINT.JANS.MOLENBEEK": "Sint-Jans-Molenbeek",
+        "BE:BRUSSEL:BRUSSEL:SINT.JOOST.TEN.NODE": "Sint-Joost-ten-Node",
+        "BE:BRUSSEL:BRUSSEL:SINT.PIETERS.WOLUWE": "Sint-Pieters-Woluwe",
+        "BE:BRUSSEL:BRUSSEL:UKKEL": "Ukkel",
+        "BE:BRUSSEL:BRUSSEL:VORST": "Vorst",
+        "BE:BRUSSEL:VLAAMS.BRABANT": "Flemish-Brabant",
+        "BE:BRUSSEL:VLAAMS.BRABANT:AARSCHOT": "Aarschot",
+        "BE:BRUSSEL:VLAAMS.BRABANT:ASSE": "Asse",
+        "BE:BRUSSEL:VLAAMS.BRABANT:DIEST": "Diest",
+        "BE:BRUSSEL:VLAAMS.BRABANT:GRIMBERGEN": "Grimbergen",
+        "BE:BRUSSEL:VLAAMS.BRABANT:HAACHT": "Haacht",
+        "BE:BRUSSEL:VLAAMS.BRABANT:HALLE": "Halle",
+        "BE:BRUSSEL:VLAAMS.BRABANT:HERNE.SINT.PIETERS.LEEUW": "Herne-Sint-Pieters-Leeuw",
+        "BE:BRUSSEL:VLAAMS.BRABANT:KRAAINEM.SINT.GENESIUS.RODE": "Kraainem-Sint-Genesius-Rode",
+        "BE:BRUSSEL:VLAAMS.BRABANT:LANDEN.ZOUTLEEUW": "Landen-Zoutleeuw",
+        "BE:BRUSSEL:VLAAMS.BRABANT:LENNIK": "Lennik",
+        "BE:BRUSSEL:VLAAMS.BRABANT:LEUVEN": "Leuven",
+        "BE:BRUSSEL:VLAAMS.BRABANT:MEISE": "Meise",
+        "BE:BRUSSEL:VLAAMS.BRABANT:OVERIJSE.ZAVENTEM": "Overijse-Zaventem",
+        "BE:BRUSSEL:VLAAMS.BRABANT:TIENEN": "Tienen",
+        "BE:BRUSSEL:VLAAMS.BRABANT:VILVOORDE": "Vilvoorde",
+        "BE:BRUSSEL:WAALS.BRABANT": "Waals-Brabant",
+        "BE:BRUSSEL:WAALS.BRABANT:EIGENBRAKEL": "Eigenbrakel",
+        "BE:BRUSSEL:WAALS.BRABANT:GELDENAKEN.PERWIJS": "Geldenaken-Perwijs",
+        "BE:BRUSSEL:WAALS.BRABANT:NIJVEL": "Nijvel",
+        "BE:BRUSSEL:WAALS.BRABANT:TUBEKE": "Tubeke",
+        "BE:BRUSSEL:WAALS.BRABANT:WAVER": "Waver",
+        "BE:GENT": "Ghent",
+        "BE:GENT:OOST.VLAANDEREN": "East Flanders",
+        "BE:GENT:OOST.VLAANDEREN:AALST": "Aalst",
+        "BE:GENT:OOST.VLAANDEREN:BEVEREN": "Beveren",
+        "BE:GENT:OOST.VLAANDEREN:DEINZE": "Deinze",
+        "BE:GENT:OOST.VLAANDEREN:DENDERMONDE": "Dendermonde",
+        "BE:GENT:OOST.VLAANDEREN:DENDERMONDE.HAMME": "Dendermonde-Hamme",
+        "BE:GENT:OOST.VLAANDEREN:EEKLO": "Eeklo",
+        "BE:GENT:OOST.VLAANDEREN:GENT": "Ghent",
+        "BE:GENT:OOST.VLAANDEREN:GERAARDSBERGEN.BRAKEL": "Geraardsbergen-Brakel",
+        "BE:GENT:OOST.VLAANDEREN:LOKEREN": "Lokeren",
+        "BE:GENT:OOST.VLAANDEREN:MERELBEKE": "Merelbeke",
+        "BE:GENT:OOST.VLAANDEREN:NINOVE": "Ninove",
+        "BE:GENT:OOST.VLAANDEREN:OUDENAARDE": "Oudenaarde",
+        "BE:GENT:OOST.VLAANDEREN:OUDENAARDE.KRUISHOUTEM": "Oudenaarde-Kruishoutem",
+        "BE:GENT:OOST.VLAANDEREN:RONSE": "Ronse",
+        "BE:GENT:OOST.VLAANDEREN:SINT.NIKLAAS": "Sint-Niklaas",
+        "BE:GENT:OOST.VLAANDEREN:WETTEREN.ZELE": "Wetteren-Zele",
+        "BE:GENT:OOST.VLAANDEREN:ZELZATE": "Zelzate",
+        "BE:GENT:OOST.VLAANDEREN:ZOMERGEM": "Zomergem",
+        "BE:GENT:OOST.VLAANDEREN:ZOTTEGEM.HERZELE": "Zottegem-Herzele",
+        "BE:GENT:WEST.VLAANDEREN": "West Flanders",
+        "BE:GENT:WEST.VLAANDEREN:BRUGGE": "Brugge",
+        "BE:GENT:WEST.VLAANDEREN:DIKSMUIDE": "Diksmuide",
+        "BE:GENT:WEST.VLAANDEREN:HARELBEKE": "Harelbeke",
+        "BE:GENT:WEST.VLAANDEREN:IEPER": "Ieper",
+        "BE:GENT:WEST.VLAANDEREN:IEPER.POPERINGE": "Ieper-Poperinge",
+        "BE:GENT:WEST.VLAANDEREN:IZEGEM": "Izegem",
+        "BE:GENT:WEST.VLAANDEREN:KORTRIJK": "Kortrijk",
+        "BE:GENT:WEST.VLAANDEREN:MENEN": "Menen",
+        "BE:GENT:WEST.VLAANDEREN:OOSTENDE": "Oostende",
+        "BE:GENT:WEST.VLAANDEREN:ROESELARE": "Roeselare",
+        "BE:GENT:WEST.VLAANDEREN:TIELT": "Tielt",
+        "BE:GENT:WEST.VLAANDEREN:TORHOUT": "Torhout",
+        "BE:GENT:WEST.VLAANDEREN:VEURNE": "Veurne",
+        "BE:GENT:WEST.VLAANDEREN:VEURNE.NIEUWPOORT": "Veurne-Nieuwpoort",
+        "BE:GENT:WEST.VLAANDEREN:WAREGEM": "Waregem",
+        "BE:GENT:WEST.VLAANDEREN:WERVIK": "Wervik",
+        "BE:LUIK": "Liege",
+        "BE:LUIK:LUIK": "Liege",
+        "BE:LUIK:LUIK:BORGWORM": "Borgworm",
+        "BE:LUIK:LUIK:EUPEN": "Eupen",
+        "BE:LUIK:LUIK:EUPEN:SANKT.VITH": "Sankt-Vith",
+        "BE:LUIK:LUIK:FLERON": "Fléron",
+        "BE:LUIK:LUIK:GRACE.HOLLOGNE": "Grâce-Hollogne",
+        "BE:LUIK:LUIK:HAMOIR": "Hamoir",
+        "BE:LUIK:LUIK:HERSTAL": "Herstal",
+        "BE:LUIK:LUIK:HOEI": "Hoei",
+        "BE:LUIK:LUIK:HOEI.HANNUIT": "Hoei-Hannuit",
+        "BE:LUIK:LUIK:MALMEDY.SPA.STAVELOT": "Malmédy-Spa-Stavelot",
+        "BE:LUIK:LUIK:SAINT.NICOLAS.LEZ.LIEGE": "Saint-Nicolas-lez-Liège",
+        "BE:LUIK:LUIK:SERAING": "Seraing",
+        "BE:LUIK:LUIK:SPRIMONT": "Sprimont",
+        "BE:LUIK:LUIK:VERVIERS": "Verviers",
+        "BE:LUIK:LUIK:WEZET": "Wezet",
+        "BE:LUIK:LUXUMBURG": "Luxumbourg",
+        "BE:LUIK:LUXUMBURG:AARLEN": "Aarlen",
+        "BE:LUIK:LUXUMBURG:AARLEN.MESSANCY": "Aarlen-Messancy",
+        "BE:LUIK:LUXUMBURG:BASTENAKEN.NEUFCHATEAU": "Bastenaken-Neufchâteau",
+        "BE:LUIK:LUXUMBURG:MARCHE.EN.FAMENNE": "Marche-en-Famenne",
+        "BE:LUIK:LUXUMBURG:MARCHE.EN.FAMENNE.DURBUY": "Marche-en-Famenne-Durbuy",
+        "BE:LUIK:LUXUMBURG:NEUFCHATEAU": "Neufchâteau",
+        "BE:LUIK:LUXUMBURG:SAINT.HUBERT.BOUILLON.PALISEUL": "Saint-Hubert-Bouillon-Paliseul",
+        "BE:LUIK:LUXUMBURG:VIELSALM.LA.ROCHE.EN.ARDENNE.HOUFFALIZE": "Vielsalm-La Roche en Ardenne-Houffalize",
+        "BE:LUIK:LUXUMBURG:VIRTON.FLORENVILLE.ETALLE": "Virton-Florenville-Etalle",
+        "BE:LUIK:NAMEN": "Namen",
+        "BE:LUIK:NAMEN:ANDENNE": "Andenne",
+        "BE:LUIK:NAMEN:BEAURAING.DINANT.GEDINNE": "Beauraing-Dinant-Gedinne",
+        "BE:LUIK:NAMEN:CINEY.ROCHEFORT": "Ciney-Rochefort",
+        "BE:LUIK:NAMEN:DINANT": "Dinant",
+        "BE:LUIK:NAMEN:FOSSES.LA.VILLE": "Fosses-la-Ville",
+        "BE:LUIK:NAMEN:GEMBLOUX.EGHEZEE": "Gembloux-Eghezée",
+        "BE:LUIK:NAMEN:NAMEN": "Namen",
+        "BE:LUIK:NAMEN:PHILIPPEVILLE.COUVIN": "Philippeville-Couvin",
+        "BE:LUIK:NAMEN:WALCOURT.FLORENNES": "Walcourt-Florennes"
+      }
+    },
+    "be": {
+      "institution-part": {
+        "bma": "BMA",
+        "const": "C.C.",
+        "cs": "RvS",
+        "educ": "R.Stvb.",
+        "electionc": "R.Verkb.",
+        "envc": "MHHC",
+        "mc": "Kr.",
+        "migc": "RvV",
+        "milc": "Mil.Ger.",
+        "permitc": "RvVb",
+        "sc": "Cass."
+      }
+    },
+    "be:antwerpen": {
+      "institution-part": {
+        "br": "Anvers",
+        "ca": "Anvers",
+        "cc": "Comm. Anvers",
+        "or": "Or. Anvers",
+        "cfi": "Trib. arr. Anvers",
+        "corrc": "Corr. Anvers",
+        "dc": "J.P. Anvers",
+        "famc": "Trib. fam. Anvers",
+        "juvc": "Trib. jeun. Anvers",
+        "lc": "Trib. trav. Brussel (Fr.)",
+        "lca": "C. trav. Anvers",
+        "pc": "Pol. Anvers",
+        "pres": "Président Anvers",
+        "sentc": "T.A.P. Anvers"
+      }
+    },
+    "be:antwerpen:antwerpen": {
+      "institution-part": {
+        "coass": "Cour ass. Anvers",
+        "dc": "J.P. Anvers",
+        "lca": "C. trav. Anvers"
+      }
+    },
+    "be:antwerpen:antwerpen:arendonk": {
+      "institution-part": {
+        "dc": "J.P. Arendonk"
+      }
+    },
+    "be:antwerpen:antwerpen:boom": {
+      "institution-part": {
+        "dc": "J.P. Boom"
+      }
+    },
+    "be:antwerpen:antwerpen:brasschaat": {
+      "institution-part": {
+        "dc": "J.P. Brasschaat"
+      }
+    },
+    "be:antwerpen:antwerpen:geel": {
+      "institution-part": {
+        "dc": "J.P. Geel"
+      }
+    },
+    "be:antwerpen:antwerpen:heist.op.den.berg": {
+      "institution-part": {
+        "dc": "J.P. Heist-op-den-Berg"
+      }
+    },
+    "be:antwerpen:antwerpen:herentals": {
+      "institution-part": {
+        "dc": "J.P. Herentals"
+      }
+    },
+    "be:antwerpen:antwerpen:hoogstraten": {
+      "institution-part": {
+        "dc": "J.P. Hoogstraten"
+      }
+    },
+    "be:antwerpen:antwerpen:kapellen": {
+      "institution-part": {
+        "dc": "J.P. Kapellen"
+      }
+    },
+    "be:antwerpen:antwerpen:kontich": {
+      "institution-part": {
+        "dc": "J.P. Kontich"
+      }
+    },
+    "be:antwerpen:antwerpen:lier": {
+      "institution-part": {
+        "dc": "J.P. Lier"
+      }
+    },
+    "be:antwerpen:antwerpen:mechelen": {
+      "institution-part": {
+        "br": "Mechelen",
+        "cc": "Comm. Mechelen",
+        "or": "Or. Mechelen",
+        "cfi": "Trib. arr. Mechelen",
+        "corrc": "Corr. Mechelen",
+        "dc": "J.P. Mechelen",
+        "famc": "Trib. fam. Mechelen",
+        "juvc": "Trib. jeun. Mechelen",
+        "lc": "Trib. trav. Brussel (Fr.)",
+        "pc": "Pol. Mechelen",
+        "pres": "Président Mechelen",
+        "sentc": "T.A.P. Mechelen"
+      }
+    },
+    "be:antwerpen:antwerpen:mol": {
+      "institution-part": {
+        "dc": "J.P. Mol"
+      }
+    },
+    "be:antwerpen:antwerpen:schilde": {
+      "institution-part": {
+        "dc": "J.P. Schilde"
+      }
+    },
+    "be:antwerpen:antwerpen:turnhout": {
+      "institution-part": {
+        "br": "Turnhout",
+        "cc": "Comm. Turnhout",
+        "or": "Or. Turnhout",
+        "cfi": "Trib. arr. Turnhout",
+        "corrc": "Corr. Turnhout",
+        "dc": "J.P. Turnhout",
+        "famc": "Trib. fam. Turnhout",
+        "juvc": "Trib. jeun. Turnhout",
+        "lc": "Trib. trav. Brussel (Fr.)",
+        "pc": "Pol. Turnhout",
+        "pres": "Président Turnhout",
+        "sentc": "T.A.P. Turnhout"
+      }
+    },
+    "be:antwerpen:antwerpen:westerlo": {
+      "institution-part": {
+        "dc": "J.P. Westerlo"
+      }
+    },
+    "be:antwerpen:antwerpen:willebroek": {
+      "institution-part": {
+        "dc": "J.P. Willebroek"
+      }
+    },
+    "be:antwerpen:antwerpen:zandhoven": {
+      "institution-part": {
+        "dc": "J.P. Zandhoven"
+      }
+    },
+    "be:antwerpen:limburg": {
+      "institution-part": {
+        "coass": "Cour ass. Limburg",
+        "dc": "J.P. Limburg",
+        "pc": "Pol. Limburg"
+      }
+    },
+    "be:antwerpen:limburg:beringen": {
+      "institution-part": {
+        "dc": "J.P. Beringen",
+        "pc": "Pol. Beringen"
+      }
+    },
+    "be:antwerpen:limburg:bilzen": {
+      "institution-part": {
+        "dc": "J.P. Bilzen"
+      }
+    },
+    "be:antwerpen:limburg:borgloon": {
+      "institution-part": {
+        "dc": "J.P. Borgloon"
+      }
+    },
+    "be:antwerpen:limburg:bree": {
+      "institution-part": {
+        "dc": "J.P. Bree"
+      }
+    },
+    "be:antwerpen:limburg:genk": {
+      "institution-part": {
+        "dc": "J.P. Genk",
+        "pc": "Pol. Genk"
+      }
+    },
+    "be:antwerpen:limburg:hasselt": {
+      "institution-part": {
+        "br": "Hasselt",
+        "cfi": "Trib. arr. Hasselt",
+        "corrc": "Corr. Hasselt",
+        "dc": "J.P. Hasselt",
+        "famc": "Trib. fam. Hasselt",
+        "juvc": "Trib. jeun. Hasselt",
+        "lca": "C. trav. Hasselt",
+        "pc": "Pol. Hasselt",
+        "pres": "Président Hasselt",
+        "sentc": "T.A.P. Hasselt"
+      }
+    },
+    "be:antwerpen:limburg:houthalen.helchteren": {
+      "institution-part": {
+        "dc": "J.P. Houthalen-Helchteren"
+      }
+    },
+    "be:antwerpen:limburg:limburg.aubel": {
+      "institution-part": {
+        "dc": "J.P. Limburg-Aubel"
+      }
+    },
+    "be:antwerpen:limburg:maaseik": {
+      "institution-part": {
+        "dc": "J.P. Maaseik",
+        "pc": "Pol. Maaseik"
+      }
+    },
+    "be:antwerpen:limburg:maasmechelen": {
+      "institution-part": {
+        "dc": "J.P. Maasmechelen"
+      }
+    },
+    "be:antwerpen:limburg:neerpelt.lommel": {
+      "institution-part": {
+        "dc": "J.P. Neerpelt-Lommel"
+      }
+    },
+    "be:antwerpen:limburg:sint.truiden": {
+      "institution-part": {
+        "dc": "J.P. Sint-Truiden",
+        "pc": "Pol. Sint-Truiden"
+      }
+    },
+    "be:antwerpen:limburg:tongeren": {
+      "institution-part": {
+        "br": "Tongeren",
+        "cc": "Comm. Tongeren",
+        "or": "Or. Tongeren",
+        "cfi": "Trib. arr. Tongeren",
+        "corrc": "Corr. Tongeren",
+        "famc": "Trib. fam. Tongeren",
+        "juvc": "Trib. jeun. Tongeren",
+        "lc": "Trib. trav. Brussel (Fr.)",
+        "pc": "Pol. Tongeren",
+        "pres": "Président Tongeren",
+        "sentc": "T.A.P. Tongeren"
+      }
+    },
+    "be:antwerpen:limburg:tongeren.voeren": {
+      "institution-part": {
+        "dc": "J.P. Tongeren-Voeren"
+      }
+    },
+    "be:bergen": {
+      "institution-part": {
+        "dc": "J.P. Mons",
+        "lca": "C. trav. Mons"
+      }
+    },
+    "be:bergen:henegouwen": {
+      "institution-part": {
+        "coass": "Cour ass. Hainault"
+      }
+    },
+    "be:bergen:henegouwen:aat.lessen": {
+      "institution-part": {
+        "dc": "J.P. Aat-Lessen"
+      }
+    },
+    "be:bergen:henegouwen:beaumont.chimay.merbes.le.chateau": {
+      "institution-part": {
+        "dc": "J.P. Beaumont-Chimay-Merbes-le-Château"
+      }
+    },
+    "be:bergen:henegouwen:bergen": {
+      "institution-part": {
+        "br": "Bergen",
+        "cc": "Comm. Bergen",
+        "or": "Or. Bergen",
+        "cfi": "Trib. arr. Bergen",
+        "corrc": "Corr. Bergen",
+        "famc": "Trib. fam. Bergen",
+        "juvc": "Trib. jeun. Bergen",
+        "pc": "Pol. Bergen",
+        "pres": "Président Bergen",
+        "sentc": "T.A.P. Bergen"
+      }
+    },
+    "be:bergen:henegouwen:binche": {
+      "institution-part": {
+        "dc": "J.P. Binche",
+        "lc": "Trib. trav. Brussel (Fr.)"
+      }
+    },
+    "be:bergen:henegouwen:boussu": {
+      "institution-part": {
+        "dc": "J.P. Boussu"
+      }
+    },
+    "be:bergen:henegouwen:charleroi": {
+      "institution-part": {
+        "br": "Charleroi",
+        "cc": "Comm. Charleroi",
+        "or": "Or. Charleroi",
+        "cfi": "Trib. arr. Charleroi",
+        "corrc": "Corr. Charleroi",
+        "dc": "J.P. Charleroi",
+        "famc": "Trib. fam. Charleroi",
+        "juvc": "Trib. jeun. Charleroi",
+        "lc": "Trib. trav. Brussel (Fr.)",
+        "pc": "Pol. Charleroi",
+        "pres": "Président Charleroi",
+        "sentc": "T.A.P. Charleroi"
+      }
+    },
+    "be:bergen:henegouwen:chatelet": {
+      "institution-part": {
+        "dc": "J.P. Châtelet"
+      }
+    },
+    "be:bergen:henegouwen:doornik": {
+      "institution-part": {
+        "br": "Doornik",
+        "cc": "Comm. Doornik",
+        "or": "Or. Doornik",
+        "cfi": "Trib. arr. Doornik",
+        "corrc": "Corr. Doornik",
+        "dc": "J.P. Doornik",
+        "famc": "Trib. fam. Doornik",
+        "juvc": "Trib. jeun. Doornik",
+        "lc": "Trib. trav. Brussel (Fr.)",
+        "pc": "Pol. Doornik",
+        "pres": "Président Doornik",
+        "sentc": "T.A.P. Doornik"
+      }
+    },
+    "be:bergen:henegouwen:dour.colfontaine": {
+      "institution-part": {
+        "dc": "J.P. Dour-Colfontaine"
+      }
+    },
+    "be:bergen:henegouwen:enghien.lens": {
+      "institution-part": {
+        "dc": "J.P. Enghien-Lens"
+      }
+    },
+    "be:bergen:henegouwen:fontaine.l.eveque": {
+      "institution-part": {
+        "dc": "J.P. Fontaine-l'Evêque",
+        "lc": "Trib. trav. Brussel (Fr.)"
+      }
+    },
+    "be:bergen:henegouwen:la.louvière": {
+      "institution-part": {
+        "dc": "J.P. La Louvière"
+      }
+    },
+    "be:bergen:henegouwen:moeskroen": {
+      "institution-part": {
+        "lc": "Trib. trav. Brussel (Fr.)"
+      }
+    },
+    "be:bergen:henegouwen:moeskroen.komen.waasten": {
+      "institution-part": {
+        "dc": "J.P. Moeskroen-Komen-Waasten"
+      }
+    },
+    "be:bergen:henegouwen:peruwelz.leuze.en.hainaut": {
+      "institution-part": {
+        "dc": "J.P. Péruwelz-Leuze en Hainaut"
+      }
+    },
+    "be:bergen:henegouwen:seneffe": {
+      "institution-part": {
+        "dc": "J.P. Seneffe"
+      }
+    },
+    "be:bergen:henegouwen:thuin": {
+      "institution-part": {
+        "dc": "J.P. Thuin"
+      }
+    },
+    "be:bergen:henegouwen:zinnik": {
+      "institution-part": {
+        "dc": "J.P. Zinnik"
+      }
+    },
+    "be:brussel": {
+      "institution-part": {
+        "cc.fr": "Comm. Brussel (Fr.) Bruxelles",
+        "cc.nl": "Kh. Brussel (Nl.) Bruxelles",
+        "or.fr": "Or. Brussel (Fr.)",
+        "or.nl": "Or. Brussel (Nl.)",
+        "coass": "Cour ass. Brussels",
+        "dc": "J.P. Brussels",
+        "lc.fr": "Arbrb. Brussel (Fr.) Bruxelles",
+        "lc.nl": "Arbrb. Brussel (Nl.) Bruxelles",
+        "lca": "C. trav. Brussels",
+        "pc.fr": "Pol. Brussel (Fr.) Bruxelles",
+        "pc.nl": "Pol. Brussel (Nl.) Bruxelles"
+      }
+    },
+    "be:brussel:brussel": {
+      "institution-part": {
+        "dc": "J.P. Brussels"
+      }
+    },
+    "be:brussel:brussel:anderlecht": {
+      "institution-part": {
+        "dc": "J.P. Anderlecht"
+      }
+    },
+    "be:brussel:brussel:elsene": {
+      "institution-part": {
+        "dc": "J.P. Elsene"
+      }
+    },
+    "be:brussel:brussel:etterbeek": {
+      "institution-part": {
+        "dc": "J.P. Etterbeek"
+      }
+    },
+    "be:brussel:brussel:jette": {
+      "institution-part": {
+        "dc": "J.P. Jette"
+      }
+    },
+    "be:brussel:brussel:ouderghem": {
+      "institution-part": {
+        "dc": "J.P. Ouderghem"
+      }
+    },
+    "be:brussel:brussel:schaarbeek": {
+      "institution-part": {
+        "dc": "J.P. Schaarbeek"
+      }
+    },
+    "be:brussel:brussel:sint.gillis": {
+      "institution-part": {
+        "dc": "J.P. Sint-Gillis"
+      }
+    },
+    "be:brussel:brussel:sint.jans.molenbeek": {
+      "institution-part": {
+        "dc": "J.P. Sint-Jans-Molenbeek"
+      }
+    },
+    "be:brussel:brussel:sint.joost.ten.node": {
+      "institution-part": {
+        "dc": "J.P. Sint-Joost-ten-Node"
+      }
+    },
+    "be:brussel:brussel:sint.pieters.woluwe": {
+      "institution-part": {
+        "dc": "J.P. Sint-Pieters-Woluwe"
+      }
+    },
+    "be:brussel:brussel:ukkel": {
+      "institution-part": {
+        "dc": "J.P. Ukkel"
+      }
+    },
+    "be:brussel:brussel:vorst": {
+      "institution-part": {
+        "dc": "J.P. Vorst"
+      }
+    },
+    "be:brussel:vlaams.brabant": {
+      "institution-part": {
+        "coass": "Cour ass. Flemish-Brabant"
+      }
+    },
+    "be:brussel:vlaams.brabant:aarschot": {
+      "institution-part": {
+        "dc": "J.P. Aarschot"
+      }
+    },
+    "be:brussel:vlaams.brabant:asse": {
+      "institution-part": {
+        "dc": "J.P. Asse"
+      }
+    },
+    "be:brussel:vlaams.brabant:diest": {
+      "institution-part": {
+        "dc": "J.P. Diest"
+      }
+    },
+    "be:brussel:vlaams.brabant:grimbergen": {
+      "institution-part": {
+        "dc": "J.P. Grimbergen"
+      }
+    },
+    "be:brussel:vlaams.brabant:haacht": {
+      "institution-part": {
+        "dc": "J.P. Haacht"
+      }
+    },
+    "be:brussel:vlaams.brabant:halle": {
+      "institution-part": {
+        "dc": "J.P. Halle",
+        "pc": "Pol. Halle"
+      }
+    },
+    "be:brussel:vlaams.brabant:herne.sint.pieters.leeuw": {
+      "institution-part": {
+        "dc": "J.P. Herne-Sint-Pieters-Leeuw"
+      }
+    },
+    "be:brussel:vlaams.brabant:kraainem.sint.genesius.rode": {
+      "institution-part": {
+        "dc": "J.P. Kraainem-Sint-Genesius-Rode"
+      }
+    },
+    "be:brussel:vlaams.brabant:landen.zoutleeuw": {
+      "institution-part": {
+        "dc": "J.P. Landen-Zoutleeuw"
+      }
+    },
+    "be:brussel:vlaams.brabant:lennik": {
+      "institution-part": {
+        "dc": "J.P. Lennik"
+      }
+    },
+    "be:brussel:vlaams.brabant:leuven": {
+      "institution-part": {
+        "br": "Leuven",
+        "cc": "Comm. Leuven",
+        "or": "Or. Leuven",
+        "cfi": "Trib. arr. Leuven",
+        "corrc": "Corr. Leuven",
+        "dc": "J.P. Leuven",
+        "famc": "Trib. fam. Leuven",
+        "juvc": "Trib. jeun. Leuven",
+        "lc": "Trib. trav. Brussel (Fr.)",
+        "pc": "Pol. Leuven",
+        "pres": "Président Leuven",
+        "sentc": "T.A.P. Leuven"
+      }
+    },
+    "be:brussel:vlaams.brabant:meise": {
+      "institution-part": {
+        "dc": "J.P. Meise"
+      }
+    },
+    "be:brussel:vlaams.brabant:overijse.zaventem": {
+      "institution-part": {
+        "dc": "J.P. Overijse-Zaventem"
+      }
+    },
+    "be:brussel:vlaams.brabant:tienen": {
+      "institution-part": {
+        "dc": "J.P. Tienen"
+      }
+    },
+    "be:brussel:vlaams.brabant:vilvoorde": {
+      "institution-part": {
+        "dc": "J.P. Vilvoorde",
+        "pc": "Pol. Vilvoorde"
+      }
+    },
+    "be:brussel:waals.brabant": {
+      "institution-part": {
+        "cfi": "Trib. arr. Waals-Brabant",
+        "coass": "Cour ass. Waals-Brabant"
+      }
+    },
+    "be:brussel:waals.brabant:eigenbrakel": {
+      "institution-part": {
+        "dc": "J.P. Eigenbrakel"
+      }
+    },
+    "be:brussel:waals.brabant:geldenaken.perwijs": {
+      "institution-part": {
+        "dc": "J.P. Geldenaken-Perwijs"
+      }
+    },
+    "be:brussel:waals.brabant:nijvel": {
+      "institution-part": {
+        "cc": "Comm. Nijvel",
+        "or": "Or. Nijvel",
+        "dc": "J.P. Nijvel",
+        "lc": "Trib. trav. Brussel (Fr.)",
+        "pc": "Pol. Nijvel"
+      }
+    },
+    "be:brussel:waals.brabant:tubeke": {
+      "institution-part": {
+        "dc": "J.P. Tubeke"
+      }
+    },
+    "be:brussel:waals.brabant:waver": {
+      "institution-part": {
+        "dc": "J.P. Waver",
+        "lc": "Trib. trav. Brussel (Fr.)",
+        "pc": "Pol. Waver"
+      }
+    },
+    "be:gent": {
+      "institution-part": {
+        "ca": "Ghent"
+      }
+    },
+    "be:gent:oost.vlaanderen": {
+      "institution-part": {
+        "ca": "East Flanders",
+        "coass": "Cour ass. East Flanders"
+      }
+    },
+    "be:gent:oost.vlaanderen:aalst": {
+      "institution-part": {
+        "dc": "J.P. Aalst",
+        "lc": "Trib. trav. Brussel (Fr.)",
+        "pc": "Pol. Aalst"
+      }
+    },
+    "be:gent:oost.vlaanderen:beveren": {
+      "institution-part": {
+        "dc": "J.P. Beveren"
+      }
+    },
+    "be:gent:oost.vlaanderen:deinze": {
+      "institution-part": {
+        "dc": "J.P. Deinze"
+      }
+    },
+    "be:gent:oost.vlaanderen:dendermonde": {
+      "institution-part": {
+        "br": "Dendermonde",
+        "cc": "Comm. Dendermonde",
+        "or": "Or. Dendermonde",
+        "cfi": "Trib. arr. Dendermonde",
+        "corrc": "Corr. Dendermonde",
+        "famc": "Trib. fam. Dendermonde",
+        "juvc": "Trib. jeun. Dendermonde",
+        "lc": "Trib. trav. Brussel (Fr.)",
+        "pc": "Pol. Dendermonde",
+        "pres": "Président Dendermonde",
+        "sentc": "T.A.P. Dendermonde"
+      }
+    },
+    "be:gent:oost.vlaanderen:dendermonde.hamme": {
+      "institution-part": {
+        "dc": "J.P. Dendermonde-Hamme"
+      }
+    },
+    "be:gent:oost.vlaanderen:eeklo": {
+      "institution-part": {
+        "dc": "J.P. Eeklo"
+      }
+    },
+    "be:gent:oost.vlaanderen:gent": {
+      "institution-part": {
+        "cc": "Comm. Ghent",
+        "or": "Or. Ghent",
+        "cfi": "Trib. arr. Ghent",
+        "dc": "J.P. Ghent",
+        "lc": "Trib. trav. Brussel (Fr.)",
+        "lca": "C. trav. Ghent",
+        "pc": "Pol. Ghent"
+      }
+    },
+    "be:gent:oost.vlaanderen:geraardsbergen.brakel": {
+      "institution-part": {
+        "dc": "J.P. Geraardsbergen-Brakel"
+      }
+    },
+    "be:gent:oost.vlaanderen:lokeren": {
+      "institution-part": {
+        "dc": "J.P. Lokeren"
+      }
+    },
+    "be:gent:oost.vlaanderen:merelbeke": {
+      "institution-part": {
+        "dc": "J.P. Merelbeke"
+      }
+    },
+    "be:gent:oost.vlaanderen:ninove": {
+      "institution-part": {
+        "dc": "J.P. Ninove"
+      }
+    },
+    "be:gent:oost.vlaanderen:oudenaarde": {
+      "institution-part": {
+        "cc": "Comm. Oudenaarde",
+        "or": "Or. Oudenaarde",
+        "cfi": "Trib. arr. Oudenaarde",
+        "lc": "Trib. trav. Brussel (Fr.)",
+        "pc": "Pol. Oudenaarde"
+      }
+    },
+    "be:gent:oost.vlaanderen:oudenaarde.kruishoutem": {
+      "institution-part": {
+        "dc": "J.P. Oudenaarde-Kruishoutem"
+      }
+    },
+    "be:gent:oost.vlaanderen:ronse": {
+      "institution-part": {
+        "dc": "J.P. Ronse"
+      }
+    },
+    "be:gent:oost.vlaanderen:sint.niklaas": {
+      "institution-part": {
+        "dc": "J.P. Sint-Niklaas",
+        "lc": "Trib. trav. Brussel (Fr.)",
+        "pc": "Pol. Sint-Niklaas"
+      }
+    },
+    "be:gent:oost.vlaanderen:wetteren.zele": {
+      "institution-part": {
+        "dc": "J.P. Wetteren-Zele"
+      }
+    },
+    "be:gent:oost.vlaanderen:zelzate": {
+      "institution-part": {
+        "dc": "J.P. Zelzate"
+      }
+    },
+    "be:gent:oost.vlaanderen:zomergem": {
+      "institution-part": {
+        "dc": "J.P. Zomergem"
+      }
+    },
+    "be:gent:oost.vlaanderen:zottegem.herzele": {
+      "institution-part": {
+        "dc": "J.P. Zottegem-Herzele"
+      }
+    },
+    "be:gent:west.vlaanderen": {
+      "institution-part": {
+        "ca": "West Flanders",
+        "coass": "Cour ass. West Flanders"
+      }
+    },
+    "be:gent:west.vlaanderen:brugge": {
+      "institution-part": {
+        "cc": "Comm. Brugge",
+        "or": "Or. Brugge",
+        "cfi": "Trib. arr. Brugge",
+        "dc": "J.P. Brugge",
+        "lc": "Trib. trav. Brussel (Fr.)",
+        "lca": "C. trav. Brugge",
+        "pc": "Pol. Brugge"
+      }
+    },
+    "be:gent:west.vlaanderen:diksmuide": {
+      "institution-part": {
+        "dc": "J.P. Diksmuide"
+      }
+    },
+    "be:gent:west.vlaanderen:harelbeke": {
+      "institution-part": {
+        "dc": "J.P. Harelbeke"
+      }
+    },
+    "be:gent:west.vlaanderen:ieper": {
+      "institution-part": {
+        "cc": "Comm. Ieper",
+        "or": "Or. Ieper",
+        "cfi": "Trib. arr. Ieper",
+        "dc": "J.P. Ieper",
+        "lc": "Trib. trav. Brussel (Fr.)",
+        "pc": "Pol. Ieper"
+      }
+    },
+    "be:gent:west.vlaanderen:ieper.poperinge": {
+      "institution-part": {
+        "dc": "J.P. Ieper-Poperinge"
+      }
+    },
+    "be:gent:west.vlaanderen:izegem": {
+      "institution-part": {
+        "dc": "J.P. Izegem"
+      }
+    },
+    "be:gent:west.vlaanderen:kortrijk": {
+      "institution-part": {
+        "br": "Kortrijk",
+        "cc": "Comm. Kortrijk",
+        "or": "Or. Kortrijk",
+        "cfi": "Trib. arr. Kortrijk",
+        "corrc": "Corr. Kortrijk",
+        "dc": "J.P. Kortrijk",
+        "famc": "Trib. fam. Kortrijk",
+        "juvc": "Trib. jeun. Kortrijk",
+        "lc": "Trib. trav. Brussel (Fr.)",
+        "pc": "Pol. Kortrijk",
+        "pres": "Président Kortrijk",
+        "sentc": "T.A.P. Kortrijk"
+      }
+    },
+    "be:gent:west.vlaanderen:menen": {
+      "institution-part": {
+        "dc": "J.P. Menen"
+      }
+    },
+    "be:gent:west.vlaanderen:oostende": {
+      "institution-part": {
+        "dc": "J.P. Oostende"
+      }
+    },
+    "be:gent:west.vlaanderen:roeselare": {
+      "institution-part": {
+        "dc": "J.P. Roeselare",
+        "lc": "Trib. trav. Brussel (Fr.)"
+      }
+    },
+    "be:gent:west.vlaanderen:tielt": {
+      "institution-part": {
+        "dc": "J.P. Tielt"
+      }
+    },
+    "be:gent:west.vlaanderen:torhout": {
+      "institution-part": {
+        "dc": "J.P. Torhout"
+      }
+    },
+    "be:gent:west.vlaanderen:veurne": {
+      "institution-part": {
+        "br": "Veurne",
+        "cc": "Comm. Veurne",
+        "or": "Or. Veurne",
+        "cfi": "Trib. arr. Veurne",
+        "corrc": "Corr. Veurne",
+        "famc": "Trib. fam. Veurne",
+        "juvc": "Trib. jeun. Veurne",
+        "lc": "Trib. trav. Brussel (Fr.)",
+        "pc": "Pol. Veurne",
+        "pres": "Président Veurne",
+        "sentc": "T.A.P. Veurne"
+      }
+    },
+    "be:gent:west.vlaanderen:veurne.nieuwpoort": {
+      "institution-part": {
+        "dc": "J.P. Veurne-Nieuwpoort"
+      }
+    },
+    "be:gent:west.vlaanderen:waregem": {
+      "institution-part": {
+        "dc": "J.P. Waregem"
+      }
+    },
+    "be:gent:west.vlaanderen:wervik": {
+      "institution-part": {
+        "dc": "J.P. Wervik"
+      }
+    },
+    "be:luik": {
+      "institution-part": {
+        "ca": "Liege"
+      }
+    },
+    "be:luik:luik": {
+      "institution-part": {
+        "br": "Liege",
+        "cc": "Comm. Liege",
+        "or": "Or. Liege",
+        "cfi": "Trib. arr. Liege",
+        "coass": "Cour ass. Liege",
+        "corrc": "Corr. Liege",
+        "dc": "J.P. Liege",
+        "famc": "Trib. fam. Liege",
+        "juvc": "Trib. jeun. Liege",
+        "lc": "Trib. trav. Brussel (Fr.)",
+        "lca": "C. trav. Liege",
+        "pc": "Pol. Liege",
+        "pres": "Président Liege",
+        "sentc": "T.A.P. Liege"
+      }
+    },
+    "be:luik:luik:borgworm": {
+      "institution-part": {
+        "dc": "J.P. Borgworm"
+      }
+    },
+    "be:luik:luik:eupen": {
+      "institution-part": {
+        "br": "Eupen",
+        "cc": "Comm. Eupen",
+        "or": "Or. Eupen",
+        "cfi": "Trib. arr. Eupen",
+        "corrc": "Corr. Eupen",
+        "dc": "J.P. Eupen",
+        "famc": "Trib. fam. Eupen",
+        "juvc": "Trib. jeun. Eupen",
+        "lc": "Trib. trav. Brussel (Fr.)",
+        "pc": "Pol. Eupen",
+        "pres": "Président Eupen",
+        "sentc": "T.A.P. Eupen"
+      }
+    },
+    "be:luik:luik:eupen:sankt.vith": {
+      "institution-part": {
+        "dc": "J.P. Sankt-Vith",
+        "pc": "Pol. Sankt-Vith"
+      }
+    },
+    "be:luik:luik:fleron": {
+      "institution-part": {
+        "dc": "J.P. Fléron"
+      }
+    },
+    "be:luik:luik:grace.hollogne": {
+      "institution-part": {
+        "dc": "J.P. Grâce-Hollogne"
+      }
+    },
+    "be:luik:luik:hamoir": {
+      "institution-part": {
+        "dc": "J.P. Hamoir"
+      }
+    },
+    "be:luik:luik:herstal": {
+      "institution-part": {
+        "dc": "J.P. Herstal"
+      }
+    },
+    "be:luik:luik:hoei": {
+      "institution-part": {
+        "br": "Hoei",
+        "cc": "Comm. Hoei",
+        "or": "Or. Hoei",
+        "cfi": "Trib. arr. Hoei",
+        "corrc": "Corr. Hoei",
+        "dc": "J.P. Hoei",
+        "famc": "Trib. fam. Hoei",
+        "juvc": "Trib. jeun. Hoei",
+        "lc": "Trib. trav. Brussel (Fr.)",
+        "pc": "Pol. Hoei",
+        "pres": "Président Hoei",
+        "sentc": "T.A.P. Hoei"
+      }
+    },
+    "be:luik:luik:hoei.hannuit": {
+      "institution-part": {
+        "dc": "J.P. Hoei-Hannuit"
+      }
+    },
+    "be:luik:luik:malmedy.spa.stavelot": {
+      "institution-part": {
+        "dc": "J.P. Malmédy-Spa-Stavelot"
+      }
+    },
+    "be:luik:luik:saint.nicolas.lez.liege": {
+      "institution-part": {
+        "dc": "J.P. Saint-Nicolas-lez-Liège"
+      }
+    },
+    "be:luik:luik:seraing": {
+      "institution-part": {
+        "dc": "J.P. Seraing"
+      }
+    },
+    "be:luik:luik:sprimont": {
+      "institution-part": {
+        "dc": "J.P. Sprimont"
+      }
+    },
+    "be:luik:luik:verviers": {
+      "institution-part": {
+        "br": "Verviers",
+        "cc": "Comm. Verviers",
+        "or": "Or. Verviers",
+        "cfi": "Trib. arr. Verviers",
+        "corrc": "Corr. Verviers",
+        "dc": "J.P. Verviers",
+        "famc": "Trib. fam. Verviers",
+        "juvc": "Trib. jeun. Verviers",
+        "lc": "Trib. trav. Brussel (Fr.)",
+        "pc": "Pol. Verviers",
+        "pres": "Président Verviers",
+        "sentc": "T.A.P. Verviers"
+      }
+    },
+    "be:luik:luik:wezet": {
+      "institution-part": {
+        "dc": "J.P. Wezet"
+      }
+    },
+    "be:luik:luxumburg": {
+      "institution-part": {
+        "coass": "Cour ass. Luxumbourg",
+        "lc": "Trib. trav. Brussel (Fr.)",
+        "lca": "C. trav. Luxumbourg"
+      }
+    },
+    "be:luik:luxumburg:aarlen": {
+      "institution-part": {
+        "cc": "Comm. Aarlen",
+        "or": "Or. Aarlen",
+        "cfi": "Trib. arr. Aarlen",
+        "lc": "Trib. trav. Brussel (Fr.)",
+        "pc": "Pol. Aarlen"
+      }
+    },
+    "be:luik:luxumburg:aarlen.messancy": {
+      "institution-part": {
+        "dc": "J.P. Aarlen-Messancy"
+      }
+    },
+    "be:luik:luxumburg:bastenaken.neufchateau": {
+      "institution-part": {
+        "dc": "J.P. Bastenaken-Neufchâteau"
+      }
+    },
+    "be:luik:luxumburg:marche.en.famenne": {
+      "institution-part": {
+        "br": "Marche-en-Famenne",
+        "cc": "Comm. Marche-en-Famenne",
+        "or": "Or. Marche-en-Famenne",
+        "cfi": "Trib. arr. Marche-en-Famenne",
+        "corrc": "Corr. Marche-en-Famenne",
+        "famc": "Trib. fam. Marche-en-Famenne",
+        "juvc": "Trib. jeun. Marche-en-Famenne",
+        "lc": "Trib. trav. Brussel (Fr.)",
+        "pc": "Pol. Marche-en-Famenne",
+        "pres": "Président Marche-en-Famenne",
+        "sentc": "T.A.P. Marche-en-Famenne"
+      }
+    },
+    "be:luik:luxumburg:marche.en.famenne.durbuy": {
+      "institution-part": {
+        "dc": "J.P. Marche-en-Famenne-Durbuy"
+      }
+    },
+    "be:luik:luxumburg:neufchateau": {
+      "institution-part": {
+        "cc": "Comm. Neufchâteau",
+        "or": "Or. Neufchâteau",
+        "cfi": "Trib. arr. Neufchâteau",
+        "lc": "Trib. trav. Brussel (Fr.)",
+        "lca": "C. trav. Neufchâteau",
+        "pc": "Pol. Neufchâteau"
+      }
+    },
+    "be:luik:luxumburg:saint.hubert.bouillon.paliseul": {
+      "institution-part": {
+        "dc": "J.P. Saint-Hubert-Bouillon-Paliseul"
+      }
+    },
+    "be:luik:luxumburg:vielsalm.la.roche.en.ardenne.houffalize": {
+      "institution-part": {
+        "dc": "J.P. Vielsalm-La Roche en Ardenne-Houffalize"
+      }
+    },
+    "be:luik:luxumburg:virton.florenville.etalle": {
+      "institution-part": {
+        "dc": "J.P. Virton-Florenville-Etalle"
+      }
+    },
+    "be:luik:namen": {
+      "institution-part": {
+        "coass": "Cour ass. Namen",
+        "lc": "Trib. trav. Brussel (Fr.)",
+        "lca": "C. trav. Namen"
+      }
+    },
+    "be:luik:namen:andenne": {
+      "institution-part": {
+        "dc": "J.P. Andenne"
+      }
+    },
+    "be:luik:namen:beauraing.dinant.gedinne": {
+      "institution-part": {
+        "dc": "J.P. Beauraing-Dinant-Gedinne"
+      }
+    },
+    "be:luik:namen:ciney.rochefort": {
+      "institution-part": {
+        "dc": "J.P. Ciney-Rochefort"
+      }
+    },
+    "be:luik:namen:dinant": {
+      "institution-part": {
+        "br": "Dinant",
+        "cc": "Comm. Dinant",
+        "or": "Or. Dinant",
+        "cfi": "Trib. arr. Dinant",
+        "corrc": "Corr. Dinant",
+        "famc": "Trib. fam. Dinant",
+        "juvc": "Trib. jeun. Dinant",
+        "lc": "Trib. trav. Brussel (Fr.)",
+        "pc": "Pol. Dinant",
+        "pres": "Président Dinant",
+        "sentc": "T.A.P. Dinant"
+      }
+    },
+    "be:luik:namen:fosses.la.ville": {
+      "institution-part": {
+        "dc": "J.P. Fosses-la-Ville"
+      }
+    },
+    "be:luik:namen:gembloux.eghezee": {
+      "institution-part": {
+        "dc": "J.P. Gembloux-Eghezée"
+      }
+    },
+    "be:luik:namen:namen": {
+      "institution-part": {
+        "br": "Namen",
+        "cfi": "Trib. arr. Namen",
+        "corrc": "Corr. Namen",
+        "dc": "J.P. Namen",
+        "famc": "Trib. fam. Namen",
+        "juvc": "Trib. jeun. Namen",
+        "pc": "Pol. Namen",
+        "pres": "Président Namen",
+        "sentc": "T.A.P. Namen"
+      }
+    },
+    "be:luik:namen:philippeville.couvin": {
+      "institution-part": {
+        "dc": "J.P. Philippeville-Couvin"
+      }
+    },
+    "be:luik:namen:walcourt.florennes": {
+      "institution-part": {
+        "dc": "J.P. Walcourt-Florennes"
+      }
+    }
+  }
+}

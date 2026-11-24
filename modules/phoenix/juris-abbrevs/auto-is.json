@@ -1,0 +1,12 @@
+{
+  "filename": "auto-is.json",
+  "name": "Iceland",
+  "version": "2026-07-22 20:44:52 UTC",
+  "xdata": {
+    "default": {
+      "place": {
+        "IS": "Iceland"
+      }
+    }
+  }
+}

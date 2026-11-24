@@ -1,0 +1,12 @@
+{
+  "filename": "auto-sr.json",
+  "name": "Suriname",
+  "version": "2026-07-22 20:44:53 UTC",
+  "xdata": {
+    "default": {
+      "place": {
+        "SR": "Suriname"
+      }
+    }
+  }
+}

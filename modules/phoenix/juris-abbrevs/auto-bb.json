@@ -1,0 +1,12 @@
+{
+  "filename": "auto-bb.json",
+  "name": "Barbados",
+  "version": "2026-07-22 20:44:51 UTC",
+  "xdata": {
+    "default": {
+      "place": {
+        "BB": "Barbados"
+      }
+    }
+  }
+}

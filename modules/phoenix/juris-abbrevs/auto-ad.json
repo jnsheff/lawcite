@@ -1,0 +1,12 @@
+{
+  "filename": "auto-ad.json",
+  "name": "Andorra",
+  "version": "2026-07-22 20:44:51 UTC",
+  "xdata": {
+    "default": {
+      "place": {
+        "AD": "Andorra"
+      }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "filename": "auto-cs.json",
+  "name": "Czechoslovakia",
+  "version": "2026-07-22 20:44:51 UTC",
+  "xdata": {
+    "default": {
+      "place": {
+        "CS": "Czechoslovakia"
+      }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "filename": "auto-sb.json",
+  "name": "Solomon Islands",
+  "version": "2026-07-22 20:44:53 UTC",
+  "xdata": {
+    "default": {
+      "place": {
+        "SB": "Solomon Islands"
+      }
+    }
+  }
+}

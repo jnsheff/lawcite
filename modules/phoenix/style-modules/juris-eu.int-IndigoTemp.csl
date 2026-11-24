@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<style xmlns="http://purl.org/net/xbiblio/csl" version="1.1mlz1" class="note">
+  <info>
+    <title>European Union</title>
+    <id>http://citationstylist.org/modules/juris-eu.int</id>
+    <link href="http://citationstylist/modules/juris-eu.int" rel="self"/>
+    <link href="http://juris-m.github.io" rel="documentation"/>
+    <author>
+      <name>aAlexander Schuster</name>
+      <email>alexander.schuster@unitn.it</email>
+    </author>
+    <category citation-format="note"/>
+    <category field="law"/>
+    <summary>Juris-M style module for European Union ECLI standard</summary>
+    <updated>2016-09-06T22:06:38+00:00</updated>
+    <rights license="http://creativecommons.org/licenses/by-sa/3.0/">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>
+    <law-module types="legal_case regulation legislation hearing report"/>
+  </info>
+  
+  <locale>
+    <terms>
+      <term name="paragraph">
+        <single>paragraph</single>
+        <multiple>paragraphs</multiple>
+      </term>
+      <term name="article">
+        <single>article</single>
+        <multiple>articles</multiple>
+      </term>
+      <term name="article" form="short">
+        <single>art.</single>
+        <multiple>arts.</multiple>
+      </term>
+    </terms>
+  </locale>
+  
+  <macro name="juris-pretitle">
+    <!-- Bluebook 21.9(a)(ii): issuing institution, type, number; for Parliament acts
+         "Directive 2001/18, of the European Parliament and of the Council"; the date
+         only with the full name (a title). -->
+    <choose>
+      <if type="regulation">
+        <group delimiter=" of ">
+          <choose>
+            <if variable="contributor">
+              <group delimiter=", of the ">
+                <group delimiter=" ">
+                  <text variable="genre"/>
+                  <text variable="number"/>
+                </group>
+                <names variable="contributor">
+                  <name delimiter=" and of the "/>
+                </names>
+              </group>
+            </if>
+            <else>
+              <group delimiter=" ">
+                <names variable="authority">
+                  <name/>
+                  <institution institution-parts="short"/>
+                </names>
+                <text variable="genre"/>
+                <text variable="number"/>
+              </group>
+            </else>
+          </choose>
+          <choose>
+            <if variable="title">
+              <date variable="issued" form="text" date-parts="year-month-day"/>
+            </if>
+          </choose>
+        </group>
+      </if>
+    </choose>
+  </macro>
+  
+  <macro name="juris-title">
+    <choose>
+      <if match="any" type="legal_case regulation legislation hearing report">
+        <text variable="title"/>
+      </if>
+    </choose>
+  </macro>
+
+  <macro name="juris-main">
+    <choose>
+      <if type="legal_case">
+        <group delimiter=" ">
+          <number variable="collection-number"/>
+          <text variable="container-title" form="short"/>
+          <text variable="publisher" prefix="(" suffix=")"/>
+          <number variable="page"/>
+        </group>
+      </if>
+      <else-if type="regulation">
+        <!-- Bluebook 21.9(a)(i): "art. 5, 1990 O.J. (L 266) 1, 2" -->
+        <group delimiter=", ">
+          <choose>
+            <if position="first">
+              <choose>
+                <if locator="page"/>
+                <else-if variable="locator">
+                  <group delimiter=" ">
+                    <label variable="locator" form="short"/>
+                    <text variable="locator"/>
+                  </group>
+                </else-if>
+              </choose>
+            </if>
+          </choose>
+          <group delimiter=", ">
+            <group delimiter=" ">
+              <date variable="publication-date" form="text" date-parts="year"/>
+              <text variable="container-title" form="short"/>
+              <text variable="issue" prefix="(" suffix=")"/>
+              <number variable="page-first"/>
+            </group>
+            <choose>
+              <if position="first">
+                <choose>
+                  <if locator="page">
+                    <text variable="locator"/>
+                  </if>
+                </choose>
+              </if>
+            </choose>
+          </group>
+        </group>
+      </else-if>
+      <else-if type="legislation">
+        <group delimiter=" ">
+          <number variable="collection-number"/>
+          <text variable="container-title" form="short"/>
+          <group delimiter=" " prefix="(" suffix=")">
+            <text variable="genre"/>
+            <number variable="number"/>
+          </group>
+          <number variable="page"/>
+        </group>
+      </else-if>
+      <else-if type="hearing">
+        <group delimiter=" ">
+          <text variable="container-title" form="short"/>
+          <number variable="number" prefix="(" suffix=")"/>
+          <number variable="page"/>
+        </group>
+      </else-if>
+      <else-if type="report">
+        <group delimiter=" ">
+          <text variable="container-title" form="short"/>
+          <group delimiter=" " prefix="(" suffix=")">
+            <text variable="genre"/>
+            <number variable="number"/>
+          </group>
+          <number variable="page"/>
+        </group>
+      </else-if>
+    </choose>
+  </macro>
+
+  <macro name="juris-tail">
+    <choose>
+      <if type="regulation">
+        <choose>
+          <if match="none" variable="genre">
+            <date variable="issued" form="text" date-parts="year-month-day" prefix="(" suffix=")"/>
+          </if>
+          <else-if variable="publisher">
+            <!-- Bluebook 21.9(a)(ii): (EC), (EU), (Euratom) -->
+            <text variable="publisher" prefix="(" suffix=")"/>
+          </else-if>
+        </choose>
+      </if>
+      <else-if type="hearing">
+        <group delimiter=" " prefix="(" suffix=")">
+          <date variable="issued" form="text" date-parts="year-month-day"/>
+        </group>
+      </else-if>
+      <else-if type="report">
+        <group delimiter=" " prefix="(" suffix=")">
+          <date variable="issued" form="text" date-parts="year"/>
+        </group>
+      </else-if>
+    </choose>
+  </macro>
+
+  <macro name="juris-pretitle-short">
+    <!-- short form: the designation, unless a short title is given -->
+    <choose>
+      <if type="regulation">
+        <choose>
+          <if variable="title-short"/>
+          <else>
+            <group delimiter=" ">
+              <choose>
+                <if variable="contributor"/>
+                <else>
+                  <names variable="authority">
+                    <name/>
+                    <institution institution-parts="short"/>
+                  </names>
+                </else>
+              </choose>
+              <text variable="genre"/>
+              <text variable="number"/>
+            </group>
+          </else>
+        </choose>
+      </if>
+      <else>
+        <text value=""/>
+      </else>
+    </choose>
+  </macro>
+  <macro name="juris-title-short">
+    <choose>
+      <if type="regulation">
+        <text variable="title-short"/>
+      </if>
+      <else-if match="any" type="legal_case legislation hearing report">
+        <text variable="title"/>
+      </else-if>
+    </choose>
+  </macro>
+
+  <macro name="juris-main-short">
+    <text macro="juris-main"/>
+  </macro>
+
+  <macro name="juris-tail-short">
+    <text value=""/>
+  </macro>
+
+  <macro name="juris-locator">
+    <choose>
+      <if type="regulation" position="first">
+        <!-- first cites: the pin is printed by juris-main (article before, page after the O.J. cite) -->
+        <text value=""/>
+      </if>
+      <else>
+    <group delimiter=" ">
+      <choose>
+        <if>
+          <conditions match="any">
+            <condition locator="page" type="report" variable="number" match="all"/>
+            <condition locator="page" type="legal_case" variable="archive" match="all"/>
+            <condition locator="page" type="legal_case" variable="archive_location" match="all"/>
+          </conditions>
+          <text value="at"/>
+        </if>
+        <else-if>
+          <conditions match="all">
+            <condition type="legal_case" match="any"/>
+            <condition match="none" variable="document-name archive container-title"/>
+          </conditions>
+          <text value="at"/>
+        </else-if>
+        <else-if locator="page" match="any"/>
+        <else-if>
+          <conditions match="all">
+            <condition type="regulation legislation" match="any"/>
+            <condition locator="rule"/>
+          </conditions>
+        </else-if>
+        <else>
+          <label variable="locator"/>
+        </else>
+      </choose>
+      <number variable="locator"/>
+    </group>
+      </else>
+    </choose>
+  </macro>
+  <citation>
+    <layout>
+    </layout>
+  </citation>
+
+</style>

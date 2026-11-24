@@ -1,0 +1,12 @@
+{
+  "filename": "auto-mu.json",
+  "name": "Mauritius",
+  "version": "2026-07-22 20:44:52 UTC",
+  "xdata": {
+    "default": {
+      "place": {
+        "MU": "Mauritius"
+      }
+    }
+  }
+}

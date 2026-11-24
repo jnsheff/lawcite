@@ -1,0 +1,12 @@
+{
+  "filename": "auto-ussr.json",
+  "name": "Union of Soviet Socialist Republics",
+  "version": "2026-07-22 20:44:53 UTC",
+  "xdata": {
+    "default": {
+      "place": {
+        "USSR": "Union of Soviet Socialist Republics"
+      }
+    }
+  }
+}

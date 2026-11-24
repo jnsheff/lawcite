@@ -1,0 +1,12 @@
+{
+  "filename": "auto-pe.json",
+  "name": "Peru",
+  "version": "2026-07-22 20:44:53 UTC",
+  "xdata": {
+    "default": {
+      "place": {
+        "PE": "Peru"
+      }
+    }
+  }
+}

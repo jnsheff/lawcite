@@ -1,0 +1,12 @@
+{
+  "filename": "auto-kw.json",
+  "name": "Kuwait",
+  "version": "2026-07-22 20:44:52 UTC",
+  "xdata": {
+    "default": {
+      "place": {
+        "KW": "Kuwait"
+      }
+    }
+  }
+}

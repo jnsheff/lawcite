@@ -1,0 +1,57 @@
+# lawcite
+
+One Zotero plugin for legal citation (Zotero 9 and 10), replacing three separate plugins:
+
+| Part | What it does | Was |
+|------|--------------|-----|
+| **phoenix** | Juris-M-style legal item types and fields, CSL-M modules, Juris-M abbreviations and the Bluebook abbreviation rules | citation-phoenix (fork of Michael Risch's plugin) |
+| **translators** | Web translators for Westlaw, Lexis+, Cornell LII, Federal Register, Bloomberg Law dockets and LegiScan bills | zotero-legal-translators |
+| **hicite** | Pinned citation keys, hicite export and auto-export, collection and item menus, Settings pane | zotero-hicite |
+
+Plugin ID `lawcite@zotero.local`. Requires Zotero 8.999 or later (the menu API hicite uses first appears in Zotero 9).
+
+## Installing
+
+lawcite replaces `citation-phoenix@michaelrisch.com`, `zotero-legal-translators@zotero.local` and
+`hicite-export@zotero.local`. Running them together would patch Zotero twice and install duplicate
+translators, so lawcite checks at startup: if any of the three is still enabled it starts nothing and
+shows a message naming them. Disable or remove them under Tools > Plugins, then restart Zotero.
+
+Your data is untouched: the legal fields, `Extra` data, citation keys and auto-export jobs are stored
+in the library and in the same preferences the standalone plugins used.
+
+## Layout
+
+```
+bootstrap.js        starts and stops the three parts; refuses to run beside the old plugins
+manifest.json       plugin ID, version, Zotero range
+build.py            builds dist/lawcite-<version>.xpi
+test/               bootstrap tests and run-all.sh
+modules/phoenix/    citation-phoenix (lib/ is bundled by esbuild into content/citation-phoenix.js)
+modules/translators/  src/ + build.py -> translators/*.js, tests, fixtures
+modules/hicite/     addon/ (hicite-export.js, translator, Settings pane), tests, tools
+```
+
+Each module keeps its own README (`README-*.md`) and tests, and still builds on its own. The module
+READMEs describe the standalone plugins and may mention their old install steps.
+
+## Building
+
+```sh
+ESBUILD=/path/to/esbuild python3 build.py     # or put esbuild on PATH
+sh test/run-all.sh
+```
+
+`build.py` assembles the translators, bundles citation-phoenix, generates the
+`locale/<lang>/citation-phoenix.ftl` files, stages the three parts into one tree and writes
+`dist/lawcite-<version>.xpi`, then verifies it. Without esbuild it uses the committed bundle
+and warns. The locale files are required in the xpi: without them Zotero's menu localization fails and
+the item right-click menu does not open.
+
+Tests need only macOS (JavaScriptCore and osascript) and Python 3.
+
+## Attribution and licensing
+
+See [NOTICE.md](NOTICE.md). In short: lawcite's own code, hicite and the translators are MIT
+(Jeremy Sheff); the citation-phoenix code is used under a license grant from Michael Risch to Jeremy
+Sheff, and the bundled Juris-M data keeps its own MIT and CC0 terms.

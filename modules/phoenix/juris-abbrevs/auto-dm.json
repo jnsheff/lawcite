@@ -1,0 +1,12 @@
+{
+  "filename": "auto-dm.json",
+  "name": "Commonwealth of Dominica",
+  "version": "2026-07-22 20:44:52 UTC",
+  "xdata": {
+    "default": {
+      "place": {
+        "DM": "Commonwealth of Dominica"
+      }
+    }
+  }
+}

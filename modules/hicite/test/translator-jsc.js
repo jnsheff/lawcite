@@ -1,0 +1,300 @@
+// Assertions about what the export translator emits (rules learned from a real hand-coded
+// hicite file), including that each setting switches its rule off.
+load('test/run.js');
+var src = read('addon/translator/hicite.js'), items = JSON.parse(read('test/sample-items.json')), errors = [];
+function eq(a, b, m) { if (JSON.stringify(a) !== JSON.stringify(b)) errors.push(m + ': got ' + JSON.stringify(a) + ' want ' + JSON.stringify(b)); }
+function has(s, sub, m) { if (String(s).indexOf(sub) < 0) errors.push(m + ': missing ' + JSON.stringify(sub)); }
+function hasNot(s, sub, m) { if (String(s).indexOf(sub) >= 0) errors.push(m + ': unexpected ' + JSON.stringify(sub)); }
+function run(settings, opts, subset) { return runTranslator(src, subset || items, opts || {}, settings || {}); }
+function entry(out, key) { var m = new RegExp('\\\\def[a-z]+\\{' + key + '\\}\\{[\\s\\S]*?\\n\\}\\n').exec(out); return m ? m[0] : ''; }
+function one(pred, settings) { return run(settings, {}, items.filter(pred)); }
+var out = run();
+
+// preprints -> workingpaper
+var e = entry(out, 'vaswani2023');
+has(e, '\\defworkingpaper{vaswani2023}', 'preprint is a workingpaper'); has(e, 'number={1706.03762}', 'number = Archive ID without "arXiv:"'); has(e, 'publisher={arXiv}', 'publisher = repository');
+has(e, 'date={aug 2 2023}', 'full date'); has(e, 'url={http://arxiv.org/abs/1706.03762}', 'preprint keeps its URL'); has(e, 'inline={Attention}', 'Short Title -> inline');
+has(entry(out, 'author2019'), 'number={1909.01285}', 'arXiv id taken from the URL (version stripped)');
+has(entry(out, 'bednar2026'), 'number={6525800}', 'SSRN id taken from the URL');
+has(entry(out, 'wen2020'), '\\defwebsite{wen2020}', 'preprint with no identifier falls back to a web page');
+
+// conference paper / encyclopedia / book section -> citecontainer with an inline container
+e = entry(out, 'brants2007');
+has(e, '\\defcitecontainer{brants2007}', 'conference paper is a citecontainer'); has(e, 'in=book: {', 'inline container reference'); has(e, 'title={Proceedings of EMNLP-CoNLL}', 'container title = proceedings');
+has(e, 'editor={Jason {Eisner}}', 'editors go in the container'); has(e, 'year={2007}', 'year on the paper'); hasNot(e, 'url=', 'URL dropped when the paper has pages');
+has(entry(out, 'talk2001'), 'url={http://proceedings.mlr.press/r3/x.html}', 'URL kept when there are no pages');
+e = entry(out, 'graham2023'); has(e, 'year={2023}', 'encyclopedia year in the container'); eq(/\n    year=/.test(e), false, 'no year on the encyclopedia article itself');
+hasNot(out, '-book}', 'no separate "-book" definitions any more');
+
+// people vs institutions among single-field names
+has(entry(out, 'haigh2024'), 'author={Thomas {Haigh}}', 'single-field person parsed as a person'); has(entry(out, 'openai2024'), 'instauth={OpenAI}', 'single word = institution');
+has(entry(out, 'anthropicpbc2025'), 'instauth={Anthropic PBC}', 'PBC = institution'); has(entry(out, 'centerforaisafety2023'), 'instauth={Center for AI Safety}', 'institution words');
+e = entry(out, 'vanmerrienboer2018'); has(e, 'author={Bart {van Merrienboer}}', 'particle joins the family name'); has(e, 'author={Dean {Edmonds {Jr.}}}', 'suffix kept with the family name');
+
+// website title omitted when it repeats the author
+hasNot(entry(out, 'openai2024'), 'journal=', 'site title equal to the author is omitted'); hasNot(entry(out, 'anthropicpbc2025'), 'journal=', 'site title contained in the author is omitted');
+has(entry(out, 'centerforaisafety2023'), 'journal={Something Else}', 'a different site title is kept'); has(entry(out, 'haigh2024'), 'journal={Communications of the ACM}', 'site title kept');
+
+// URL rules
+has(entry(out, 'line2024'), 'url=', 'journal article without volume/pages keeps its URL'); hasNot(entry(out, 'er2001'), 'url=', 'journal article with volume and pages drops it');
+
+// cases
+e = entry(out, 'grokster'); has(e, 'p={Metro-Goldwyn-Mayer Studios Inc.}', 'first party'); has(e, 'd={Grokster, Ltd.}', 'second party'); has(e, 'inline={Grokster}', 'Short Title -> inline'); hasNot(e, 'court=', 'no court for U.S. Reports');
+has(entry(out, 'garcia'), 'd={Character Technologies Inc.}', '"v" without a period splits too'); hasNot(entry(out, 'garcia'), 'url=', 'case with a reporter has no URL');
+hasNot(entry(out, 'doe'), 'url=', 'a case, even one without a reporter, has no URL'); has(entry(out, 'doe'), 'docket={24-7700}', 'docket');
+has(entry(out, 'inrenimitztechnologies'), 'name={In re Nimitz Technologies LLC}', 'no " v. ": a single name');
+
+// a typed court the reporter already identifies is left out; Westlaw and Lexis cites are dated in full (Bluebook)
+e = entry(out, 'warholus'); hasNot(e, 'court=', 'court "U.S." omitted with a U.S. Reports cite'); has(e, 'year={2023}', 'a reported case is dated by its year');
+hasNot(entry(out, 'boomerny'), 'court=', 'court "N.Y." omitted with N.Y.2d'); has(entry(out, 'guild2d'), 'court={2d Cir.}', 'a circuit court is kept');
+e = entry(out, 'rossintel'); has(e, 'court={D. Del.}', 'court kept with a WL cite'); has(e, 'rep={WL}', 'WL reporter'); has(e, 'year={feb 11 2025}', 'a WL cite is dated in full');
+e = entry(out, 'doelexis'); has(e, 'year={jan 5 2023}', 'a LEXIS cite is dated in full'); has(e, 'court={S.D.N.Y.}', 'court kept with a LEXIS cite');
+// settings switch each rule off
+has(one(function (i) { return i.title === 'Attention Is All You Need'; }, { shortTitleInline: false }), 'title={Attention Is All You Need}', 'sanity');
+hasNot(one(function (i) { return i.title === 'Attention Is All You Need'; }, { shortTitleInline: false }), 'inline=', 'shortTitleInline off');
+hasNot(one(function (i) { return i.title === 'Attention Is All You Need'; }, { includeUrls: false }), 'url=', 'includeUrls off');
+has(one(function (i) { return i.title === 'Memory and New Controls'; }, { omitRedundantSite: false }), 'journal={OpenAI}', 'omitRedundantSite off keeps the site title');
+
+// keys: Better BibTeX's (auth.lower + shorttitle(3,3) + year), with first-party keys for cases and Short Title /
+// first-word keys for statutes, bills and hearings -- see keyFor() in the translator
+function keyOf(item, settings) { var m = /\\def[a-z]+\{([^}]*)\}\{/.exec(run(settings, {}, [item])); return m && m[1]; }
+function person1(f, l) { return { creatorType: 'author', firstName: f, lastName: l }; }
+function inst1(n) { return { creatorType: 'author', name: n, fieldMode: 1, lastName: n, firstName: '' }; }
+eq(keyOf({ itemType: 'journalArticle', title: 'Fair Use as Market Failure: A Structural and Economic Analysis of the "Betamax" Case', publicationTitle: 'J', date: '1982', creators: [person1('Wendy J.', 'Gordon')] }), 'gordonFairUseMarket1982', 'author + three title words (skip words dropped, capitalized) + year');
+eq(keyOf({ itemType: 'webpage', title: 'Introducing ChatGPT', date: '2022-11-30', creators: [inst1('OpenAI')] }), 'openaiIntroducingChatGPT2022', 'a one-field name is used whole, lower-cased');
+eq(keyOf({ itemType: 'webpage', title: 'Behaviorism', date: '2000', creators: [inst1('Stanford Encyclopedia of Philosophy')] }), 'stanfordencyclopediaofphilosophyBehaviorism2000', 'whole one-field names, spaces dropped');
+eq(keyOf({ itemType: 'book', title: 'A Theory of the Case', date: '2001', creators: [person1('Bart', 'van Merrienboer')] }), 'vanmerrienboerTheoryCase2001', 'last name with its particle; "a", "of", "the" skipped');
+eq(keyOf({ itemType: 'journalArticle', title: 'Über formal unentscheidbare Sätze', publicationTitle: 'M', date: '1931', creators: [person1('Kurt', 'Gödel')] }), 'godelUberFormalUnentscheidbare1931', 'accents folded');
+eq(keyOf({ itemType: 'book', title: 'The Law of the Horse', date: '1996', creators: [{ creatorType: 'editor', firstName: 'Ann', lastName: 'Editor' }] }), 'editorLawHorse1996', 'no author: the editor');
+eq(keyOf({ itemType: 'book', title: '2001: A Space Odyssey', date: '1968', creators: [] }), 'ref2001SpaceOdyssey1968', 'a key starting with a digit gets "ref" (hicite would read it as a volume)');
+eq(keyOf({ itemType: 'book', title: 'Tiny', creators: [person1('A', 'B')] }), 'bTiny', 'no date: no year');
+eq(keyOf({ itemType: 'case', caseName: 'Metro-Goldwyn-Mayer Studios Inc. v. Grokster, Ltd.', dateDecided: '2005-06-27', creators: [] }), 'metrogoldwynmayerstudios2005', 'case: first party, no company suffix, no punctuation, + year');
+eq(keyOf({ itemType: 'case', caseName: 'Garcia v Character Technologies Inc.', dateDecided: '2025', creators: [] }), 'garcia2025', '"v" without a period splits too');
+eq(keyOf({ itemType: 'case', caseName: 'Cox Communications, Inc. v. Sony Music Entertainment', dateDecided: '2026', creators: [] }), 'coxcommunications2026', '", Inc." dropped');
+eq(keyOf({ itemType: 'case', caseName: 'In re Smith', dateDecided: '2013-05-01', creators: [] }), 'inresmith2013', 'no "v": the whole name');
+eq(keyOf({ itemType: 'case', caseName: 'Complaint: Carrier v. OpenAI Foundation', dateDecided: '2026-06-11', creators: [] }), 'carrier2026', 'a court paper is keyed by its case');
+eq(keyOf({ itemType: 'case', caseName: 'Order Granting Final Approval of Class Action Settlement, Bartz v. Anthropic PBC', dateDecided: '2026', creators: [] }), 'bartz2026', 'a court paper with a long name');
+eq(keyOf({ itemType: 'statute', nameOfAct: 'Ensuring Likeness, Voice, and Image Security Act', shortTitle: 'ELVIS Act', dateEnacted: '2024', creators: [] }), 'elvisact2024', 'statute: the Short Title');
+eq(keyOf({ itemType: 'statute', nameOfAct: 'Communications Decency Act', creators: [] }), 'communications', 'statute without a Short Title: the first word of the title');
+eq(keyOf({ itemType: 'bill', title: 'The NO FAKES Act of 2025', date: '2025-04-09', creators: [{ creatorType: 'sponsor', firstName: 'C', lastName: 'Coons' }] }), 'no2025', 'bill: first significant word of the title (not the sponsor)');
+eq(keyOf({ itemType: 'hearing', title: 'Oversight of A.I.', shortTitle: 'AI Oversight', date: '2023', creators: [] }), 'aioversight2023', 'hearing: the Short Title');
+eq(keyOf({ itemType: 'webpage', url: 'https://x.org/a', creators: [] }), 'ref', 'nothing to go on but a URL');
+
+// a key the item already has: a "Citation Key:" line in Extra (the old way, moved into the field by the add-on) wins over
+// the Citation Key field; the field is used when there is no line; an unusable one is replaced by a generated key
+var withNative = { itemType: 'book', title: 'A Book', creators: [person1('Ann', 'Writer')], date: '2020', citationKey: 'thomashaigh2020' };
+eq(keyOf(withNative), 'thomashaigh2020', 'the Citation Key field is used');
+eq(keyOf(Object.assign({}, withNative, { citationKey: '2020' })), 'writerBook2020', 'an unusable field key ("2020") is replaced by a generated one');
+eq(keyOf(Object.assign({}, withNative, { citationKey: 'has_underscore' })), 'writerBook2020', 'so is one with characters hicite cannot use');
+eq(keyOf(Object.assign({}, withNative, { extra: 'Citation Key: pinned1' })), 'pinned1', 'an Extra line wins over the field');
+eq(keyOf(Object.assign({}, withNative, { extra: 'Citation Key: 2018' })), 'thomashaigh2020', 'an unusable Extra line is ignored');
+var twice = run({}, {}, [mk({ itemType: 'book', title: 'Same', date: '2000', creators: [person1('A', 'Same')], extra: 'Citation Key: Dup1' }), mk({ itemType: 'book', title: 'Other', date: '2001', creators: [], extra: 'Citation Key: dup1' }), mk({ itemType: 'book', title: 'Dup One', date: '2002', creators: [person1('A', 'Dup')] })]);
+has(twice, '\\defbook{Dup1}', 'first of two keys that differ only in case is kept'); has(twice, '\\defbook{dup1a}', 'the second is disambiguated (keys are compared case-insensitively, as Better BibTeX does)');
+has(run({}, {}, [mk({ itemType: 'book', title: 'Same Title', date: '2000', creators: [person1('A', 'Same')] }), mk({ itemType: 'book', title: 'Same Title', date: '2000', creators: [person1('B', 'Same')] })]), '\\defbook{sameSameTitle2000a}', 'generated duplicates get a, b, ...');
+
+// publisher option still works
+has(run({}, { 'Include publisher': true }, items.filter(function (i) { return i.title === 'Nimmer on Copyright & Related Things'; })), 'publisher={LexisNexis}', 'Include publisher');
+
+// author cap
+var many = function (t) { return items.filter(function (i) { return i.title === t; }); };
+var e6 = entry(run({}, {}, many('Many authors')), 'alpha2020');
+eq((e6.match(/    author=/g) || []).length, 6, 'default lists every author'); hasNot(e6, 'et al.', 'no "et al." by default');
+var c3 = entry(run({ maxAuthors: '3' }, {}, many('Many authors')), 'alpha2020');
+eq((c3.match(/    author=/g) || []).length, 3, 'cap 3 lists three authors'); has(c3, 'author={Cy {Gamma} et al.},', 'the last listed author gets " et al."'); hasNot(c3, 'Delta', 'the rest are left out');
+var c1 = entry(run({ maxAuthors: '1' }, {}, many('Many authors')), 'alpha2020'); has(c1, 'author={Ada {Alpha} et al.},', 'cap 1 = first author et al.');
+hasNot(entry(run({ maxAuthors: '3' }, {}, many('Two authors only')), 'one2019'), 'et al.', 'fewer authors than the cap: no "et al."');
+has(entry(run({ maxAuthors: '2' }, {}, many('Institutional authors')), 'alphacommittee2020'), 'instauth={Beta Office et al.},', 'institutions get "et al." appended to the name');
+var ed = entry(run({ maxAuthors: '1' }, {}, many('An edited volume')), 'writer2018'); eq((ed.match(/    editor=/g) || []).length, 4, 'editors are never capped'); hasNot(ed, 'et al.', 'a single author is not shortened');
+has(entry(run({ maxAuthors: 'banana' }, {}, many('Many authors')), 'alpha2020'), 'author={Flo {Zeta}},', 'an invalid cap means "all"');
+var pre = items.filter(function (i) { return i.title === 'Attention Is All You Need'; });
+has(run({ maxAuthors: '1' }, {}, pre), 'author={Ashish {Vaswani} et al.}', 'the cap applies to preprints too'); hasNot(run({ maxAuthors: '2' }, {}, pre), 'et al.', 'exactly as many authors as the cap: no "et al."');
+
+// name forms
+e = entry(out, 'dzieza2021');
+has(e, 'author={Josh {Dzieza}}', '"Last, First" read as inverted'); has(e, 'author={Thomas E. {Hill {Jr.}}}', '"Name, Jr." keeps the suffix'); has(e, 'author={Ruairi {Robinson}}', '[@handle] dropped');
+has(e, 'author={Meredith Filak {Rose}}', 'trailing ";" dropped, multi-word given name');
+has(entry(out, 'universityofcaliforniasandiego2022'), 'instauth={University of California, San Diego}', 'an institution with a comma stays an institution');
+
+// translators (hicite files them under "editor", labelled with edtype)
+e = entry(out, 'barthes1977');
+has(e, 'editor={Stephen {Heath}},', 'translator listed in the container'); has(e, 'edtype={trans.},', 'labelled "trans."'); hasNot(e, 'paren=', 'no parenthetical needed');
+e = entry(out, 'chekhov1977'); has(e, 'editor={Eugene K. {Bristow}},', 'editor who also translated: listed once'); has(e, 'edtype={ed. \\& trans.},', 'labelled "ed. & trans."'); eq((e.match(/editor=/g) || []).length, 1, 'the same person is not listed twice');
+e = entry(out, 'author2001'); eq((e.match(/    editor=/g) || []).length, 2, 'two editors, listed once each'); has(e, 'edtype={eds. \\& trans.},', 'plural label when several edited and translated');
+e = entry(out, 'writer1999'); has(e, 'editor={Ed {One}},', 'the editor'); has(e, 'paren={Tom Trans \\& Sue Two trans.},', 'a different translator goes in a parenthetical'); hasNot(e, 'edtype=', 'no role label needed');
+e = entry(out, 'scribe1990'); has(e, 'editor={Tom {Trans}},', 'translator of a book'); has(e, 'edtype={trans.},', 'labelled "trans." in a book');
+e = entry(out, 'composer1995'); has(e, 'editor={Ed {Reviser}},', 'editor of a book'); has(e, 'paren={Tom Renderer trans.},', 'a book\'s different translator in a parenthetical');
+e = entry(out, 'brants2007'); hasNot(e, 'edtype=', 'editors alone need no label'); hasNot(e, 'paren=', 'and no parenthetical');
+e = entry(run({ maxAuthors: '1' }, {}, items.filter(function (i) { return i.title === 'Editor and different translators'; })), 'writer1999'); has(e, 'Sue Two trans.', 'the author cap does not shorten translators');
+
+
+// ---- rules learned from migrating a hand-coded hicite file (ai-refs.tex) to the generated library
+function mk(o) { o.creators = o.creators || []; return o; }
+function person(f, l, t) { return { creatorType: t || 'author', firstName: f, lastName: l }; }
+function gen(item, settings, opts) { return run(settings, opts, [mk(item)]); }
+
+// accents become TeX macros (hicite builds control sequences from journal names, institutions, case names)
+e = gen({ itemType: 'journalArticle', title: 'Über formal unentscheidbare Sätze der Principia Mathematica und verwandter Systeme I', publicationTitle: 'Monatshefte für Mathematik und Physik',
+	volume: '38', pages: '173-198', date: '1931', creators: [person('Kurt', 'Gödel')], extra: 'Citation Key: godel1931' });
+has(e, 'rep={Monatshefte f{\\"u}r Mathematik und Physik}', 'accented journal name as a TeX macro'); has(e, 'author={Kurt {G{\\"o}del}}', 'accented author as a TeX macro');
+has(e, 'title={{\\"U}ber formal unentscheidbare', 'a German title is not given English title case');
+has(gen({ itemType: 'case', caseName: 'In re Théâtre D’opéra Spatial', extra: 'Citation Key: theatre' }), 'name={In re Th{\\\'e}{\\^a}tre D\'op{\\\'e}ra Spatial}', 'accents and curly apostrophe in a case name');
+has(gen({ itemType: 'book', title: 'It’s “quoted” — a dash', date: '2000', extra: 'Citation Key: q' }), "title={It's ``Quoted'' --- A Dash}", 'curly quotes and dashes become TeX ligatures');
+e = gen({ itemType: 'conferencePaper', title: 'Stochastic Parrots 🦜', proceedingsTitle: 'Proc.', date: '2021', extra: 'Citation Key: parrots' });
+has(e, 'name={Stochastic Parrots},', 'emoji dropped, no trailing space');
+
+// three or more names carry "noetal" (hicite warns without it); fewer do not
+e = entry(run({}, {}, many('Many authors')), 'alpha2020'); has(e, '    noetal,', 'noetal with 3+ authors');
+hasNot(entry(run({}, {}, many('Two authors only')), 'one2019'), 'noetal', 'no noetal with two authors');
+
+// Bluebook title case; mixed-case words and an already title-cased title are left alone
+function title(t, settings) { var m = /title=\{([^}]*(?:\{[^}]*\}[^}]*)*)\},/.exec(gen({ itemType: 'book', title: t, date: '2000', extra: 'Citation Key: t' }, settings)); return m ? m[1] : ''; }
+eq(title('Finding structure in time'), 'Finding Structure in Time', 'sentence case becomes title case');
+eq(title('Learning long-term dependencies with gradient descent is difficult'), 'Learning Long-Term Dependencies with Gradient Descent Is Difficult', 'hyphenated words, "is" capitalized');
+eq(title('Why do humans reason? arguments for an argumentative theory'), 'Why Do Humans Reason? Arguments for an Argumentative Theory', 'first word after a question mark');
+eq(title('The iPhone and arXiv: a GPT-4 study'), 'The iPhone and arXiv: A GPT-4 Study', 'mixed-case words and the word after a colon');
+eq(title('LAWBREAKING AS A METHOD OF COMPETITION'), 'Lawbreaking as a Method of Competition', 'all capitals');
+eq(title('Attention Is All You Need'), 'Attention Is All You Need', 'already title case');
+eq(title('Finding structure in time', { titleCase: false }), 'Finding structure in time', 'titleCase off');
+has(gen({ itemType: 'journalArticle', title: 'T', publicationTitle: 'the bulletin of mathematical biophysics', volume: '5', pages: '115', date: '1943', extra: 'Citation Key: b' }), 'rep={The Bulletin of Mathematical Biophysics}', 'journal names get title case too');
+
+// court papers are \defcasedoc; a reported case is dated by its year alone; a slip opinion gets "slip"
+e = gen({ itemType: 'case', caseName: 'Complaint: Carrier v. OpenAI Foundation', docketNumber: 'CGC26637791', court: 'Cal.', dateDecided: '2026-06-11', extra: 'Citation Key: carrier' });
+has(e, '\\defcasedoc{carrier}', 'a complaint is a casedoc'); has(e, 'citation=case: {', 'with the case as an anonymous reference'); has(e, 'p={Carrier},', 'parties'); has(e, 'name={Complaint},', 'document name'); has(e, 'year={jun 11 2026},', 'document date');
+e = gen({ itemType: 'case', caseName: 'Order Granting Final Approval of Class Action Settlement, Bartz v. Anthropic PBC', docketNumber: '24-cv-05417', court: 'N.D. Cal.', dateDecided: '2026-07-20', extra: 'Citation Key: bartzorder' });
+has(e, 'name={Order Granting Final Approval of Class Action Settlement},', 'the paper name is everything before the comma'); has(e, 'd={Anthropic PBC},', 'party');
+e = gen({ itemType: 'case', caseName: 'Apple, Inc. v. Liu', shortTitle: 'Complaint', docketNumber: '26-cv-07078', court: 'N.D. Cal.', extra: 'Citation Key: liu' });
+has(e, '\\defcasedoc{liu}', 'Short Title "Complaint" makes a casedoc'); hasNot(e, 'inline=', 'and is not also the short form');
+has(gen({ itemType: 'case', caseName: 'Order of Railroad Telegraphers v. Railway Express Agency', reporterVolume: '321', reporter: 'U.S.', firstPage: '342', dateDecided: '1944-01-01', extra: 'Citation Key: ort' }), '\\defcase{ort}', 'a case that merely starts with "Order" is still a case');
+e = gen({ itemType: 'case', caseName: 'Metro-Goldwyn-Mayer Studios Inc. v. Grokster, Ltd.', reporterVolume: '545', reporter: 'U.S.', firstPage: '913', dateDecided: '2005-06-27', extra: 'Citation Key: g' });
+has(e, 'year={2005},', 'a reported case is dated by year only');
+e = gen({ itemType: 'case', caseName: 'Thompson v. Ross', reporter: 'Slip Op.', docketNumber: '25-2153', court: '3d Cir.', dateDecided: '2026-09-29', extra: 'Citation Key: slip' });
+has(e, '    slip,', 'slip opinion flag'); hasNot(e, 'rep=', 'no reporter for a slip opinion'); has(e, 'year={sep 29 2026},', 'a slip opinion keeps its full date');
+has(gen({ itemType: 'case', caseName: 'Doe v. Github', docketNumber: '24-7700', court: '9th Cir.', dateDecided: '2026-09-16', extra: 'Citation Key: doe2' }), 'year={sep 16 2026},', 'an unreported case keeps its full date');
+
+// bills need a Congress: Session, else the URL / text, else the date
+has(gen({ itemType: 'bill', title: 'NO FAKES Act', billNumber: 'S.1367', date: '2025-04-09', url: 'https://www.congress.gov/bill/119th-congress/senate-bill/1367/text', extra: 'Citation Key: nf' }), 'congress={119},', 'Congress from the URL');
+has(gen({ itemType: 'bill', title: 'A Bill', billNumber: 'H.R. 1', date: '2021-03-01', extra: 'Citation Key: hr1' }), 'congress={117},', 'Congress from the date');
+has(gen({ itemType: 'bill', title: 'A Bill', billNumber: 'H.R. 1', session: '116', date: '2021-03-01', extra: 'Citation Key: hr2' }), 'congress={116},', 'the Session field wins');
+has(gen({ itemType: 'bill', title: 'A Bill', billNumber: 'H.R. 1', extra: 'Citation Key: hr3' }), '\\defwebsite{hr3}', 'no way to tell the Congress: a web page');
+
+// journal articles hicite cannot cite as articles
+e = gen({ itemType: 'journalArticle', title: 'Improving Language Understanding by Generative Pre-Training', creators: [person('Alec', 'Radford')], extra: 'Citation Key: radford' });
+has(e, '\\defwebsite{radford}', 'no publication title: a web page'); has(e, '% hicite: journal article with no publication title', 'with a note');
+has(gen({ itemType: 'journalArticle', title: 'A Blog Post', publicationTitle: 'Lawfare', url: 'https://x.org/a', date: '2025-01-28', extra: 'Citation Key: lf' }), '\\defwebsite{lf}', 'web article without volume or pages');
+has(gen({ itemType: 'journalArticle', title: 'Coming Soon', publicationTitle: 'Yale Law Journal', url: 'https://x.org/a', date: '2026', extra: 'Status: forthcoming\nCitation Key: ylj' }), 'page={forthcoming}', 'forthcoming article stays an article');
+
+
+// a very long author list is cut to the first two names and "et al." unless the setting says never
+var longList = { itemType: 'preprint', title: 'A Paper With Many Authors', archiveID: 'arXiv:1234.56789', date: '2020', extra: 'Citation Key: lots', creators: [] };
+'ABCDEFGHIJ'.split('').forEach(function (c) { longList.creators.push(person('F' + c, 'L' + c)); });
+e = gen(longList);
+eq((e.match(/    author=/g) || []).length, 2, 'ten authors: two listed by default'); has(e, 'author={FB {LB} et al.},', 'the second gets "et al."'); hasNot(e, 'noetal', 'no noetal for a shortened list of two');
+eq((gen(longList, { longLists: '0' }).match(/    author=/g) || []).length, 10, 'longLists 0 = never shorten');
+eq((gen(longList, { longLists: '10' }).match(/    author=/g) || []).length, 10, 'a list no longer than the limit is kept whole');
+eq((gen(longList, { maxAuthors: '4' }).match(/    author=/g) || []).length, 4, 'an explicit cap wins');
+
+
+// <i> in a title or in an Extra value becomes \emph; never in names or journal names
+e = gen({ itemType: 'journalArticle', title: 'Review of <i>Verbal Behavior</i> &amp; More', publicationTitle: 'Journal of <i>X</i>', volume: '1', pages: '2', date: '1959', creators: [person('N', 'Chomsky')], extra: 'hicite-hereinafter: Chomsky, Review of <i>Verbal Behavior</i>\nCitation Key: ital' });
+has(e, 'title={Review of \\emph{Verbal Behavior} \\& More},', 'italics in a title'); has(e, 'rep={Journal of X},', 'no markup in a journal name'); has(e, 'hereinafter={Chomsky, Review of \\emph{Verbal Behavior}},', 'italics in an Extra parameter');
+has(gen({ itemType: 'book', title: 'A <b>bold</b> <span class="x">word</span>', date: '2000', extra: 'Citation Key: tags' }), 'title={A Bold Word},', 'other tags are dropped');
+
+
+// presentations are hicite speeches
+e = gen({ itemType: 'presentation', title: 'History of Natural Language Processing', place: 'Stanford University', date: '2020-01-05', url: 'https://x.org/s', creators: [person('Christopher', 'Manning', 'presenter')], extra: 'Citation Key: talk' });
+has(e, '\\defspeech{talk}', 'presentation is a speech'); has(e, 'author={Christopher {Manning}},', 'presenter as author'); has(e, 'type={Presentation},', 'default type'); has(e, 'place={Stanford University},', 'place'); has(e, 'name={History of Natural Language Processing},', 'title'); has(e, 'year={jan 5 2020},', 'date');
+
+has(gen({ itemType: 'statute', nameOfAct: 'Some Act', publicLawNumber: '116-283', codeNumber: '134', code: 'Stat.', pages: '4523', dateEnacted: '2021-01-01', extra: 'hicite-doctype: statsess\nCitation Key: sess' }), 'year={jan 1 2021},', 'a session law is dated in hicite syntax');
+
+// letters
+e = gen({ itemType: 'letter', title: 'Re: Zarya of the Dawn', date: '2023-02-21', creators: [{ creatorType: 'author', name: 'United States Copyright Office', fieldMode: 1, lastName: 'United States Copyright Office' }, { creatorType: 'recipient', firstName: 'Van', lastName: 'Lindberg' }], extra: 'Citation Key: zarya' });
+has(e, '\\defletter{zarya}', 'letter with a sender and recipient'); has(e, 'instauth={United States Copyright Office}', 'institutional sender'); has(e, 'to={Van Lindberg}', 'recipient');
+has(gen({ itemType: 'letter', title: 'Anonymous', extra: 'Citation Key: anon' }), '\\defmanuscript{anon}', 'a letter with no sender or recipient stays a manuscript');
+
+// Federal Register entries filed as statutes; the Constitution
+e = gen({ itemType: 'statute', nameOfAct: 'Executive Order No. 14110 of Oct. 30, 2023: Safe, Secure, and Trustworthy Development and Use of Artificial Intelligence', code: 'Federal Register', codeNumber: '88', pages: '75191', dateEnacted: '2023-11-01', extra: 'Citation Key: eo' });
+has(e, '\\defgovdoc{eo}', 'executive order is a govdoc'); has(e, 'number={Exec. Order No. 14110},', 'order number'); has(e, 'name={Safe, Secure, and Trustworthy Development and Use of Artificial Intelligence},', 'name without the order number'); has(e, 'rep={Fed. Reg.},', 'reporter'); has(e, 'vol={88},', 'volume'); has(e, 'page={75191},', 'page');
+has(gen({ itemType: 'statute', nameOfAct: 'U.S. Const. Art. I, §8, cl. 8', extra: 'Citation Key: c1' }), 'page={article I, S 8, clause 8},', 'constitutional provision');
+has(gen({ itemType: 'statute', nameOfAct: 'U.S. Const. amend. XIV', extra: 'Citation Key: c2' }), 'number={14},', 'amendment number from Roman numerals');
+has(gen({ itemType: 'statute', nameOfAct: 'Subject matter of copyright: In general', code: 'U.S.C.', codeNumber: '17', section: '102', url: 'https://x.org/s', extra: 'Citation Key: s102' }), '\\defstatcode{s102}{17 U.S.C. S 102}', 'a bare section is hicite\'s one-line form');
+// hicite reads a plain hyphen in a section number as a range ("S 50-f" prints "\u00a7\u00a7 50\u2013f"); the hyphen is written as "\-"
+has(gen({ itemType: 'statute', nameOfAct: 'Right of publicity', code: 'N.Y. Civ. Rights Law', section: '50-f', extra: 'Citation Key: pub1' }), '{N.Y. Civ. Rights Law S 50\\-f}', 'a hyphenated section, one-line form');
+has(gen({ itemType: 'statute', nameOfAct: 'Right of Publicity Act', code: 'N.Y. Civ. Rights Law', section: '50\\-f', extra: 'Citation Key: pub2' }), 'page={S 50\\-f},', 'citation-phoenix\'s own "\\-" is kept, not turned into a backslash');
+has(gen({ itemType: 'statute', nameOfAct: 'Part Definitions Act', code: 'Tenn. Code Ann.', section: '47-25-1102', extra: 'Citation Key: pub3' }), 'page={S 47\\-25\\-1102},', 'every hyphen of a multi-hyphen section');
+has(gen({ itemType: 'statute', nameOfAct: 'Protection of Lawful Commerce in Arms Act', code: 'U.S.C.', codeNumber: '15', section: '7901-7903', extra: 'Citation Key: rng1' }), 'page={S 7901-7903},', 'two numbers of the same length are a range');
+has(gen({ itemType: 'statute', nameOfAct: 'Certification Act', code: 'C.F.R.', codeNumber: '14', section: '61.1-61.429', extra: 'Citation Key: rng2' }), 'page={S 61.1-61.429},', 'a range of decimal sections');
+has(gen({ itemType: 'statute', nameOfAct: 'Arizona Act', code: 'Ariz. Rev. Stat.', section: '12-101', extra: 'Citation Key: rng3' }), 'page={S 12\\-101},', 'numbers of different lengths are one hyphenated section');
+has(gen({ itemType: 'statute', nameOfAct: 'Drug Act', code: 'U.S.C.', codeNumber: '21', section: '351-360fff\u20138', extra: 'Citation Key: rng4' }), 'page={S 351-360fff', 'a section with a dash is a range');
+has(gen({ itemType: 'statute', nameOfAct: 'Sections Act', code: 'U.S.C.', codeNumber: '17', section: '\u00a7\u00a7 101-103', extra: 'Citation Key: pub4' }), 'page={\u00a7\u00a7 101-103},', 'an explicit range of sections keeps its hyphen');
+has(gen({ itemType: 'statute', nameOfAct: 'Purpose', code: 'C.F.R.', codeNumber: '45', section: '73.735\u2013101', extra: 'Citation Key: pub5' }), '73.735', 'an en dash passes through');
+// session laws (what the Westlaw and Lexis web translators save: code "Stat.", volume, first page in the section) and chapter codes
+e = gen({ itemType: 'statute', nameOfAct: 'Leahy-Smith America Invents Act', code: 'Stat.', codeNumber: '125', section: '284', publicLawNumber: '112-29', session: '112', dateEnacted: 'September 16, 2011', extra: 'Citation Key: aia' });
+has(e, '\\defstatsess{aia}', 'a Stat. item with a public law number is a session law'); has(e, 'number={112-29},', 'public law number'); has(e, 'vol={125},', 'volume'); has(e, 'page={284},', 'the page, from the section');
+has(gen({ itemType: 'statute', nameOfAct: 'Old Act', code: 'Stat.', codeNumber: '16', section: 'ch. 230', extra: 'Citation Key: old' }), '\\defstatcode{old}', 'a Stat. item without a public law number stays a statcode');
+has(gen({ itemType: 'statute', nameOfAct: 'Inapplicability of certain sections to cities', code: 'Mass. Gen. Laws', codeNumber: '78', section: '21', extra: 'Citation Key: ma1' }), '{Mass. Gen. Laws ch. 78, S 21}', 'a Massachusetts section is cited by chapter');
+e = gen({ itemType: 'statute', nameOfAct: 'Public Library Act', code: 'Mass. Gen. Laws', codeNumber: '78', section: '21', extra: 'Citation Key: ma2' });
+has(e, 'rep={Mass. Gen. Laws ch. 78},', 'chapter in the code, keyword form'); hasNot(e, 'vol=', 'and no volume');
+// pre-1957 acts have no public law number: a government document, "36 Stat. 557"
+e = gen({ itemType: 'statute', nameOfAct: 'An Act To enable the people of New Mexico to form a constitution', code: 'Stat.', codeNumber: '36', pages: '557-579', dateEnacted: 'June 20, 1910', extra: 'Citation Key: nm1910' });
+has(e, '\\defgovdoc{nm1910}', 'a Stat. item with no public law number is a govdoc'); has(e, 'vol={36},', 'volume'); has(e, 'rep={Stat.},', 'reporter'); has(e, 'page={557},', 'first page');
+e = gen({ itemType: 'statute', nameOfAct: 'No Electronic Theft (NET) Act', code: 'Statutes at Large', codeNumber: '111', pages: '2678', publicLawNumber: '105-147', dateEnacted: '1997', extra: 'Citation Key: net' });
+has(e, '\\defstatsess{net}', '"Statutes at Large" with a public law number is a statsess'); has(e, 'rep={Stat.},', 'and its reporter is Stat.');
+e = gen({ itemType: 'book', title: 'Restatement (Second) of Torts', date: '1965', creators: [{ creatorType: 'author', name: 'American Law Institute', fieldMode: 1 }], extra: 'Citation Key: rst2' });
+has(e, '\\defmodelcode{rst2}', 'a book titled "Restatement (...) of ..." is a model code without the citation-phoenix marker');
+e = gen({ itemType: 'book', title: 'Model Penal Code', date: '1985', publisher: 'American Law Institute', creators: [{ creatorType: 'author', name: 'American Law Institute', fieldMode: 1 }], extra: 'Citation Key: mpc' });
+has(gen({ itemType: 'book', title: 'Model Penal Code', creators: [], extra: 'Citation Key: mpcnd' }), 'year={nd}', 'a restatement or code with no year is "nd": hicite will not compile a model code without one');
+has(e, '\\defmodelcode{mpc}', 'the Model Penal Code is a model code'); has(e, 'instauth={American Law Institute}', 'by the American Law Institute'); has(e, 'year={1985}', 'with its year');
+e = gen({ itemType: 'book', title: 'Restatement (Second) of Torts', date: '1977', extra: 'Citation Key: rst3' });
+has(e, 'instauth={American Law Institute},', 'a restatement entered without an author is the American Law Institute\'s');
+// a Federal Register document saved by the Federal Register web translator
+e = gen({ itemType: 'statute', nameOfAct: 'Standards of Conduct; Revocation of Superseded Regulations; Revision of Residual Provisions', code: 'Fed. Reg.', codeNumber: '90', section: '40975', pages: '40975-40985', dateEnacted: 'August 22, 2025', abstractNote: 'x', url: 'https://www.federalregister.gov/documents/2025/08/22/2025-16129/standards-of-conduct', extra: 'mlzsync1:{"xtype":"regulation"}\nDocument Type: Rule\nAgency: Department of Health and Human Services; Office of the Secretary\nCFR: 45 CFR 73\nEffective Date: October 21, 2025\nDocument Number: 2025-16129\nRIN: 0991-AC40\nDocket ID: HHS-OS-2025-0001\nCitation Key: hhsconduct' });
+has(e, '\\defgovdoc{hhsconduct}', 'a Federal Register rule is a govdoc'); has(e, 'vol={90},', 'volume'); has(e, 'rep={Fed. Reg.},', 'reporter'); has(e, 'page={40975},', 'first page'); has(e, 'year={aug 22 2025},', 'publication date'); hasNot(e, 'RIN', 'the Extra lines are not exported'); hasNot(e, 'Effective', 'including the effective date'); has(run({ phoenix: 'on' }, {}, [mk({ itemType: 'statute', nameOfAct: 'x', code: 'Fed. Reg.', codeNumber: '90', section: '40975', extra: 'mlzsync1:{"xtype":"regulation"}\nCitation Key: frm' })]), '\\defgovdoc{frm}', 'still a govdoc with citation-phoenix on and the regulation marker');
+// an exhibit, and a paper whose name has commas, are court papers when a colon ends the name
+e = gen({ itemType: 'case', caseName: "Exhibit 1 to Declaration of Christopher R. Clark in Support of Defendants' Motion to Dismiss - Chat Logs: Joshi V. Openai Foundation", court: 'N.D. Fla.', docketNumber: '4:26-cv-00222', dateDecided: 'October 7, 2026', url: 'https://www.bloomberglaw.com/product/blaw/document/X1LC35C4GSS9HTR9KE6GAUPG1AF', shortTitle: 'Exhibit 1 - Chat Logs', extra: 'Citation Key: exhibit1clark' });
+has(e, '\\defcasedoc{exhibit1clark}', 'an exhibit is a casedoc'); has(e, 'p={Joshi}', 'the plaintiff is not the paper'); has(e, 'd={Openai Foundation}', 'the defendant'); has(e, 'name={Exhibit 1 to Declaration of Christopher R. Clark', 'the paper'); hasNot(e, 'url=', 'and it has no url'); has(e, 'inline={Exhibit 1 - Chat Logs}', 'its Short Title stays the short form');
+e = gen({ itemType: 'case', caseName: 'Summons For AESTAS, LLC: Joshi v. OpenAI Foundation', court: 'N.D. Fla.', docketNumber: '4:26-cv-00222', dateDecided: 'May 10, 2026', extra: 'Citation Key: summonsaestas' });
+has(e, '\\defcasedoc{summonsaestas}', 'a paper with a comma in its name is a casedoc'); has(e, 'name={Summons For AESTAS, LLC}', 'the whole paper name'); has(e, 'p={Joshi}', 'plaintiff');
+// state session laws (what the LegiScan web translator saves) and the codified-at parenthetical from Extra
+e = gen({ itemType: 'statute', nameOfAct: 'California AI Transparency Act', code: 'Cal. Stat.', codeNumber: '2024', publicLawNumber: 'ch. 291', session: '2023-2024 Regular Session', dateEnacted: 'September 19, 2024',
+	url: 'https://legiscan.com/CA/text/SB942/id/3021807', extra: 'Bill: S.B. 942\nVersion: Chaptered\nCodified: Cal. Bus. & Prof. Code \u00a7\u00a7 22757-22757.6\nCitation Key: caait' });
+has(e, '\\defstatsess{caait}', 'a state session law is a statsess'); has(e, 'type={ch.}', 'chapter'); has(e, 'number={291}', 'chapter number'); has(e, 'vol={2024}', 'year as the volume'); has(e, 'rep={Cal. Stat.}', 'reporter');
+has(e, '    slip,', 'no page: slip'); has(e, 'year={sep 19 2024}', 'date'); has(e, 'paren={codified at: caaitCodified}', 'codified at, by key');
+has(e, '\\defstatcode{caaitCodified}{Cal. Bus. \\& Prof. Code S 22757-22757.6}', 'the codification is a statcode (a range stays a range)'); hasNot(e, 'Bill:', 'Extra lines are not exported');
+e = gen({ itemType: 'statute', nameOfAct: 'Local Lodging Tax Reporting on Sales Return', code: 'Colo. Sess. Laws', codeNumber: '2024', publicLawNumber: 'S.B. 24-024', dateEnacted: 'April 19, 2024', extra: 'Citation Key: cosb' });
+has(e, '\\defstatsess{cosb}', 'a bill is a statsess'); has(e, 'type={S.B.}', 'bill type'); has(e, 'number={24-024}', 'bill number'); has(e, 'place={Colo.}', 'cited by its state'); hasNot(e, 'rep=', 'no reporter'); hasNot(e, 'slip', 'and no slip');
+e = gen({ itemType: 'statute', nameOfAct: 'Old Act', code: 'Cal. Stat.', codeNumber: '1990', publicLawNumber: 'ch. 12', pages: '345-350', dateEnacted: '1990-03-01', extra: 'Citation Key: caold' });
+has(e, 'page={345},', 'a state session law with a page'); hasNot(e, 'slip', 'is not slip');
+e = gen({ itemType: 'statute', nameOfAct: 'National AI Initiative Act', code: 'Stat.', codeNumber: '134', section: '4523', publicLawNumber: '116-283', dateEnacted: '2021-01-01', extra: 'Codified as amended: 15 U.S.C. \u00a7 9401\nCitation Key: naiia' });
+has(e, 'paren={codified as amended at: naiiaCodifiedAmended}', 'codified as amended at'); has(e, '\\defstatcode{naiiaCodifiedAmended}{15 U.S.C. S 9401}', 'a federal codification with a volume');
+e = gen({ itemType: 'statute', nameOfAct: 'Odd Act', code: 'Stat.', codeNumber: '134', section: '4523', publicLawNumber: '116-283', dateEnacted: '2021-01-01', extra: 'Codified: various places\nCitation Key: oddact' });
+has(e, 'codified not understood', 'a codified line without a section is noted, not exported'); hasNot(e, 'paren=', 'and writes no parenthetical');
+// court papers are cited without a URL, whether a Case named for the paper or a Document typed casedoc
+hasNot(gen({ itemType: 'case', caseName: 'Complaint: Garcia v. Character Technologies', court: 'M.D. Fla.', docketNumber: '24-cv-01903', dateDecided: 'October 22, 2024', url: 'https://example.org/garcia.pdf', extra: 'Citation Key: garciaurl' }), 'url=', 'a court paper saved as a case has no url');
+hasNot(gen({ itemType: 'document', title: 'Complaint', url: 'https://example.org/c.pdf', date: '2024-10-22', extra: 'hicite-doctype: casedoc\nCitation Key: cdocurl' }), 'url=', 'a casedoc document has no url');
+hasNot(gen({ itemType: 'case', caseName: 'Doe v. Roe', docketNumber: '24-cv-1', court: 'D. Mass.', dateDecided: 'May 1, 2024', url: 'https://example.org/doe', extra: 'Citation Key: doeurl' }), 'url=', 'an unreported case that is not a court paper has no url either');
+has(gen({ itemType: 'statute', nameOfAct: 'Trademarks Regulations', url: 'https://example.org/foreign', dateEnacted: '1996', extra: 'Citation Key: foreignact' }), 'url={https://example.org/foreign}', 'a statute with no code and section is cited as a web page, which keeps its address');
+hasNot(gen({ itemType: 'statute', nameOfAct: 'Some Act', code: 'U.S.C.', codeNumber: '17', section: '106', url: 'https://example.org/act', extra: 'Citation Key: acturl' }), 'url=', 'a codified statute has no url');
+hasNot(gen({ itemType: 'statute', nameOfAct: 'California AI Transparency Act', code: 'Cal. Stat.', codeNumber: '2024', publicLawNumber: 'ch. 291', dateEnacted: 'September 19, 2024', url: 'https://legiscan.com/CA/text/SB942/id/3021807', extra: 'Citation Key: caaiturl' }), 'url=', 'a session law has no url');
+// a court paper saved by the Bloomberg Law web translator
+e = run({ phoenix: 'on' }, {}, [mk({ itemType: 'case', caseName: 'Complaint: Joshi v. OpenAI Foundation', court: 'N.D. Fla.', docketNumber: '4:26-cv-00222', dateDecided: 'May 10, 2026', url: 'https://www.bloomberglaw.com/product/blaw/document/X6RSR9K0SBB8TGPOG903PHAQ7S8',
+	extra: 'mlzsync1:{"extrafields":{"jurisdiction":"012us:c11:fl.ndUnited States|US|Eleventh Circuit|N.D. Florida","filingDate":"May 10, 2026"}}\nDocket Entry: 1\nCase Number: 4:26-cv-00222-MW-MJF\nPart: 2: Civil Cover Sheet\nPages: 76\nCitation Key: joshicomplaint' })]);
+has(e, '\\defcasedoc{joshicomplaint}', 'a court paper from the Bloomberg Law translator is a casedoc'); has(e, 'name={Complaint}', 'the paper'); has(e, 'p={Joshi}', 'plaintiff'); has(e, 'd={OpenAI Foundation}', 'defendant'); has(e, 'docket={4:26-cv-00222}', 'docket'); has(e, 'court={N.D. Fla.}', 'court'); has(e, 'year={may 10 2026}', 'date'); hasNot(e, 'Civil Cover', 'the part line in Extra is not exported'); hasNot(e, 'Part', 'and is not read as a parameter');
+has(gen({ itemType: 'statute', nameOfAct: 'Institution of inter partes review', code: 'C.F.R.', codeNumber: '37', section: '42.108', extra: 'Citation Key: ipr' }), '\\defregcode{ipr}', 'a C.F.R. section is a regcode, with or without citation-phoenix');
+has(gen({ itemType: 'statute', nameOfAct: 'Local Law', code: 'N.Y.C. Admin. Code', codeNumber: '', section: '8-107', extra: 'Citation Key: nyc' }), '\\defstatcode{nyc}', 'the New York City Administrative Code is legislation, not a regcode');
+has(gen({ itemType: 'statute', nameOfAct: 'A judge shall perform the duties of judicial office', code: 'NYCRR', codeNumber: '22', section: '100.3', extra: 'Citation Key: nyj' }), '\\defregcode{nyj}', 'an NYCRR section is a regcode');
+e = gen({ itemType: 'statute', nameOfAct: 'COVID-19 Vaccination and Testing; Emergency Temporary Standard', code: 'Fed. Reg.', codeNumber: '86', section: '61402', dateEnacted: 'November 5, 2021', extra: 'Citation Key: ets' });
+has(e, '\\defgovdoc{ets}', 'a Federal Register document from the web translators is a govdoc'); has(e, 'vol={86},', 'volume'); has(e, 'rep={Fed. Reg.},', 'reporter'); has(e, 'page={61402},', 'first page'); has(e, 'year={nov 5 2021},', 'full date');
+e = gen({ itemType: 'statute', nameOfAct: 'Ensuring Likeness, Voice, and Image Security Act', shortTitle: 'ELVIS Act', code: 'Tenn. C.', codeNumber: '47', section: '1-101', dateEnacted: '2024', url: 'https://x.org/s', extra: 'Citation Key: elvis' });
+has(e, 'name={Ensuring Likeness, Voice, and Image Security Act},', 'a named act keeps its name'); has(e, 'rep={Tenn. C.},', 'code'); has(e, 'vol={47},', 'title'); has(e, 'page={S 1\\-101},', 'section, with the section sign (the hyphen escaped so hicite does not read a range)'); has(e, 'inline={ELVIS Act},', 'short form'); has(e, 'year={2024},', 'year'); hasNot(e, 'url=', 'a codified section drops its URL');
+has(gen({ itemType: 'statute', nameOfAct: 'Copyright Registration Guidance', code: 'C.F.R.', codeNumber: '88', section: '16190', pages: '16190', dateEnacted: '2023-03-16', extra: 'Citation Key: crg' }), 'rep={Fed. Reg.},', 'a C.F.R. item with a page is a Federal Register document');
+
+has(run({}, {}, [mk({ itemType: 'webpage', extra: 'Citation Key: empty1' })]), '% hicite: skipped empty1', 'an empty item is skipped, not exported as an invalid definition');
+
+has(gen({ itemType: 'webpage', url: 'https://x.org/photo?id=1', extra: 'Citation Key: bare' }), 'title={https://x.org/photo?id=1},', 'an untitled web page is cited by its URL');
+
+// editions, placeholder pages
+e = gen({ itemType: 'bookSection', title: 'Hilbert’s Program', bookTitle: 'The Stanford Encyclopedia of Philosophy', edition: 'Spring 2023', date: '2023', creators: [person('Richard', 'Zach'), person('Edward N.', 'Zalta', 'editor')], extra: 'Citation Key: zach' });
+has(e, 'year={Spring 2023},', 'a seasonal edition is the container date'); hasNot(e, 'edition=', 'and not an edition number');
+hasNot(gen({ itemType: 'bookSection', title: 'T', bookTitle: 'B', pages: '0', date: '2013', creators: [person('A', 'B')], extra: 'Citation Key: p0' }), 'page=', 'page "0" is ignored');
+
+print(errors.length ? 'FAIL\n' + errors.join('\n') : 'translator OK (preprints, containers, names, urls, cases, keys, each setting)');

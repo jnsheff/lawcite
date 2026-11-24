@@ -1,0 +1,16 @@
+{
+  "manifest_version": 2,
+  "name": "lawcite",
+  "version": "0.1.0",
+  "description": "Legal citation for Zotero: Juris-M-style legal item types, CSL-M modules and abbreviations (from citation-phoenix), web translators for Westlaw, Lexis+, Cornell LII, Federal Register, Bloomberg Law and LegiScan, and hicite export with pinned citation keys.",
+  "author": "Jeremy Sheff",
+  "icons": { "48": "content/ui/icon48.svg" },
+  "applications": {
+    "zotero": {
+      "id": "lawcite@zotero.local",
+      "update_url": "https://raw.githubusercontent.com/jnsheff/lawcite/main/updates.json",
+      "strict_min_version": "8.999",
+      "strict_max_version": "10.*"
+    }
+  }
+}

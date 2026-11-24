@@ -1,0 +1,12 @@
+{
+  "filename": "auto-gq.json",
+  "name": "Equatorial Guinea",
+  "version": "2026-07-22 20:44:52 UTC",
+  "xdata": {
+    "default": {
+      "place": {
+        "GQ": "Equatorial Guinea"
+      }
+    }
+  }
+}

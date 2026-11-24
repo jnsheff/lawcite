@@ -1,0 +1,12 @@
+{
+  "filename": "auto-lb.json",
+  "name": "Lebanon",
+  "version": "2026-07-22 20:44:52 UTC",
+  "xdata": {
+    "default": {
+      "place": {
+        "LB": "Lebanon"
+      }
+    }
+  }
+}

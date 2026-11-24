@@ -1,0 +1,17 @@
+{
+  "filename": "auto-sg.json",
+  "name": "Singapore",
+  "version": "2026-07-22 20:44:53 UTC",
+  "xdata": {
+    "default": {
+      "place": {
+        "SG": "Singapore"
+      }
+    },
+    "sg": {
+      "institution-part": {
+        "hc": "High Court"
+      }
+    }
+  }
+}

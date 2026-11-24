@@ -1,0 +1,12 @@
+{
+  "filename": "auto-nu.json",
+  "name": "Niue",
+  "version": "2026-07-22 20:44:52 UTC",
+  "xdata": {
+    "default": {
+      "place": {
+        "NU": "Niue"
+      }
+    }
+  }
+}
