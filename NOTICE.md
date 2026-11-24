@@ -46,7 +46,8 @@ Bundled third-party material keeps its own terms:
 - `modules/phoenix/style-modules/` is dedicated to the public domain under CC0 1.0
   (`style-modules/LICENSE`).
 - The bundled CSL styles carry the license stated in each file's `<rights>` element,
-  for example CC BY-SA 3.0 for `jm-indigobook.csl`. The lawcite IndigoBook styles
+  for example CC BY-SA 3.0 for `jm-indigobook.csl`. `lawcite-apa.csl` is derived from Zotero's `apa.csl` (APA 7th edition) by Brenton M. Wiernik and Andrew
+  Dunning, CC BY-SA 3.0, with three changes to its legal-reference macros. The lawcite IndigoBook styles
   (`lawcite-indigobook-lawreview.csl`, `lawcite-indigobook-memoranda.csl`, formerly
   Sheff-IndigoBook), adapted from the JM Indigo Book styles by Frank Bennett, are CC BY-SA 4.0.
 

@@ -3866,6 +3866,9 @@ export class Patcher {
         cslItem.jurisdiction = jur;
         cslItem.country = jur.split(':')[0];
         this._decorateShortForms(cslItem, jur, styleID);
+        const courtText = zotItem.getField?.('court');
+        this._omitSupremeCourtAuthority(cslItem, jur, styleID, courtText);
+        this._resolveCourtKeyForPlainStyle(cslItem, jur, styleID, courtText);
         this._sanitizeCSLControlFields(cslItem);
         this._logCitationItemData(cslItem, zotItem, 'retrieveItem');
         this._logRenderProbeFromItem(cslItem, jur, 'retrieveItem');
@@ -4200,6 +4203,90 @@ export class Patcher {
       prior.legalCase = true;
     }
     this._titleContextByKey.set(key, prior);
+  }
+
+  /**
+   * Bluebook and Indigo Book cite the U.S. Supreme Court by its reporter alone: "5 U.S. 137 (1803)", never
+   * "(U.S. 1803)". The Juris-M abbreviation data gives the Court the institution-part "U.S.", so a case whose
+   * court is set to the Supreme Court would print it. APA 7 follows the same rule. For the IndigoBook-family and
+   * APA-family styles, drop the authority of a
+   * federal Supreme Court case so the parenthetical shows the date alone. State supreme courts (jurisdiction
+   * "us:xx"), other courts and other styles are left alone.
+   * Returns true when the authority was removed.
+   */
+  _omitSupremeCourtAuthority(cslItem, jurisdiction, styleID = '', courtText = '') {
+    if (!cslItem || String(cslItem.type || '') !== 'legal_case') return false;
+    if (!this._styleOmitsSupremeCourt(styleID)) return false;
+    if (String(jurisdiction || '').trim().toLowerCase() !== 'us') return false;
+    if (!cslItem.authority) return false;
+
+    const key = this.abbrevService.normalizeKey(String(courtText || ''));
+    if (!key || !this._supremeCourtKeys().has(key)) return false;
+
+    delete cslItem.authority;
+    return true;
+  }
+
+  /** Styles that cite the U.S. Supreme Court by its reporter alone: IndigoBook and APA (which follows Bluebook). */
+  _styleOmitsSupremeCourt(styleID) {
+    if (this._styleAllowsContainerTitleFallback(styleID)) return true;
+    return this._isAPAStyle(styleID);
+  }
+
+  /** APA 7 and the styles derived from it (including lawcite-apa and the apa-* variants). */
+  _isAPAStyle(styleID) {
+    const key = String(styleID || '').trim().toLowerCase();
+    return /^https?:\/\/www\.zotero\.org\/styles\/(?:lawcite-)?apa(?:-|$)/.test(key);
+  }
+
+  /**
+   * Whether citeproc resolves Juris-M court keys itself for this style. CSL-M styles (the Juris-M "jm-" styles
+   * and lawcite's IndigoBook styles) turn a court key such as "court.appeals" into an abbreviation through the
+   * getAbbreviation hook. Plain CSL styles just print whatever string the item's Court field holds.
+   */
+  _styleResolvesCourtKeys(styleID) {
+    const key = String(styleID || '').trim().toLowerCase();
+    if (key.startsWith('http://juris-m.github.io/') || key.startsWith('https://juris-m.github.io/')) return true;
+    return this._styleAllowsContainerTitleFallback(styleID);
+  }
+
+  /**
+   * A Court field holding a Juris-M key ("supreme.court", "court.appeals", "district.court") would print raw in a
+   * plain CSL style: "(supreme.court 1952)". Replace it with the court's Bluebook abbreviation, found with the
+   * item's jurisdiction ("N.Y. Sup. Ct.", "2d Cir.", "S.D.N.Y."). Anything that is not a key, or a key with no
+   * abbreviation, is left exactly as the user entered it. Returns true when the authority was replaced.
+   */
+  _resolveCourtKeyForPlainStyle(cslItem, jurisdiction, styleID = '', courtText = '') {
+    if (!cslItem || String(cslItem.type || '') !== 'legal_case') return false;
+    if (this._styleResolvesCourtKeys(styleID)) return false;
+    if (!cslItem.authority) return false;
+
+    const raw = String(courtText || '').trim();
+    // a key: lowercase, dotted, no spaces ("supreme.court", "ny.sd"); typed text such as "2d Cir." is not
+    if (!/^[a-z][a-z0-9]*(?:\.[a-z0-9]+)+$/.test(raw)) return false;
+
+    const jur = String(jurisdiction || '').trim().toLowerCase() || 'default';
+    for (const category of ['institution-part', 'institution-entire']) {
+      const hit = this.abbrevService.lookupForCiteProc(category, raw, jur, { noHints: true });
+      if (!hit?.value) continue;
+      const value = String(this.abbrevService.parseDirective(hit.value).value || '').trim();
+      if (!value) continue;
+      // a plain string, as Zotero supplies it: plain CSL styles read `authority` as text, not as a names array
+      cslItem.authority = value;
+      return true;
+    }
+    return false;
+  }
+
+  _supremeCourtKeys() {
+    if (!this._supremeCourtKeySet) {
+      this._supremeCourtKeySet = new Set([
+        'supreme.court', 'supreme court', 'u.s.', 'us', 'scotus',
+        'u.s. supreme court', 'us supreme court', 'united states supreme court',
+        'supreme court of the united states', 'supreme court of the us', 'supreme court of the u.s.',
+      ].map((value) => this.abbrevService.normalizeKey(value)));
+    }
+    return this._supremeCourtKeySet;
   }
 
   _shouldAllowTitleFallback(title, styleID = '', jurisdiction = '') {

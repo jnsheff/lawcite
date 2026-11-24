@@ -470,6 +470,82 @@ for (const [key, expected, label] of periodicalCases) {
   }
 }
 
+// U.S. Supreme Court: Bluebook / Indigo Book cite it by reporter alone, "(1803)", never "(U.S. 1803)".
+const SCOTUS_LR = 'http://www.zotero.org/styles/lawcite-indigobook-lawreview';
+const SCOTUS_MEMO = 'http://www.zotero.org/styles/lawcite-indigobook-memoranda';
+const scotusCases = [
+  // [label, style, jurisdiction, court text, item type, authority dropped?]
+  ['court key supreme.court, law review style', SCOTUS_LR, 'us', 'supreme.court', 'legal_case', true],
+  ['court key supreme.court, memoranda style', SCOTUS_MEMO, 'us', 'supreme.court', 'legal_case', true],
+  ['"Supreme Court" with federal jurisdiction', 'http://juris-m.github.io/styles/jm-indigobook', 'us', 'Supreme Court', 'legal_case', true],
+  ['"U.S. Supreme Court"', SCOTUS_MEMO, 'us', 'U.S. Supreme Court', 'legal_case', true],
+  ['"Supreme Court of the United States"', SCOTUS_LR, 'US', 'Supreme Court of the United States', 'legal_case', true],
+  ['earlier sheff-indigobook id still honored', 'http://www.zotero.org/styles/sheff-indigobook', 'us', 'supreme.court', 'legal_case', true],
+  ['a state supreme court is kept (us:ny)', SCOTUS_MEMO, 'us:ny', 'supreme.court', 'legal_case', false],
+  ['a circuit court is kept', SCOTUS_MEMO, 'us', '2d Cir.', 'legal_case', false],
+  ['a district court is kept', SCOTUS_LR, 'us:c2:ny.sd', 'S.D.N.Y.', 'legal_case', false],
+  ['APA 7 cites the Supreme Court by reporter alone', 'http://www.zotero.org/styles/apa', 'us', 'supreme.court', 'legal_case', true],
+  ['lawcite-apa likewise', 'http://www.zotero.org/styles/lawcite-apa', 'us', 'supreme.court', 'legal_case', true],
+  ['an APA variant likewise', 'http://www.zotero.org/styles/apa-6th-edition', 'us', 'Supreme Court', 'legal_case', true],
+  ['a style outside the IndigoBook and APA families is kept', 'http://www.zotero.org/styles/chicago-notes-bibliography', 'us', 'supreme.court', 'legal_case', false],
+  ['"apartheid-law-review" is not an APA style', 'http://www.zotero.org/styles/apartheid-law-review', 'us', 'supreme.court', 'legal_case', false],
+  ['not a legal case is kept', SCOTUS_MEMO, 'us', 'supreme.court', 'article-journal', false],
+];
+for (const [label, styleID, jur, court, type, dropped] of scotusCases) {
+  try {
+    const item = { type, authority: [{ literal: service.normalizeKey(court) }], title: 'X v. Y' };
+    const result = patcher._omitSupremeCourtAuthority(item, jur, styleID, court);
+    assert.equal(result, dropped);
+    assert.equal(Object.prototype.hasOwnProperty.call(item, 'authority'), !dropped);
+    assert.equal(item.title, 'X v. Y');
+    console.log(`PASS Supreme Court: ${label}`);
+  } catch (error) {
+    failures += 1;
+    console.error(`FAIL Supreme Court: ${label}: ${String(error?.message || error).split('\n')[0]}`);
+  }
+}
+
+// A Court field holding a Juris-M key prints raw in plain CSL styles ("(supreme.court 1952)"). Resolve it to the
+// court's Bluebook abbreviation for APA and other plain styles; CSL-M styles resolve keys themselves.
+const APA = 'http://www.zotero.org/styles/apa';
+const courtKeyCases = [
+  // [label, style, jurisdiction, Court field, expected authority literal or null (unchanged)]
+  ['state trial court', APA, 'us:ny', 'supreme.court', 'N.Y. Sup. Ct.'],
+  ['federal court of appeals', APA, 'us:c2', 'court.appeals', '2d Cir.'],
+  ['another circuit', APA, 'us:c9', 'court.appeals', '9th Cir.'],
+  ['federal district court', APA, 'us:c2:ny.sd', 'district.court', 'S.D.N.Y.'],
+  ['state supreme court', APA, 'us:ca', 'supreme.court', 'Cal.'],
+  ['lawcite-apa resolves keys too', 'http://www.zotero.org/styles/lawcite-apa', 'us:c2', 'court.appeals', '2d Cir.'],
+  ['another plain style resolves keys', 'http://www.zotero.org/styles/chicago-notes-bibliography', 'us:c2', 'court.appeals', '2d Cir.'],
+  ['typed court text is left alone', APA, 'us:c2', '2d Cir.', null],
+  ['an unknown key is left alone', APA, 'us:ny', 'no.such.court', null],
+  ['Juris-M style resolves keys itself', 'http://juris-m.github.io/styles/jm-indigobook', 'us:c2', 'court.appeals', null],
+  ['lawcite IndigoBook style resolves keys itself', SCOTUS_MEMO, 'us:c2', 'court.appeals', null],
+];
+for (const [label, styleID, jur, court, expected] of courtKeyCases) {
+  try {
+    // Zotero supplies `authority` to the CSL processor as a plain string
+    const item = { type: 'legal_case', authority: court, title: 'X v. Y' };
+    const result = patcher._resolveCourtKeyForPlainStyle(item, jur, styleID, court);
+    assert.equal(result, expected !== null);
+    assert.equal(typeof item.authority, 'string');
+    assert.equal(item.authority, expected === null ? court : expected);
+    console.log(`PASS Court key: ${label}: ${court} -> ${item.authority}`);
+  } catch (error) {
+    failures += 1;
+    console.error(`FAIL Court key: ${label}: ${String(error?.message || error).split('\n')[0]}`);
+  }
+}
+try {
+  const notCase = { type: 'article-journal', authority: 'supreme.court' };
+  assert.equal(patcher._resolveCourtKeyForPlainStyle(notCase, 'us:ny', APA, 'supreme.court'), false);
+  assert.equal(notCase.authority, 'supreme.court');
+  console.log('PASS Court key: only legal cases are touched');
+} catch (error) {
+  failures += 1;
+  console.error(`FAIL Court key: only legal cases are touched: ${String(error?.message || error).split('\n')[0]}`);
+}
+
 // Regression: citeproc calls getAbbreviation with a NORMALIZED key (lower-cased, punctuation stripped). The
 // plugin used to run the word-based fallback on that key, printing "nyu L. Rev." and "J. Econ. Mgmt. strategy",
 // and it escaped "&" itself, which citeproc escapes again ("&amp;amp;"). Drive the real patched hook.
@@ -517,5 +593,5 @@ if (failures) {
   process.exitCode = 1;
   console.error(`\n${failures} abbreviation regression test(s) failed.`);
 } else {
-  console.log(`\nAll ${cases.length + optionCases.length + periodicalCases.length + patchedHookCases.length + 28} abbreviation regression tests passed.`);
+  console.log(`\nAll ${cases.length + optionCases.length + periodicalCases.length + patchedHookCases.length + scotusCases.length + courtKeyCases.length + 1 + 28} abbreviation regression tests passed.`);
 }

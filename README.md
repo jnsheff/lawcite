@@ -28,11 +28,27 @@ lawcite installs its own CSL styles into Zotero at startup, next to the Juris-M 
 |-------|-----|----|
 | Lawcite IndigoBook Law Review | law-review footnotes | `lawcite-indigobook-lawreview` |
 | Lawcite IndigoBook Memoranda | legal memoranda, briefs and other practitioner documents | `lawcite-indigobook-memoranda` |
+| Lawcite APA Style 7th edition | APA 7 with corrected legal references for bills, hearings and statutes | `lawcite-apa` |
 
 Both are adapted from the JM Indigo Book styles by Frank Bennett (CC BY-SA 4.0) and add the Bluebook periodical
 abbreviation rules. A bundled style is installed when it is missing and updated when its `<updated>` date is newer;
 a style you have edited in Zotero's styles folder is overwritten only by a newer bundled version. Earlier copies
 named `sheff-indigobook` and `sheff-indigobook-law-review` keep working but are no longer shipped.
+
+In the IndigoBook-family styles (these two and the Juris-M Indigo Book styles) a U.S. Supreme Court case is cited by
+its reporter alone, `5 U.S. 137 (1803)`, as Bluebook and Indigo Book require, even when the item's Court field is
+set to the Supreme Court. State supreme courts, other courts and other styles are unaffected. APA 7 follows the same rule.
+
+**Court keys in plain styles.** The Court field may hold a Juris-M key such as `court.appeals`. The Juris-M and lawcite
+IndigoBook styles resolve it themselves; for every other style (APA, Chicago, ...) lawcite replaces the key with the
+court's Bluebook abbreviation, found with the item's jurisdiction: `2d Cir.`, `S.D.N.Y.`, `N.Y. Sup. Ct.`. Court text you
+typed yourself, and keys with no known abbreviation, are left exactly as entered.
+
+**`lawcite-apa`** is Zotero's stock `apa.csl` with three corrections to legal references, made by
+`modules/phoenix/scripts/make-lawcite-apa.py` (rerun it against a newer `apa.csl` to refresh the style):
+bills and hearings print the congress from the Session field (`H.R. 6580, 117th Cong. (2022)`; stock APA printed the
+legislative body and a bare `117`); a statute with a Section prints the code citation (`42 U.S.C. § 12101`; stock APA
+dropped the section); and a public law number is always singular (`Pub. L. No. 101-336`, not `Nos.`).
 
 ## Layout
 

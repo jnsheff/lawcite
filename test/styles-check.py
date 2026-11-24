@@ -32,5 +32,22 @@ missing = [n for n in index if not os.path.exists(os.path.join(STY, n))]
 if missing: errors.append('index.json lists files that do not exist: ' + ', '.join(missing))
 extra = [f for f in os.listdir(STY) if f.endswith('.csl') and f not in index]
 if extra: errors.append('styles/ has .csl files not in index.json (never installed): ' + ', '.join(extra))
-print('styles OK (%d indexed, 2 lawcite styles)' % len(index) if not errors else 'FAIL\n  ' + '\n  '.join(errors))
+# lawcite-apa: derived from Zotero's apa.csl (Wiernik, Dunning; CC BY-SA 3.0)
+apa_path = os.path.join(STY, 'lawcite-apa.csl')
+if not os.path.exists(apa_path):
+    errors.append('missing lawcite-apa.csl')
+else:
+    try:
+        apa = ET.parse(apa_path).getroot()
+        ainfo = apa.find('c:info', NS)
+        if ainfo.findtext('c:id', namespaces=NS) != 'http://www.zotero.org/styles/lawcite-apa': errors.append('lawcite-apa.csl: wrong id')
+        authors = [a.findtext('c:name', namespaces=NS) for a in ainfo.findall('c:author', NS)]
+        if not {'Brenton M. Wiernik', 'Andrew Dunning'} <= set(authors): errors.append('lawcite-apa.csl: original authors not credited: %s' % authors)
+        if 'by-sa/3.0' not in (ainfo.find('c:rights', NS).get('license') or ''): errors.append('lawcite-apa.csl: CC BY-SA 3.0 notice missing')
+        if 'lawcite-apa.csl' not in index: errors.append('lawcite-apa.csl: not in styles/index.json')
+        macros = {m.get('name') for m in apa.findall('c:macro', NS)}
+        if 'legal-congress' not in macros: errors.append('lawcite-apa.csl: legal-congress macro missing')
+    except ET.ParseError as e:
+        errors.append(f'lawcite-apa.csl: not well-formed: {e}')
+print('styles OK (%d indexed, 3 lawcite styles)' % len(index) if not errors else 'FAIL\n  ' + '\n  '.join(errors))
 sys.exit(1 if errors else 0)
