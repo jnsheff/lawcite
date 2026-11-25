@@ -1,0 +1,67 @@
+/* lawcite Settings pane: sections with pinned headers, in the manner of Better BibTeX's pane.
+   Colors come from Zotero's own settings variables, so light, dark and high-contrast themes follow. */
+
+#lawcite-prefs .lawcite-prefs-section,
+#lawcite-prefs .lawcite-prefs-subsection {
+  --lawcite-prefs-header-bg: color-mix(in srgb, var(--in-content-page-background, Field) 94%, var(--in-content-border-color, currentColor));
+  --lawcite-prefs-subsection-header-bg: color-mix(in srgb, var(--lawcite-prefs-header-bg) 88%, var(--in-content-border-color, currentColor));
+  --lawcite-prefs-section-header-height: 2.6rem;
+}
+
+/* a section: a bordered block whose header stays at the top of the pane while you scroll through it */
+#lawcite-prefs .lawcite-prefs-section {
+  margin-bottom: 1.25rem;
+  padding-top: 0.25rem;
+  border-top: 3px double var(--in-content-border-color, currentColor);
+}
+
+#lawcite-prefs .lawcite-prefs-section > label,
+#lawcite-prefs .lawcite-prefs-subsection > label {
+  display: block;
+  margin: 0;
+}
+
+#lawcite-prefs .lawcite-prefs-section > label {
+  position: sticky;
+  top: 0.25rem;
+  z-index: 4;
+}
+
+#lawcite-prefs .lawcite-prefs-section > label > h2,
+#lawcite-prefs .lawcite-prefs-subsection > label > h2,
+#lawcite-prefs .lawcite-prefs-subsection > h2 {
+  position: relative;
+  margin: 0;
+  padding: 0.45rem 0.75rem;
+  background: var(--lawcite-prefs-header-bg);
+  border: 1px solid color-mix(in srgb, var(--in-content-border-color, currentColor) 75%, transparent);
+  border-radius: 0.45rem;
+}
+
+/* a group of settings inside a section: indented, with its own (smaller) pinned header below the section's */
+#lawcite-prefs .lawcite-prefs-subsection {
+  margin: 0.75rem 0 1rem 1rem;
+  padding: 0.5rem 0 1rem 1rem;
+  border-left: 0.3rem solid color-mix(in srgb, var(--in-content-border-color, currentColor) 35%, transparent);
+}
+
+#lawcite-prefs .lawcite-prefs-subsection > label {
+  position: sticky;
+  top: var(--lawcite-prefs-section-header-height);
+  z-index: 3;
+}
+
+#lawcite-prefs .lawcite-prefs-subsection > label > h2,
+#lawcite-prefs .lawcite-prefs-subsection > h2 {
+  margin-left: -0.45rem;
+  padding-left: 0.9rem;
+  background: var(--lawcite-prefs-subsection-header-bg);
+  font-size: 1.1em;
+}
+
+/* the modules' own headers use plain <html:h2> as the first child of a group */
+#lawcite-prefs .lawcite-prefs-subsection > h2 {
+  position: sticky;
+  top: var(--lawcite-prefs-section-header-height);
+  z-index: 3;
+}

@@ -4,12 +4,14 @@
  *                modules, Juris-M style abbreviations. Bundled to content/citation-phoenix.js.
  *   translators  web translators for Westlaw, Lexis+, Cornell LII, Federal Register, Bloomberg Law, LegiScan.
  *   hicite       hicite export, pinned citation keys, auto-export (hicite/hicite-export.js).
+ *   permacc      Perma.cc archives for the URLs in the user's libraries (permacc/permacc.js).
  *
  * The three standalone plugins this replaces must be removed first: running them together would patch Zotero
  * twice and install duplicate translators. If one of them is still enabled, lawcite starts nothing and says so.
  */
 
 var HiCite; // assigned by hicite/hicite-export.js
+var PermaCC; // assigned by permacc/permacc.js
 
 const LAWCITE_REPLACES = {
 	'citation-phoenix@michaelrisch.com': 'citation-phoenix',
@@ -22,7 +24,7 @@ const LAWCITE_TRANSLATORS = [
 	'Federal Register (legal).js', 'Bloomberg Law (legal).js', 'LegiScan (legal).js',
 ];
 
-var lawciteState = { started: false, parts: { phoenix: false, translators: false, hicite: false } };
+var lawciteState = { paneID: null, started: false, parts: { phoenix: false, translators: false, hicite: false, permacc: false } };
 
 function lawciteLog(msg) {
 	try { Zotero.debug('[lawcite] ' + msg); } catch (e) { /* no Zotero yet */ }
@@ -133,6 +135,55 @@ function lawciteStopHiCite() {
 	}
 }
 
+// ----------------------------------------------------------------- permacc
+async function lawciteStartPermaCC({ id, version }, base) {
+	let permaBase = base + 'permacc/';
+	Services.scriptloader.loadSubScript(permaBase + 'permacc.js');
+	await PermaCC.init({ id, version, rootURI: permaBase });
+	// the rest of lawcite reaches it here: the Settings pane, and citation-phoenix's CSL item hook
+	Zotero.Lawcite.permacc = PermaCC;
+	Zotero.Lawcite.permaFormat = (cslItem, zotItem) => PermaCC?.formatURL(cslItem, zotItem);
+	lawciteState.parts.permacc = true;
+}
+
+function lawciteStopPermaCC() {
+	if (!PermaCC) return;
+	try { PermaCC.destroy(); }
+	finally {
+		PermaCC = undefined;
+		try { delete Zotero.Lawcite.permacc; delete Zotero.Lawcite.permaFormat; } catch (e) { /* ignore */ }
+		lawciteState.parts.permacc = false;
+	}
+}
+
+// ------------------------------------------------------------ Settings pane
+// One sidebar item, "lawcite", with a section for each part: Perma.cc, hicite and Jurisdictions. The parts do not
+// register panes of their own inside lawcite; this pane (composed at build time, see build.py) carries their markup and
+// loads their scripts. Section ids (lawcite-section-perma | -hicite | -jurisdictions) are scroll targets.
+async function lawciteRegisterPane({ id }, base) {
+	lawciteState.paneID = await Zotero.PreferencePanes.register({
+		pluginID: id,
+		id: 'lawcite-prefpane',
+		src: base + 'pane/preferences.xhtml',
+		label: 'lawcite',
+		image: base + 'icon.svg',
+		scripts: [
+			base + 'permacc/preferences.js',
+			base + 'hicite/preferences.js',
+			base + 'content/prefs-abbrev.js',
+			base + 'pane/preferences.js',
+		],
+		stylesheets: [base + 'pane/preferences.css', base + 'content/prefs-abbrev.css'],
+	});
+}
+
+function lawciteUnregisterPane() {
+	if (!lawciteState.paneID) return;
+	try { Zotero.PreferencePanes.unregister(lawciteState.paneID); }
+	catch (e) { Zotero.logError(e); }
+	finally { lawciteState.paneID = null; }
+}
+
 // -------------------------------------------------------------- lifecycle
 async function startup({ id, version, rootURI }, reason) {
 	await Zotero.initializationPromise;
@@ -152,11 +203,14 @@ async function startup({ id, version, rootURI }, reason) {
 		['phoenix', () => lawciteStartPhoenix({ id, version }, base)],
 		['translators', () => lawciteInstallTranslators(base)],
 		['hicite', () => lawciteStartHiCite({ id, version }, base)], // after phoenix: it asks Zotero.Lawcite
+		['permacc', () => lawciteStartPermaCC({ id, version }, base)],
 	];
 	for (let [name, start] of parts) {
 		try { await start(); lawciteLog(`${name} started`); }
 		catch (e) { Zotero.logError(e); lawciteLog(`${name} FAILED: ${e}`); }
 	}
+	try { await lawciteRegisterPane({ id }, base); }
+	catch (e) { Zotero.logError(e); lawciteLog(`settings pane FAILED: ${e}`); }
 	lawciteState.started = true;
 }
 
@@ -165,6 +219,8 @@ async function shutdown() {
 		try { delete Zotero.Lawcite; } catch (e) { /* ignore */ }
 		return;
 	}
+	lawciteUnregisterPane();
+	try { lawciteStopPermaCC(); } catch (e) { Zotero.logError(e); }
 	try { lawciteStopHiCite(); } catch (e) { Zotero.logError(e); }
 	try { await lawciteStopPhoenix(); } catch (e) { Zotero.logError(e); }
 	try { delete Zotero.Lawcite; } catch (e) { /* ignore */ }

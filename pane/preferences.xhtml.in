@@ -1,0 +1,29 @@
+<!-- lawcite Settings pane: one pane with a section for each part, in the manner of Better BibTeX's.
+     build.py composes this file (see compose_pane) by putting each module's own fragment inside its section:
+       @@permacc@@  modules/permacc/addon/preferences.xhtml
+       @@hicite@@   modules/hicite/addon/preferences.xhtml
+       @@phoenix@@  modules/phoenix/content/prefs-abbrev.xhtml   (the Jurisdictions section)
+     Parsed by Zotero as an XUL fragment: XUL elements are unprefixed, HTML elements use html:. The root's `main-section`
+     class is where Zotero puts the pane's "lawcite" title. Section ids (lawcite-section-*) are scroll targets. -->
+<vbox id="lawcite-prefs" class="main-section" onload="Zotero.LawcitePrefs.init()">
+	<groupbox class="lawcite-prefs-section" id="lawcite-section-perma">
+		<label>
+			<html:h2>Perma.cc</html:h2>
+		</label>
+		@@permacc@@
+	</groupbox>
+
+	<groupbox class="lawcite-prefs-section" id="lawcite-section-hicite">
+		<label>
+			<html:h2>hicite</html:h2>
+		</label>
+		@@hicite@@
+	</groupbox>
+
+	<groupbox class="lawcite-prefs-section" id="lawcite-section-jurisdictions">
+		<label>
+			<html:h2>Jurisdictions</html:h2>
+		</label>
+		@@phoenix@@
+	</groupbox>
+</vbox>

@@ -1,0 +1,13 @@
+pref("extensions.zotero.lawcite.permacc.rememberKey", true);
+pref("extensions.zotero.lawcite.permacc.urlFormat", "url-archived");
+pref("extensions.zotero.lawcite.permacc.auto", false);
+pref("extensions.zotero.lawcite.permacc.private", false);
+pref("extensions.zotero.lawcite.permacc.skipDomains", "westlaw.com, lexis.com, nexis.com, bloomberglaw.com, heinonline.org");
+pref("extensions.zotero.lawcite.permacc.excludedLibraries", "[]");
+pref("extensions.zotero.lawcite.permacc.folderMap", "{}");
+pref("extensions.zotero.lawcite.permacc.pending", "[]");
+pref("extensions.zotero.lawcite.permacc.failures", "{}");
+pref("extensions.zotero.lawcite.permacc.accountName", "");
+pref("extensions.zotero.lawcite.permacc.offered", false);
+pref("extensions.zotero.lawcite.permacc.apiBase", "https://api.perma.cc/v1");
+pref("extensions.zotero.lawcite.permacc.testKey", "");

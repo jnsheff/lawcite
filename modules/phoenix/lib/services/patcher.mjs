@@ -3869,6 +3869,8 @@ export class Patcher {
         const courtText = zotItem.getField?.('court');
         this._omitSupremeCourtAuthority(cslItem, jur, styleID, courtText);
         this._resolveCourtKeyForPlainStyle(cslItem, jur, styleID, courtText);
+        // lawcite's Perma.cc part decides what the URL says ("[url], archived at [perma.cc url]" and so on)
+        try { Zotero.Lawcite?.permaFormat?.(cslItem, zotItem); } catch (e) { this._warnRetrieveItem(String(e)); }
         this._sanitizeCSLControlFields(cslItem);
         this._logCitationItemData(cslItem, zotItem, 'retrieveItem');
         this._logRenderProbeFromItem(cslItem, jur, 'retrieveItem');

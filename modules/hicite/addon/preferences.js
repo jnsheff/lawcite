@@ -87,7 +87,7 @@ Zotero.HiCitePrefs = {
 		if (!label) return;
 		let text = 'citation-phoenix: not installed';
 		if (Zotero.Lawcite) {
-			label.setAttribute('value', `citation-phoenix: built into lawcite ${Zotero.Lawcite.version}`);
+			label.setAttribute('value', `Jurisdiction data: built into lawcite ${Zotero.Lawcite.version}`);
 			return;
 		}
 		try {

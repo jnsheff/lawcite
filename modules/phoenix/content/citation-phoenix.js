@@ -5682,6 +5682,11 @@ ${mlzBlock}` : mlzBlock;
           const courtText = zotItem.getField?.("court");
           this._omitSupremeCourtAuthority(cslItem, jur, styleID, courtText);
           this._resolveCourtKeyForPlainStyle(cslItem, jur, styleID, courtText);
+          try {
+            Zotero.Lawcite?.permaFormat?.(cslItem, zotItem);
+          } catch (e) {
+            this._warnRetrieveItem(String(e));
+          }
           this._sanitizeCSLControlFields(cslItem);
           this._logCitationItemData(cslItem, zotItem, "retrieveItem");
           this._logRenderProbeFromItem(cslItem, jur, "retrieveItem");
@@ -6719,6 +6724,13 @@ ${mlzBlock}` : mlzBlock;
     async _tryRegister() {
       try {
         if (this._paneID) return;
+        if (Zotero?.Lawcite) {
+          try {
+            Zotero.debug("[Citation Phoenix] prefs pane is part of the lawcite pane; not registering a separate one");
+          } catch (_) {
+          }
+          return;
+        }
         if (!Zotero?.PreferencePanes?.register) {
           this._scheduleRetry("PreferencePanes service not ready");
           return;

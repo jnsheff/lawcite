@@ -61,22 +61,22 @@
 	</groupbox>
 
 	<groupbox>
-		<html:h2>Legal data (citation-phoenix)</html:h2>
-		<label id="hicite-phoenix-status" value="Checking for citation-phoenix…"/>
+		<html:h2>Legal data (jurisdictions)</html:h2>
+		<label id="hicite-phoenix-status" value="Checking for jurisdiction data…"/>
 		<hbox align="center">
 			<label value="Use its legal data:" control="hicite-phoenixMode"/>
 			<menulist id="hicite-phoenixMode" native="true" preference="extensions.zotero.translators.hicite.phoenixMode">
 				<menupopup>
-					<menuitem label="Automatically (when citation-phoenix is installed and enabled)" value="auto"/>
+					<menuitem label="Automatically (when the jurisdiction data is installed and enabled)" value="auto"/>
 					<menuitem label="Always" value="on"/>
 					<menuitem label="Never" value="off"/>
 				</menupopup>
 			</menulist>
 		</hbox>
 		<description>
-			citation-phoenix stores Juris-M's legal data in Extra and Juris-M court IDs such as "court.appeals" in the Court field.
+			lawcite's jurisdictions (citation-phoenix) store Juris-M's legal data in Extra and Juris-M court IDs such as "court.appeals" in the Court field.
 			When it is in use, hicite turns a court ID into its Bluebook abbreviation ("court.appeals" in the Second Circuit becomes
-			"2d Cir."), takes a missing reporter from the Juris-M data, and writes citation-phoenix regulations as regcode and treaties
+			"2d Cir."), takes a missing reporter from the Juris-M data, and writes its regulations as regcode and treaties
 			as treaty. Without it, items export exactly as before. A court ID that cannot be translated with certainty is left out and
 			noted in the .tex file. Changes re-run your auto-exports.
 		</description>

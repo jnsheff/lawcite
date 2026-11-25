@@ -1,0 +1,77 @@
+<!-- lawcite Perma.cc settings pane. Parsed by Zotero as an XUL fragment: XUL elements are unprefixed and HTML
+     elements use the html: prefix. `preference` attributes bind a control to a preference (full key). -->
+<vbox id="permacc-prefs" onload="Zotero.PermaCCPrefs.init()">
+	<groupbox>
+		<html:h2>Perma.cc account</html:h2>
+		<label id="permacc-status" value="Checking…"/>
+		<description>
+			Perma.cc is reached with an API key. Perma.cc does not offer a password login for programs, so create a key
+			on its site (Settings, then Tools, then "Generate an API key"), and paste it below.
+		</description>
+		<hbox align="center">
+			<button label="Open Perma.cc's API key page" oncommand="Zotero.PermaCCPrefs.openKeyPage()"/>
+			<button label="API documentation" oncommand="Zotero.PermaCCPrefs.openDocs()"/>
+		</hbox>
+		<hbox align="center">
+			<label value="API key:" control="permacc-key"/>
+			<html:input id="permacc-key" type="password" autocomplete="off" spellcheck="false" style="flex: 1; min-width: 20em;"
+				onkeydown="if (event.key == 'Enter') Zotero.PermaCCPrefs.saveKey()"/>
+			<button id="permacc-save" label="Save and verify" oncommand="Zotero.PermaCCPrefs.saveKey()"/>
+		</hbox>
+		<checkbox id="permacc-remember" label="Remember my API key on this computer"
+			oncommand="Zotero.PermaCCPrefs.setRemember(this.checked)"/>
+		<description>
+			When this is on, the key is kept in Zotero's password store (the same place Firefox keeps saved logins).
+			Turn it off and lawcite forgets the key when Zotero closes; you will paste it again next time.
+		</description>
+		<hbox>
+			<button id="permacc-forget" label="Forget my API key" oncommand="Zotero.PermaCCPrefs.forget()"/>
+		</hbox>
+	</groupbox>
+
+	<groupbox>
+		<html:h2>How URLs appear in citations</html:h2>
+		<hbox align="center">
+			<label value="Show:" control="permacc-urlFormat"/>
+			<menulist id="permacc-urlFormat" native="true" preference="extensions.zotero.lawcite.permacc.urlFormat">
+				<menupopup>
+					<menuitem label="[URL], archived at [Perma.cc URL]" value="url-archived"/>
+					<menuitem label="[Perma.cc URL]" value="perma"/>
+					<menuitem label="[URL]" value="url"/>
+				</menupopup>
+			</menulist>
+		</hbox>
+		<description>
+			Applies to items that have a Perma.cc archive, in every citation style. The item's own URL field is never
+			changed; the archive's link is kept in the item's Extra field as "perma-cc: https://perma.cc/…", the form already used in
+			your library. Items that already have a Perma.cc link (in Extra, as a link attachment or in a note) are never archived again.
+		</description>
+	</groupbox>
+
+	<groupbox>
+		<html:h2>Archiving</html:h2>
+		<description>
+			lawcite can make sure every web URL in your libraries has a Perma.cc archive. A URL that your Perma.cc account
+			already has an archive of is recorded, not archived again. Each new page you archive is sent to Perma.cc, which
+			counts it against your account's allowance. Archives are filed in Perma.cc folders that
+			mirror your collections, under Personal Links, then Zotero, then the library's name.
+		</description>
+		<checkbox label="Archive new and existing URLs automatically" preference="extensions.zotero.lawcite.permacc.auto"/>
+		<checkbox label="Make my archives private" preference="extensions.zotero.lawcite.permacc.private"/>
+		<description>Unchecked, archives follow your Perma.cc default (public unless your account or organization says otherwise).</description>
+
+		<label value="Never archive these sites (one per line or separated by commas):" control="permacc-skip"/>
+		<html:textarea id="permacc-skip" rows="3" spellcheck="false" style="width: 100%;" onchange="Zotero.PermaCCPrefs.saveSkip()"/>
+
+		<label value="Libraries to archive (libraries you can edit):"/>
+		<vbox id="permacc-libraries"/>
+
+		<hbox align="center">
+			<button id="permacc-run" label="Archive now" oncommand="Zotero.PermaCCPrefs.archiveNow()"/>
+			<button id="permacc-pause" label="Pause" oncommand="Zotero.PermaCCPrefs.pause()"/>
+			<button id="permacc-retry" label="Retry failed" oncommand="Zotero.PermaCCPrefs.retryFailed()"/>
+		</hbox>
+		<label id="permacc-progress" value=""/>
+		<description id="permacc-note"/>
+	</groupbox>
+</vbox>

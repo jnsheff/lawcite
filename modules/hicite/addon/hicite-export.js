@@ -865,6 +865,9 @@ HiCite = {
 				this.schedule(null);
 			}));
 		}
+		// Inside lawcite there is one Settings pane for all its parts (lawcite's bootstrap registers it, with this
+		// part's preferences.xhtml as the hicite section); on its own, hicite has a pane of its own.
+		if (Zotero.Lawcite) return;
 		try {
 			await Zotero.PreferencePanes.register({
 				pluginID: this.id,

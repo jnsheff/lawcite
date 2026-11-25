@@ -16,6 +16,12 @@ export class PrefsUI {
   async _tryRegister() {
     try {
       if (this._paneID) return;
+      // Inside lawcite the one lawcite Settings pane carries this section ("Jurisdictions"), registered by
+      // lawcite's bootstrap with content/prefs-abbrev.xhtml; only on its own does this part have a pane.
+      if (Zotero?.Lawcite) {
+        try { Zotero.debug('[Citation Phoenix] prefs pane is part of the lawcite pane; not registering a separate one'); } catch (_) {}
+        return;
+      }
 
       if (!Zotero?.PreferencePanes?.register) {
         this._scheduleRetry('PreferencePanes service not ready');
