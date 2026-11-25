@@ -266,6 +266,35 @@ test('folders: library and nested collections', function () {
 	});
 });
 
+test('folders: organization by default, personal by choice, switching refiles under the other folder', function () {
+	var w = world();
+	w.srv.folders[20] = { id: 20, name: 'Example Law School', parent: null, organization: 5 };
+	w.srv.user.top_level_folders = [{ id: 10, name: 'Personal Links', organization: null }, { id: 20, name: 'Example Law School', organization: 5 }];
+	var it = w.item(1, 'A', { url: 'https://example.org/a' }, [2]);
+	function parentOfRoot() { var r = JSON.parse(w.prefs['lawcite.permacc.folderMap']).root; return w.srv.folders[r].parent; }
+	return w.P.setKey('GOODKEY', false).then(function () { return w.P.verify(); }).then(function () {
+		eq(JSON.parse(w.prefs['lawcite.permacc.organizations']), [{ id: '5', name: 'Example Law School', folder: 20 }], 'organizations recorded');
+		return w.P.folderIdFor(it);
+	}).then(function () {
+		eq(parentOfRoot(), 20, 'default is the organization folder');
+		eq(w.prefs['lawcite.permacc.archivingTo'], 'organization folder (Example Law School)', 'description');
+		w.prefs['lawcite.permacc.archiveTo'] = 'personal';
+		return w.P.folderIdFor(it);
+	}).then(function () {
+		eq(parentOfRoot(), 10, 'personal folder when chosen');
+		w.prefs['lawcite.permacc.archiveTo'] = 'org:5';
+		return w.P.folderIdFor(it);
+	}).then(function () { eq(parentOfRoot(), 20, 'org:<id> chooses that organization'); });
+});
+
+test('folders: no organization means personal, whatever the choice', function () {
+	var w = world();
+	var it = w.item(1, 'A', { url: 'https://example.org/a' }, []);
+	return w.P.setKey('GOODKEY', false).then(function () { return w.P.folderIdFor(it); }).then(function () {
+		eq(w.srv.folders[JSON.parse(w.prefs['lawcite.permacc.folderMap']).root].parent, 10, 'personal');
+	});
+});
+
 test('folders: item in several collections, and in none', function () {
 	var w = world();
 	var multi = w.item(1, 'M', { url: 'https://example.org/m' }, [3, 2]); // Contracts and Torts/AI: "Contracts" sorts before "Torts/AI"

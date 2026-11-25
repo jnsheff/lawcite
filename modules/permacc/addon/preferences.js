@@ -35,7 +35,36 @@ Zotero.PermaCCPrefs = {
 			label.setAttribute('value', 'Not connected: no API key yet.');
 		}
 		this.el('forget').disabled = !(await P.hasKey());
+		this.renderArchiveTo();
 		this.refreshProgress();
+	},
+
+	// "Perma.cc folder": the organization folder (default), each organization when the account has several, or the personal folder.
+	renderArchiveTo() {
+		let P = this.perma, list = this.el('archiveTo'), popup = this.el('archiveTo-popup');
+		if (!P || !list || !popup) return;
+		let orgs = P.json('organizations', []), want = P.pref('archiveTo') || 'organization';
+		while (popup.firstChild) popup.removeChild(popup.firstChild);
+		let add = (label, value) => {
+			let item = popup.ownerDocument.createXULElement ? popup.ownerDocument.createXULElement('menuitem') : popup.ownerDocument.createElement('menuitem');
+			item.setAttribute('label', label); item.setAttribute('value', value); popup.appendChild(item);
+		};
+		add(orgs.length ? `Organization folder: ${orgs[0].name} (default)` : 'Organization folder (default)', 'organization');
+		if (orgs.length > 1) for (let o of orgs.slice(1)) add(`Organization folder: ${o.name}`, 'org:' + o.id);
+		add('Personal folder', 'personal');
+		list.value = [...popup.childNodes].some(n => n.getAttribute('value') === want) ? want : 'organization';
+		let note = this.el('archiveTo-note');
+		let to = P.pref('archivingTo');
+		note.textContent = (orgs.length ? '' : 'Verify your API key to see your organizations. ')
+			+ (to ? `Currently filing in: ${to}. ` : '')
+			+ 'Changing this affects new archives only; existing archives stay where they are, and a URL already archived in either folder is recorded, not archived again.';
+	},
+
+	saveArchiveTo() {
+		let P = this.perma;
+		if (!P) return;
+		P.setPref('archiveTo', this.el('archiveTo').value || 'organization');
+		this.renderArchiveTo();
 	},
 
 	refreshProgress() {

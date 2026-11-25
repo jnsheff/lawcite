@@ -4,7 +4,7 @@
  * item's Extra field ("perma-cc: https://perma.cc/ABCD-1234", the form already used in the user's library); the item's own
  * URL is never changed. An archive already recorded anywhere (that Extra line in any of its spellings, a bare perma.cc
  * link in Extra, a child link attachment or note) or already in the user's Perma.cc account is never paid for twice. Archives are
- * filed in Perma.cc folders that mirror the Zotero collections: Personal Links / Zotero / <library> / <collection>.
+ * filed in Perma.cc folders that mirror the Zotero collections: <personal or organization folder> / Zotero / <library> / <collection>.
  * A style can show the URL, the Perma.cc link, or both (formatURL, applied to the CSL item citeproc receives).
  *
  * Authentication is an API key (Authorization: ApiKey <key>); Perma.cc documents no password login. The key is
@@ -234,6 +234,7 @@ var PermaCC = {
 	async verify() {
 		let { json } = await this.request('GET', '/user/');
 		this.setPref('accountName', json?.full_name || json?.short_name || '');
+		this.saveJSON('organizations', this.organizationsOf(json));
 		this.lastError = '';
 		return json;
 	},
@@ -265,14 +266,50 @@ var PermaCC = {
 		return id;
 	},
 
+	// The organization top-level folders of an account, as [{ id, name, folder }]; the personal one has none.
+	orgOfFolder(f) { let o = f?.organization; return o && typeof o === 'object' ? o.id : o; },
+	organizationsOf(user) {
+		let out = [];
+		for (let f of user?.top_level_folders || []) {
+			let id = this.orgOfFolder(f);
+			if (id === null || id === undefined || id === '') continue;
+			out.push({ id: String(id), name: f.name || ('Organization ' + id), folder: f.id });
+		}
+		return out;
+	},
+
+	// Where archives go: 'organization' (default: the account's first organization, else personal), 'org:<id>', or 'personal'.
+	// Returns the top-level folder and a description of what was chosen.
+	pickTopFolder(user, want) {
+		let tops = user?.top_level_folders || [];
+		let orgs = this.organizationsOf(user);
+		let personal = tops.find(f => { let id = this.orgOfFolder(f); return id === null || id === undefined || id === ''; });
+		let top, label;
+		if (want === 'personal') { top = personal; label = 'personal folder'; }
+		else {
+			let org = String(want || '').startsWith('org:') ? orgs.find(o => o.id === want.slice(4)) : null;
+			org = org || orgs[0];
+			if (org) { top = tops.find(f => f.id === org.folder); label = 'organization folder (' + org.name + ')'; }
+			else { top = personal; label = 'personal folder (this account has no organization folder)'; }
+		}
+		top = top || personal || tops[0];
+		return { top, label };
+	},
+
 	async rootFolderId() {
+		let want = this.pref('archiveTo') || 'organization';
 		let map = this.folderMap();
-		if (map.root) return map.root;
+		if (map.root && map.rootChoice === want) return map.root;
+		if (map.root) { this.forgetFolders(); } // the choice changed: the cached folders belong to the other folder
 		let { json } = await this.request('GET', '/user/');
-		let tops = json?.top_level_folders || [];
-		let personal = tops.find(f => !f.organization) || tops[0];
-		if (!personal) throw new this.PermaError('rejected', 0, 'No Perma.cc folder to file archives in');
-		return this.ensureChild('root', personal.id, 'Zotero');
+		let { top, label } = this.pickTopFolder(json, want);
+		if (!top) throw new this.PermaError('rejected', 0, 'No Perma.cc folder to file archives in');
+		this.setPref('archivingTo', label);
+		let id = await this.ensureChild('root', top.id, 'Zotero');
+		map = this.folderMap();
+		map.rootChoice = want;
+		this.saveJSON('folderMap', map);
+		return id;
 	},
 
 	// The collection an item is filed under: its first collection by full name; none means the library's own folder.

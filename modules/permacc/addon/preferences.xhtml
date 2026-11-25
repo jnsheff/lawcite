@@ -53,9 +53,19 @@
 		<description>
 			lawcite can make sure every web URL in your libraries has a Perma.cc archive. A URL that your Perma.cc account
 			already has an archive of is recorded, not archived again. Each new page you archive is sent to Perma.cc, which
-			counts it against your account's allowance. Archives are filed in Perma.cc folders that
-			mirror your collections, under Personal Links, then Zotero, then the library's name.
+			counts it against the allowance of the personal or organization folder it is filed in. Archives are filed in Perma.cc folders that
+			mirror your collections, under Zotero, then the library's name, within the personal or organization folder chosen below.
 		</description>
+		<hbox align="center">
+			<label value="Perma.cc folder:" control="permacc-archiveTo"/>
+			<menulist id="permacc-archiveTo" native="true" oncommand="Zotero.PermaCCPrefs.saveArchiveTo()">
+				<menupopup id="permacc-archiveTo-popup">
+					<menuitem label="Organization folder (default)" value="organization"/>
+					<menuitem label="Personal folder" value="personal"/>
+				</menupopup>
+			</menulist>
+		</hbox>
+		<description id="permacc-archiveTo-note"/>
 		<checkbox label="Archive new and existing URLs automatically" preference="extensions.zotero.lawcite.permacc.auto"/>
 		<checkbox label="Make my archives private" preference="extensions.zotero.lawcite.permacc.private"/>
 		<description>Unchecked, archives follow your Perma.cc default (public unless your account or organization says otherwise).</description>

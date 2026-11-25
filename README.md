@@ -74,7 +74,7 @@ archive in your citations. Set it up under Settings, then Perma.cc.
   rewritten.
 - **How URLs appear.** Choose `[URL], archived at [Perma.cc URL]` (the default), `[Perma.cc URL]`, or `[URL]`. This
   applies to items that have an archive, in every citation style, because it is applied when the citation is built.
-- **Folders.** Archives are filed in Perma.cc folders that mirror your collections: Personal Links, then `Zotero`, then
+- **Folders.** Archives are filed in Perma.cc folders that mirror your collections: your organization folder (the default; or your personal folder, if you choose it in settings), then `Zotero`, then
   the library's name (shared group libraries get their own), then the collection path. A Perma.cc archive lives in one
   folder, so an item in several collections is filed under its first collection by name; an item in none goes in the
   library's folder. Folders are created and reused as needed; renaming a collection later does not rename the folder.
