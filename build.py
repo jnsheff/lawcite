@@ -108,11 +108,12 @@ def main():
             out.write(open(os.path.join(part, 'prefs.js'), encoding='utf-8').read().rstrip('\n') + '\n')
     # permacc: everything but its default prefs
     for name in os.listdir(PERMACC):
-        if name in ('prefs.js', '.DS_Store'):
+        if name in ('prefs.js', 'locale', '.DS_Store'):
             continue
         dst = os.path.join(STAGE, 'permacc', name)
         os.makedirs(os.path.dirname(dst), exist_ok=True)
         shutil.copy2(os.path.join(PERMACC, name), dst)
+    shutil.copy2(os.path.join(PERMACC, 'locale', 'en-US', 'permacc.ftl'), os.path.join(STAGE, 'locale', 'en-US', 'permacc.ftl'))
     # lawcite's icon (assets/icon.svg): the plugin icon, and the image citation-phoenix's Settings pane loads
     shutil.copy2(os.path.join(ROOT, 'assets', 'icon.svg'), os.path.join(STAGE, 'icon.svg'))
     shutil.copy2(os.path.join(ROOT, 'assets', 'icon.svg'), os.path.join(STAGE, 'content', 'ui', 'icon48.svg'))
@@ -148,7 +149,7 @@ def verify(xpi):
                  'hicite/hicite-export.js', 'hicite/preferences.xhtml', 'hicite/translator/hicite.js',
                  'permacc/permacc.js', 'permacc/preferences.xhtml', 'permacc/preferences.js',
                  'pane/preferences.xhtml', 'pane/preferences.js', 'pane/preferences.css', 'content/prefs-abbrev.js', 'content/prefs-abbrev.css',
-                 'locale/en-US/hicite-export.ftl', 'locale/en-US/citation-phoenix.ftl',
+                 'locale/en-US/hicite-export.ftl', 'locale/en-US/citation-phoenix.ftl', 'locale/en-US/permacc.ftl',
                  'styles/lawcite-indigobook-lawreview.csl', 'styles/lawcite-indigobook-memoranda.csl',
                  'styles/lawcite-apa.csl'):
         if need not in names:

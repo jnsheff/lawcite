@@ -122,16 +122,12 @@ Zotero.PermaCCPrefs = {
 		if (P.pref('offered')) return;
 		P.setPref('offered', true);
 		let n = await P.countCandidates();
-		let text = n
-			? `lawcite found ${n} web URL${n == 1 ? '' : 's'} in your libraries without a Perma.cc archive.\n\n` +
-				'Archive them now, and archive new URLs automatically from now on?\n\n' +
-				'Each page is sent to Perma.cc and counts against your account\'s allowance. You can pause at any time, ' +
-				'and you can list sites to leave out below.'
-			: 'None of your libraries has a URL that needs an archive yet.\n\nArchive new URLs automatically from now on?';
-		if (Services.prompt.confirm(window, 'Perma.cc', text)) {
-			P.setPref('auto', true);
-			if (n) P.run();
-		}
+		let text = 'Archive new URLs automatically from now on?\n\n' +
+			'Only items you add from now on are archived this way; each page is sent to Perma.cc and counts against your ' +
+			'account\'s allowance. ' +
+			(n ? `${n} web URL${n == 1 ? '' : 's'} already in your libraries ${n == 1 ? 'has' : 'have'} no Perma.cc archive; ` +
+				'they are archived only when you press "Archive now".' : 'None of your existing URLs needs an archive.');
+		if (Services.prompt.confirm(window, 'Perma.cc', text)) { P.setPref('auto', true); P.noteAutoState(); }
 	},
 
 	async forget() {

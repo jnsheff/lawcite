@@ -79,11 +79,13 @@ archive in your citations. Set it up under Settings, then Perma.cc.
   folder, so an item in several collections is filed under its first collection by name; an item in none goes in the
   library's folder. Folders are created and reused as needed; renaming a collection later does not rename the folder.
 - **Turning it on.** Nothing is archived until you say so. After the first successful connection lawcite counts the URLs
-  that need an archive and asks whether to archive them now and archive new ones automatically. "Archive now" and the
-  "automatically" checkbox are in the pane, as are "Pause", "Retry failed", the list of libraries to include
+  that need an archive and asks whether to archive new ones automatically. Automatic archiving is prospective only: it
+  covers items added after you switch it on. Existing libraries are archived only when you press "Archive now". The
+  "Archive new URLs automatically" checkbox and "Archive now" are in the pane, as are "Pause", "Retry failed", the list of libraries to include
   (libraries you can edit, including shared groups; archiving writes the Extra line into those items) and a list of
   sites never to archive. The list starts with subscription sites whose pages need a login (Westlaw, Lexis, Bloomberg
-  Law, HeinOnline), which would only be captured as a login page.
+  Law, HeinOnline), which would only be captured as a login page, and with repositories that are already permanent
+  records (arXiv, SSRN, JSTOR).
 - **Cost and privacy.** Every archived page is sent to Perma.cc and counts against your account's allowance. Perma.cc
   does not document its quotas or rate limits in the developer docs, so lawcite paces its requests, retries on
   rate-limit and server errors, stops when Perma.cc reports a limit or rejects the key, and gives up after five failures in

@@ -175,6 +175,7 @@ async function lawciteRegisterPane({ id }, base) {
 		],
 		stylesheets: [base + 'pane/preferences.css', base + 'content/prefs-abbrev.css'],
 	});
+	Zotero.Lawcite.paneID = lawciteState.paneID; // the right-click menu opens Settings here
 }
 
 function lawciteUnregisterPane() {
@@ -244,5 +245,5 @@ async function uninstall(data, reason) {
 	catch (e) { Zotero.logError(e); }
 }
 
-function onMainWindowLoad({ window }) { HiCite?.addToWindow(window); }
-function onMainWindowUnload({ window }) { HiCite?.removeFromWindow(window); }
+function onMainWindowLoad({ window }) { HiCite?.addToWindow(window); PermaCC?.addToWindow(window); }
+function onMainWindowUnload({ window }) { HiCite?.removeFromWindow(window); PermaCC?.removeFromWindow(window); }

@@ -114,7 +114,7 @@ var PermaCC = {
 
 	// The URL to archive, or null: web (http/https) addresses only, not local or private hosts, not Perma.cc links,
 	// not a site on the user's skip list (subscription sites whose pages need a login are pointless to capture).
-	archivableURL(raw) {
+	archivableURL(raw, { ignoreSkip = false } = {}) {
 		let text = String(raw || '').trim();
 		if (!text) return null;
 		let url;
@@ -125,7 +125,7 @@ var PermaCC = {
 		if (!host.includes('.') || host === 'localhost' || host.endsWith('.local') || host.endsWith('.internal')) return null;
 		if (/^(127|10)\./.test(host) || /^192\.168\./.test(host) || /^172\.(1[6-9]|2\d|3[01])\./.test(host)) return null;
 		if (host === 'perma.cc' || host.endsWith('.perma.cc')) return null;
-		if (this.skipDomains().some(d => host === d || host.endsWith('.' + d))) return null;
+		if (!ignoreSkip && this.skipDomains().some(d => host === d || host.endsWith('.' + d))) return null;
 		return text;
 	},
 
@@ -385,7 +385,9 @@ var PermaCC = {
 
 	// Regular items with an archivable URL and no archive recorded anywhere (Extra in any spelling, a child attachment or
 	// note), not waiting for a capture, not recently failed.
-	async findCandidates({ includeFailed = false } = {}) {
+	// `since` (ms since the epoch) limits the search to items added at or after that moment: automatic archiving is only
+	// prospective, so existing libraries are archived solely by the user's "Archive now".
+	async findCandidates({ includeFailed = false, since = 0 } = {}) {
 		let pending = new Set(this.json('pending', []).map(p => p.libraryID + '/' + p.key));
 		let failures = this.json('failures', {});
 		let now = Date.now(), out = [];
@@ -399,6 +401,7 @@ var PermaCC = {
 			let recorded = this.childArchives(all);
 			for (let item of all) {
 				if (!item.isRegularItem?.() || item.deleted) continue;
+				if (since && !(this.addedAt(item) >= since)) continue;
 				let url = this.archivableURL(item.getField('url'));
 				if (!url) continue;
 				if (this.guidFromExtra(item.getField('extra')) || recorded.has(item.id)) continue;
@@ -410,6 +413,20 @@ var PermaCC = {
 			}
 		}
 		return out;
+	},
+
+	// When an item was added (ms since the epoch); Zotero stores dateAdded as UTC 'YYYY-MM-DD HH:MM:SS'. NaN if unreadable.
+	addedAt(item) {
+		let raw = String(item.getField('dateAdded') || '').trim();
+		return /^\d{4}-\d\d-\d\d \d\d:\d\d:\d\d$/.test(raw) ? Date.parse(raw.replace(' ', 'T') + 'Z') : NaN;
+	},
+
+	// Automatic archiving only ever covers what is added after it is switched on (autoSince; stored as text because Zotero
+	// preferences are 32-bit). Called when the checkbox changes, and lazily for a profile that already had it on.
+	noteAutoState() {
+		let on = !!this.pref('auto'), since = Number(this.pref('autoSince')) || 0;
+		if (on && !since) this.setPref('autoSince', String(Date.now()));
+		else if (!on && since) this.setPref('autoSince', '');
 	},
 
 	async countCandidates() { return (await this.findCandidates()).length; },
@@ -532,7 +549,8 @@ var PermaCC = {
 		this.saveJSON('pending', keep);
 	},
 
-	async run() {
+	// run(): everything that needs an archive (the user's "Archive now"). run({ since }): only items added since then.
+	async run({ since = 0 } = {}) {
 		if (this.running || this.destroyed) return this.progress;
 		if (!(await this.hasKey())) { this.progress = { state: 'no-key', total: 0, done: 0, adopted: 0, failed: 0, current: '' }; return this.progress; }
 		this.running = true;
@@ -541,7 +559,7 @@ var PermaCC = {
 		let sleep = this.sleep || (ms => new Promise(r => setTimeout(r, ms)));
 		try {
 			try { await this.checkPending(); } catch (e) { Zotero.logError(e); }
-			let candidates = await this.findCandidates();
+			let candidates = await this.findCandidates({ since });
 			this.progress = { state: 'running', total: candidates.length, done: 0, adopted: 0, failed: 0, current: '' };
 			let known = new Map();
 			if (candidates.length) {
@@ -607,18 +625,108 @@ var PermaCC = {
 	// --------------------------------------------------------- keeping up
 	onNotify(event, type, ids) {
 		if (this.destroyed || type !== 'item' || !['add', 'modify'].includes(event)) return;
+		this.noteAutoState();
 		if (!this.pref('auto')) return;
 		this.schedule(15000);
 	},
 
 	schedule(delayMs) {
 		if (this.destroyed || !this.pref('auto')) return;
+		this.noteAutoState();
 		if (this.timer) clearTimeout(this.timer);
 		this.timer = setTimeout(async () => {
 			this.timer = null;
-			try { if (await this.hasKey()) await this.run(); } catch (e) { Zotero.logError(e); }
+			try {
+				let since = Number(this.pref('autoSince')) || 0;
+				if (since && await this.hasKey()) await this.run({ since }); // prospective only
+			}
+			catch (e) { Zotero.logError(e); }
 		}, delayMs);
 	},
+
+
+	// ------------------------------------------------- right-click menu item
+	FTL: 'permacc.ftl',
+
+	alert(text) {
+		try { Services.prompt.alert(Zotero.getMainWindow?.(), 'lawcite: Perma.cc', text); }
+		catch (e) { Zotero.logError(e); }
+	},
+
+	// Opens Settings at the Perma.cc section of the lawcite pane.
+	openSettings() {
+		try { Zotero.Utilities.Internal.openPreferences(Zotero.Lawcite?.paneID, { scrollTo: '#lawcite-section-perma' }); }
+		catch (e) { Zotero.logError(e); }
+	},
+
+	// "lawcite: Get Perma.cc Link": archive the selected items' URLs now (reusing an archive that already exists, in Extra
+	// or in the Perma.cc account) and report the links. Works regardless of the automatic-archiving setting and the skip
+	// list: it is an explicit request, for these items only.
+	async getLinkFromMenu(items) {
+		let regular = (items || []).filter(i => i.isRegularItem?.());
+		if (!regular.length) return;
+		if (!(await this.hasKey())) {
+			this.alert('To get a Perma.cc link, lawcite must first be connected to your Perma.cc account.\n\n' +
+				'Paste your Perma.cc API key in the Perma.cc section of the lawcite settings, which will open now.');
+			this.openSettings();
+			return;
+		}
+		let sleep = this.sleep || (ms => new Promise(r => setTimeout(r, ms)));
+		let one = regular.length === 1, lines = [], links = [];
+		for (let item of regular) {
+			let name = String(item.getField('title') || item.getField('caseName') || item.key).slice(0, 60);
+			let say = text => lines.push(one ? text : `${name}: ${text}`);
+			let raw = String(item.getField('url') || '').trim();
+			if (!raw) { say('this item has no URL, so there is nothing to archive.'); continue; }
+			let url = this.archivableURL(raw, { ignoreSkip: true });
+			if (!url) { say(`Perma.cc can only archive public web (http or https) pages, so ${raw} cannot be archived.`); continue; }
+			try {
+				let guid = this.archivedGuid(item), how = 'already had';
+				if (!guid) {
+					let existing = (await this.accountArchives()).get(this.normalizeURL(url));
+					if (existing) { guid = await this.recordExisting(item, existing.guid); how = 'was already archived on Perma.cc for'; }
+					else { guid = await this.archiveOne(item, url); how = 'archived'; }
+				}
+				let link = this.permaURL(guid);
+				links.push(link);
+				say(how === 'archived' ? `archived: ${link}` : `${how === 'already had' ? 'this item already has' : 'found'} a Perma.cc link: ${link}`);
+			}
+			catch (e) {
+				if (e.kind === 'auth') {
+					this.alert('Perma.cc did not accept your API key. Paste a new one in the Perma.cc section of the lawcite settings, which will open now.');
+					this.openSettings();
+					return;
+				}
+				say(`could not archive (${e.message}).`);
+				if (e.kind === 'quota') break;
+			}
+			if (regular.length > 1) await sleep(this.pacingMs);
+		}
+		if (links.length) {
+			try { Zotero.Utilities.Internal.copyTextToClipboard(links.join('\n')); lines.push('', links.length === 1 ? 'The link was copied to the clipboard.' : 'The links were copied to the clipboard.'); }
+			catch (e) { /* no clipboard */ }
+		}
+		this.alert(lines.join('\n'));
+	},
+
+	registerMenus() {
+		let id = Zotero.MenuManager.registerMenu({
+			menuID: 'lawcite-permacc-main-library-item',
+			pluginID: this.id,
+			target: 'main/library/item',
+			menus: [{
+				menuType: 'menuitem', l10nID: 'permacc-menu-get-link',
+				onShowing: (event, ctx) => ctx.setVisible(!!ctx.items?.some(i => i.isRegularItem())),
+				onCommand: (event, ctx) => this.getLinkFromMenu(ctx.items),
+			}],
+		});
+		if (id) this.menuIDs.push(id);
+		else Zotero.logError(new Error('permacc: registerMenu rejected the item menu'));
+	},
+
+	addToWindow(win) { win.MozXULElement.insertFTLIfNeeded(this.FTL); },
+	removeFromWindow(win) { win.document.querySelector(`[href="${this.FTL}"]`)?.remove(); },
+	addToAllWindows() { for (let win of Zotero.getMainWindows?.() || []) this.addToWindow(win); },
 
 	// ---------------------------------------------------------------- lifecycle
 	async init({ id, version, rootURI, fetch = null, sleep = null }) {
@@ -628,10 +736,15 @@ var PermaCC = {
 		this.fetch = fetch;
 		this.sleep = sleep;
 		this.destroyed = false;
+		this.menuIDs = [];
 
 		this.observerID = Zotero.Notifier.registerObserver({
 			notify: (event, type, ids) => this.onNotify(event, type, ids),
 		}, ['item'], 'lawcite-permacc');
+
+		// Switching automatic archiving on starts "from now"; switching it off forgets the moment.
+		try { this.autoObserver = Zotero.Prefs.registerObserver?.(this.PREF + 'auto', () => this.noteAutoState()); }
+		catch (e) { Zotero.logError(e); }
 
 		// Inside lawcite the one lawcite Settings pane carries this section (lawcite's bootstrap registers it).
 		if (!Zotero.Lawcite) {
@@ -646,6 +759,9 @@ var PermaCC = {
 			catch (e) { Zotero.logError(e); }
 		}
 
+		try { this.registerMenus(); this.addToAllWindows(); }
+		catch (e) { Zotero.logError(e); }
+
 		// Catch up once Zotero is settled, if the user has switched archiving on.
 		Zotero.uiReadyPromise?.then(() => this.schedule(60000));
 	},
@@ -657,6 +773,11 @@ var PermaCC = {
 		this.timer = null;
 		if (this.observerID) Zotero.Notifier.unregisterObserver(this.observerID);
 		this.observerID = null;
+		try { if (this.autoObserver) Zotero.Prefs.unregisterObserver?.(this.autoObserver); } catch (e) { /* closing */ }
+		this.autoObserver = null;
+		for (let id of this.menuIDs || []) { try { Zotero.MenuManager.unregisterMenu(id); } catch (e) { /* closing */ } }
+		this.menuIDs = [];
+		try { for (let win of Zotero.getMainWindows?.() || []) this.removeFromWindow(win); } catch (e) { /* closing */ }
 		delete Zotero.PermaCCPrefs; // defined by the Settings pane's script
 	},
 };

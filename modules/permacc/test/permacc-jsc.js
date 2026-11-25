@@ -15,7 +15,7 @@ function world(opts) {
 	opts = opts || {};
 	var prefs = Object.assign({}, defaults);
 	Object.keys(opts.prefs || {}).forEach(function (k) { prefs['lawcite.permacc.' + k] = opts.prefs[k]; });
-	var saved = [], logged = [], notifiers = [], logins = [];
+	var saved = [], logged = [], notifiers = [], logins = [], menus = [], opened = [], clipboard = [], alerts = [];
 	var collections = { 1: { id: 1, key: 'COLA', name: 'Torts', parentID: false }, 2: { id: 2, key: 'COLB', name: 'AI', parentID: 1 }, 3: { id: 3, key: 'COLC', name: 'Contracts', parentID: false } };
 	var items = [], nextId = 1;
 	// opts: { regular: false } for a non-regular item; { type: 'attachment' | 'note', parent: item, note: '<p>html</p>' } for a child
@@ -58,8 +58,11 @@ function world(opts) {
 		Notifier: { registerObserver: function (o, types, name) { notifiers.push({ o: o, types: types, name: name }); return 'obs1'; }, unregisterObserver: function (id) { notifiers.push('unreg:' + id); } },
 		PreferencePanes: { register: function (o) { notifiers.push({ pane: o }); return Promise.resolve(); } },
 		uiReadyPromise: new Promise(function () {}),
+		MenuManager: { registerMenu: function (o) { menus.push(o); return o.menuID; }, unregisterMenu: function (id) { notifiers.push('unmenu:' + id); } },
+		getMainWindow: function () { return null; }, getMainWindows: function () { return []; },
+		Utilities: { Internal: { openPreferences: function (pane, opts) { opened.push({ pane: pane, opts: opts }); }, copyTextToClipboard: function (t) { clipboard.push(t); } } },
 	};
-	var Services = { logins: {
+	var Services = { prompt: { alert: function (win, title, text) { alerts.push(text); } }, logins: {
 		searchLoginsAsync: function (q) { return Promise.resolve(logins.filter(function (l) { return l.origin === q.origin && l.httpRealm === q.httpRealm; })); },
 		addLoginAsync: function (l) { logins.push(l); return Promise.resolve(l); },
 		removeLogin: function (l) { logins.splice(logins.indexOf(l), 1); },
@@ -117,7 +120,7 @@ function world(opts) {
 	var P = new Function('Zotero', 'Services', 'Components', 'setTimeout', 'clearTimeout', 'URL', src + '; return PermaCC;')(Zotero, Services, Components, function (fn) { return 1; }, function () {}, URLShim);
 	P.fetch = fetchFake;
 	P.sleep = function () { return Promise.resolve(); };
-	return { P: P, Zotero: Zotero, prefs: prefs, saved: saved, logged: logged, notifiers: notifiers, logins: logins, srv: srv, item: item, collections: collections };
+	return { P: P, Zotero: Zotero, prefs: prefs, saved: saved, logged: logged, notifiers: notifiers, logins: logins, srv: srv, item: item, collections: collections, menus: menus, opened: opened, clipboard: clipboard, alerts: alerts };
 }
 
 var chain = Promise.resolve();
@@ -474,6 +477,86 @@ test('formatURL: the three formats', function () {
 	c = {}; w.P.formatURL(c, it); eq(c.URL, 'https://perma.cc/AB12-CD34', 'perma-only supplies the URL even if the style had none');
 });
 
+test('automatic archiving is prospective: only items added after it was switched on', function () {
+	var w = world();
+	var old = w.item(1, 'OLD', { url: 'https://example.org/old', dateAdded: '2026-01-01 00:00:00' }, []);
+	var fresh = w.item(1, 'NEW', { url: 'https://example.org/new', dateAdded: '2026-06-01 12:00:00' }, []);
+	var nodate = w.item(1, 'NODATE', { url: 'https://example.org/nodate' }, []);
+	var since = Date.parse('2026-06-01T00:00:00Z');
+	function posts() { return w.srv.calls.filter(function (c) { return c.indexOf('POST /archives/') === 0; }); }
+	return w.P.setKey('GOODKEY', false).then(function () { return w.P.findCandidates({ since: since }); }).then(function (c) {
+		eq(c.map(function (x) { return x.item.key; }), ['NEW'], 'only the item added after the switch-on moment (undated items are left alone)');
+		return w.P.findCandidates();
+	}).then(function (c) {
+		eq(c.length, 3, 'a manual run still covers everything');
+		w.prefs['lawcite.permacc.auto'] = true;
+		w.P.noteAutoState();
+		ok(Number(w.prefs['lawcite.permacc.autoSince']) > 0, 'switching on records the moment');
+		w.prefs['lawcite.permacc.auto'] = false;
+		w.P.noteAutoState();
+		eq(w.prefs['lawcite.permacc.autoSince'], '', 'switching off forgets it');
+		w.prefs['lawcite.permacc.auto'] = true;
+		w.prefs['lawcite.permacc.autoSince'] = String(since);
+		return w.P.run({ since: since });
+	}).then(function () {
+		eq(posts().length, 1, 'a prospective run archives only the new item');
+		eq(posts()[0].indexOf('example.org/new') >= 0, true, 'and it is the new one');
+	});
+});
+
+test('menu item: Get Perma.cc Link', function () {
+	var w = world();
+	var P = w.P;
+	P.id = 'lawcite@zotero.local';
+	P.menuIDs = [];
+	P.registerMenus();
+	var m = w.menus[0];
+	eq([m.target, m.menus[0].l10nID, m.menus[0].menuType], ['main/library/item', 'permacc-menu-get-link', 'menuitem'], 'one item-menu entry');
+	eq(read('addon/locale/en-US/permacc.ftl').indexOf('permacc-menu-get-link =') === 0, true, 'its label exists');
+	var vis = []; m.menus[0].onShowing(null, { items: [w.item(1, 'V', {}, [], { type: 'attachment' })], setVisible: function (v) { vis.push(v); } });
+	m.menus[0].onShowing(null, { items: [w.item(1, 'V2', {}, [])], setVisible: function (v) { vis.push(v); } });
+	eq(vis, [false, true], 'shown only for regular items');
+	w.Zotero.Lawcite = { paneID: 'plugin-pane-xyz' };
+	var noURL = w.item(1, 'NOURL', { title: 'No URL here', url: '' }, []);
+	var good = w.item(1, 'GOOD', { title: 'A page', url: 'https://example.org/page' }, [2]);
+	var skipped = w.item(1, 'SKIP', { title: 'A paper', url: 'https://arxiv.org/abs/1' }, []);
+	function posts() { return w.srv.calls.filter(function (c) { return c.indexOf('POST /archives/') === 0; }); }
+	return P.getLinkFromMenu([good]).then(function () {
+		eq(w.alerts.length, 1, 'not connected: one dialog');
+		ok(/must first be connected/.test(w.alerts[0]), 'it explains the API key is needed: ' + w.alerts[0].slice(0, 50));
+		eq(w.opened, [{ pane: 'plugin-pane-xyz', opts: { scrollTo: '#lawcite-section-perma' } }], 'and Settings opens at the Perma.cc section');
+		eq(posts(), [], 'nothing archived');
+		w.alerts.length = 0; w.opened.length = 0;
+		return P.setKey('GOODKEY', false);
+	}).then(function () { return P.getLinkFromMenu([noURL]); }).then(function () {
+		eq(w.alerts, ['this item has no URL, so there is nothing to archive.'], 'no URL: a dialog says so');
+		eq(posts(), [], 'nothing archived');
+		w.alerts.length = 0;
+		return P.getLinkFromMenu([good]);
+	}).then(function () {
+		eq(posts().length, 1, 'the URL is archived');
+		ok(/^archived: https:\/\/perma\.cc\/MOCK-/.test(w.alerts[0]) || /^archived: https:\/\/perma\.cc\/[A-Z0-9]{4}-[A-Z0-9]{4}/.test(w.alerts[0]), 'the dialog gives the link: ' + w.alerts[0]);
+		eq(w.clipboard.length, 1, 'and it is copied');
+		ok(/perma-cc: https:\/\/perma\.cc\//.test(good.getField('extra')), 'recorded in Extra');
+		w.alerts.length = 0;
+		return P.getLinkFromMenu([good]);
+	}).then(function () {
+		eq(posts().length, 1, 'asking again does not archive again');
+		ok(/already has a Perma\.cc link/.test(w.alerts[0]), 'it says the link exists: ' + w.alerts[0]);
+		w.alerts.length = 0;
+		return P.getLinkFromMenu([skipped]);
+	}).then(function () {
+		eq(posts().length, 2, 'an explicit request overrides the skip list');
+		w.alerts.length = 0; w.opened.length = 0;
+		w.srv.key = 'ROTATED';
+		var another = w.item(1, 'ANOTHER', { url: 'https://example.org/another' }, []);
+		return P.getLinkFromMenu([another]);
+	}).then(function () {
+		ok(/did not accept your API key/.test(w.alerts[0]), 'a rejected key is explained: ' + w.alerts[0]);
+		eq(w.opened.length, 1, 'and Settings opens');
+	});
+});
+
 test('notifier and lifecycle', function () {
 	var w = world();
 	var scheduled = 0;
@@ -554,11 +637,17 @@ test('pane script: opens, connects, offers, forgets', function () {
 		eq(W.confirms.length, 1, 'the first-run offer is made once');
 		ok(/2 web URLs/.test(W.confirms[0]), 'it says how many URLs are waiting: ' + W.confirms[0].slice(0, 60));
 		eq(w.prefs['lawcite.permacc.auto'], true, 'accepting turns automatic archiving on');
+		ok(Number(w.prefs['lawcite.permacc.autoSince']) > 0, 'and starts it from now');
+		ok(/only when you press "Archive now"/.test(W.confirms[0]), 'the offer says existing URLs wait for Archive now');
 		eq(w.prefs['lawcite.permacc.offered'], true, 'and is not offered again');
 		eq(w.logins.length, 1, 'the key was remembered (default)');
 		return flush(w, 600);
 	}).then(function () {
-		eq(w.srv.calls.filter(function (c) { return c.indexOf('POST /archives/') === 0; }).length, 2, 'accepting archives the waiting URLs');
+		eq(w.srv.calls.filter(function (c) { return c.indexOf('POST /archives/') === 0; }), [], 'accepting archives nothing that already exists');
+		W.pane.archiveNow();
+		return flush(w, 900);
+	}).then(function () {
+		eq(w.srv.calls.filter(function (c) { return c.indexOf('POST /archives/') === 0; }).length, 2, 'Archive now archives the waiting URLs');
 		W.pane.refreshProgress();
 		eq(E['permacc-progress'].attrs.value, 'Finished: 2 archived.', 'progress text after a run');
 		eq(E['permacc-run'].disabled, false, 'Archive now is available again');

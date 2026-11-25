@@ -1,6 +1,7 @@
 pref("extensions.zotero.lawcite.permacc.rememberKey", true);
 pref("extensions.zotero.lawcite.permacc.urlFormat", "url-archived");
 pref("extensions.zotero.lawcite.permacc.auto", false);
+pref("extensions.zotero.lawcite.permacc.autoSince", "");
 pref("extensions.zotero.lawcite.permacc.private", false);
 pref("extensions.zotero.lawcite.permacc.skipDomains", "westlaw.com, lexis.com, nexis.com, bloomberglaw.com, heinonline.org, arxiv.org, ssrn.com, jstor.org");
 pref("extensions.zotero.lawcite.permacc.excludedLibraries", "[]");
